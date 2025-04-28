@@ -1,0 +1,78 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div class="WrapperArea">
+  <mat-toolbar class="pagetitle-bar w-100 mb-0" fxLayoutAlign="space-between center" fxLayoutGap="20">
+    <h2 class="admin-logo"> App Setting Management</h2>
+    <button mat-raised-button color="primary" (click)="addSetting()" class="primary">Add</button>
+  </mat-toolbar>
+  <mat-sidenav-container class="example-sidenav-container" autosize>
+    <div class="WrapperBox">
+      <div class="Small-Wrapper">
+        <form [formGroup]="searchForm">
+          <div fxLayoutAlign="end center" fxLayoutGap="20" class="mb-2">
+            <!-- <div class="search-box"> -->
+              <!-- <input type="text" placeholder="Search" formControlName="name" class="form-control lg" />
+              <button (click)="loadData()" class="btn search-icon">
+                <mat-icon class="material-symbols-sharp">search</mat-icon>
+              </button> -->
+              <!-- <button class="btn close-icon">
+              <mat-icon class="material-symbols-sharp">close</mat-icon>
+            </button> -->
+            <!-- </div> -->
+          <!-- <app-search (searchEvent)="onSearch($event)" (clearEvent)="onClearSearch()"></app-search> -->
+            <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+            </mat-paginator>
+          </div>
+        </form>
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100" cdkDropList
+            (cdkDropListDropped)="drop($event)">
+            <ng-container matColumnDef="sr">
+              <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+              <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }} </td>
+            </ng-container>
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef> Title</th>
+              <td mat-cell *matCellDef="let element"> {{element.title?element.title:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="image">
+              <th mat-header-cell *matHeaderCellDef>Image</th>
+              <td mat-cell *matCellDef="let element">
+                <img (click)="previewImage(element.image)" style="max-width: 70px;" src={{element.image}}>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="desc">
+              <th mat-header-cell *matHeaderCellDef>Description</th>
+              <td mat-cell *matCellDef="let element"> {{element.description?element.description:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="url">
+              <th mat-header-cell *matHeaderCellDef>Url </th>
+              <td mat-cell *matCellDef="let element"> {{element.url?element.url:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="sequence">
+              <th mat-header-cell *matHeaderCellDef>Sequence</th>
+              <td mat-cell *matCellDef="let element"> {{element.sequence}} </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef> Update </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-mini-fab color="accent" (click)="showEditForm(element)">
+                  <mat-icon class="material-symbols-sharp">edit</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" cdkDrag></tr>
+          </table>
+        </div>
+        <div>
+          <!-- <mat-paginator #paginator [length]="userlistcount" [pageIndex]="currentPage" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"  (page)="pageChanged($event)"  aria-label="Select page">
+          </mat-paginator> -->
+        </div>
+      </div>
+      <div>
+      </div>
+    </div>
+  </mat-sidenav-container>
+</div>

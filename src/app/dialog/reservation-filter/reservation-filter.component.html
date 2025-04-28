@@ -1,0 +1,100 @@
+<h2 mat-dialog-title>Filters</h2>
+<mat-dialog-content class="mat-typography">
+    <div fxLayoutAlign="space-between center" fxLayoutGap="20" class="searchArea big mb-3">
+        <form [formGroup]="searchForm" class="search-form" fxLayoutAlign="start center" fxLayoutGap="8">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Select Status</mat-label>
+                        <mat-select formControlName="status">
+                            <mat-option value="upcoming">Upcoming</mat-option>
+                            <mat-option value="historical">Historical</mat-option>
+                            <mat-option value="noshow">Noshow</mat-option>
+                            <!-- <mat-option value="completed">Completed</mat-option> -->
+                            <mat-option value="cancelled">Cancelled</mat-option>
+                            <mat-option value="refunded">Refunded</mat-option>
+                            <mat-option value="payment_completed">Payment Completed</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <app-date-time-picker #dateTimePicker (dateRangeChange)="onDateRangeChange($event)"></app-date-time-picker>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Select User Type</mat-label>
+                        <mat-select formControlName="is_nukhba_user">
+                            <mat-option value="1">Test User</mat-option>
+                            <mat-option value="0">Actual User</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field class="searchField" appearance="outline">
+                        <mat-label>Search by User Email/Phone</mat-label>
+                        <input matInput placeholder="Search by Email/Phone" formControlName="user_email_mobile">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field class="searchField" appearance="outline">
+                        <mat-label>Search by Restaurant Name</mat-label>
+                        <input matInput placeholder="Search by Restaurant Name" formControlName="resName">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Reservation Type</mat-label>
+                        <mat-select formControlName="is_pilot">
+                            <mat-option value="1">Pilot </mat-option>
+                            <mat-option value="0"> Live</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field class="searchField" appearance="outline">
+                        <mat-label>Search by Coupon Code</mat-label>
+                        <input matInput placeholder="Search by Coupon Code" formControlName="coupon_code">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field class="searchField" appearance="outline">
+                        <mat-label>Search by Coupon Discount</mat-label>
+                        <input matInput placeholder="Search by Coupon Discount" formControlName="coupon_discount">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field class="searchField" appearance="outline">
+                        <mat-label>Search by Campaign Code</mat-label>
+                        <input matInput placeholder="Search by Campaign Code" formControlName="campaign_code">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field class="searchField" appearance="outline">
+                        <mat-label>Search by Slot Discount</mat-label>
+                        <input matInput placeholder="Search by slot Discount" formControlName="slot_discount">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field class="searchField" appearance="outline">
+                        <mat-label>Search by Booking Id</mat-label>
+                        <input matInput placeholder="Search by Booking Id" formControlName="booking_id">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Coupon Applied</mat-label>
+                        <mat-select formControlName="coupon_applied">
+                            <mat-option value="1">Yes </mat-option>
+                            <mat-option value="0"> No</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="p-3">
+    <button mat-raised-button color="accent" (click)="backFrom()">Close</button>
+    <button mat-raised-button color="primary" class="primary" (click)="loadData()">Search</button>
+    <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+</mat-dialog-actions>

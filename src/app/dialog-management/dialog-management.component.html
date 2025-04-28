@@ -1,0 +1,98 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div class="WrapperArea">
+    <mat-toolbar class="pagetitle-bar w-100 mb-0" fxLayoutAlign="space-between center" fxLayoutGap="20">
+        <h2>Dialog Management</h2>
+        <!-- <button mat-raised-button color="primary" class="primary" (click)="addDialog()">Add Dialog</button> -->
+    </mat-toolbar>
+    <mat-sidenav-container class="example-sidenav-container" autosize>
+        <div class="WrapperBox">
+            <div class="Small-Wrapper">
+                <div class="searchArea mb-2" fxLayoutAlign="space-between center" fxLayoutGap="20">
+                    <!-- <form [formGroup]="searchForm" class="search-form" fxLayoutAlign="start center" fxLayoutGap="8">
+              <app-input-box [formgroup]="searchForm" [params]="controls.name"></app-input-box>
+              <mat-form-field appearance="outline" class="searchField">
+                <mat-label>Select Status</mat-label>
+                <mat-select formControlName="status">
+                  <mat-option value="1">Active</mat-option>
+                  <mat-option value="0">Inactive</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-raised-button color="primary" class="primary" (click)="loadData()">Search</button>
+              <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+            </form> -->
+                    <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+                        [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+                    </mat-paginator>
+                </div>
+                <div class="table-responsive">
+                    <table mat-table [dataSource]="dataSource" class="w-100 sticky-table" >
+                        <ng-container matColumnDef="sr">
+                            <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+                            <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="title">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">Title </th>
+                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.title}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="start_time">
+                            <th mat-header-cell *matHeaderCellDef class="text-center"> Start Time</th>
+                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.start_time*1000 | date: 'dd-MMM-yy hh:mm:aa'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="end_time">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">  End Time</th>
+                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.end_time*1000 | date: 'dd-MMM-yy hh:mm:aa'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="action1">
+                            <th mat-header-cell *matHeaderCellDef> Action Type</th>
+                            <!-- <td mat-cell *matCellDef="let element"> {{element.details.action_type}} </td> -->
+                            <td mat-cell *matCellDef="let element">
+                                <span *ngIf="element.details.action_type=='1'" class="chip white">Restaurant</span>
+                                <span *ngIf="element.details.action_type=='2'" class="chip white">Game Play</span>
+                                <span *ngIf="element.details.action_type=='3'" class="chip white">Share App</span>
+                                <span *ngIf="element.details.action_type=='5'" class="chip white">Voucher</span>
+                                <span *ngIf="element.details.action_type=='4'" class="chip white">Manual</span>
+                                <span *ngIf="element.details.action_type=='6'" class="chip white">Deal</span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="message">
+                            <th mat-header-cell *matHeaderCellDef> Message</th>
+                            <td mat-cell *matCellDef="let element"> {{element.message}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="user_type">
+                            <th mat-header-cell *matHeaderCellDef> User Type</th>
+                            <td mat-cell *matCellDef="let element"> {{element.user_type==1?'All User':'Specific User'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                            <th mat-header-cell *matHeaderCellDef>Status</th>
+                            <td mat-cell *matCellDef="let element">
+                                <span *ngIf="element.status=='1'"
+                                    class="chip green">{{element.status==1?'Active':'Inactive'}}</span>
+                                <span *ngIf="element.status!='1'"
+                                    class="chip inactive">{{element.status==1?'Active':'Inactive'}}</span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef> Edit </th>
+                            <td mat-cell *matCellDef="let element">
+                                <button mat-mini-fab color="accent" (click)="showEditForm(element)">
+                                    <span class="material-symbols-sharp">edit</span>
+                                </button>
+                                <button mat-mini-fab color="warn" (click)="deleteDialog(element)">
+                                <mat-icon  class="material-symbols-sharp"> delete</mat-icon>
+                              </button>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+                <div>
+                </div>
+            </div>
+            <div>
+            </div>
+        </div>
+    </mat-sidenav-container>
+</div>

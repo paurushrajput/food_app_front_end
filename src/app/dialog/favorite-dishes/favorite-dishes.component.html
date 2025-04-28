@@ -1,0 +1,61 @@
+<h2 mat-dialog-title>Update Cuisine</h2>
+<mat-dialog-content class="mat-typography">
+  <!-- <h3><b>Pin Your Dish</b></h3> -->
+  <div class="searchField search-form">
+    <form class="innerbox" [formGroup]="cuisinesForm" class="w-100">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Enter your Cuisine</mat-label>
+        <input matInput placeholder="Enter Cuisine Name" formControlName="name">
+        <mat-icon matSuffix class="material-symbols-sharp">restaurant</mat-icon>
+      </mat-form-field>
+    </form>
+
+    <button mat-raised-button color="primary" (click)="add()">Add</button>
+  </div>
+
+  <mat-chip-grid #chipGrid aria-label="Chip list">
+    <mat-chip-row *ngFor="let item of cuisineData" (removed)="remove(item)">
+      {{ item }}
+      <button matChipRemove>
+        <mat-icon class="material-symbols-sharp">cancel</mat-icon>
+      </button>
+    </mat-chip-row>
+  </mat-chip-grid>
+
+
+
+  <!-- <mat-chip-grid class="mt-3">
+        <mat-chip-row>
+            Chicken Tikka Masala
+        <button matChipRemove>
+          <mat-icon class="material-symbols-sharp">cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+
+      <mat-chip-row>
+        Chicken Curry
+    <button matChipRemove>
+      <mat-icon class="material-symbols-sharp">cancel</mat-icon>
+    </button>
+  </mat-chip-row>
+
+  <mat-chip-row>
+    Chicken Caesar Salad
+<button matChipRemove>
+  <mat-icon class="material-symbols-sharp">cancel</mat-icon>
+</button>
+</mat-chip-row>
+
+<mat-chip-row>
+    Chicken Popcorn
+<button matChipRemove>
+  <mat-icon class="material-symbols-sharp">cancel</mat-icon>
+</button>
+</mat-chip-row>
+
+    </mat-chip-grid> -->
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" (click)="updateCuisine()">Update Cuisines</button>
+  <button mat-raised-button color="accent" class="accent" (click)="closeDialogBox()">Close</button>
+</mat-dialog-actions>

@@ -1,0 +1,107 @@
+<h2 mat-dialog-title>
+ {{ isEditMode ? 'Edit Redeem' : 'Add Redeem' }}
+</h2>
+
+<form class="innerbox" [formGroup]="couponForm">
+    <div mat-dialog-content>
+        <div fxLayout="column">
+            <div class="row">
+                <div class="col-md-6 input-margin">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Title</mat-label>
+                        <input matInput placeholder="Enter Title" formControlName="title">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(couponForm.get('title')?.hasError('required') && (submitted || (couponForm.get('title')?.dirty)))">
+                        * Title field is required
+                    </div>
+                </div>
+                <div class="col-md-6 input-margin">
+                    <!-- <div class="teamlable">Select Status<em>*</em></div> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-select formControlName="type">
+                            <mat-option value="">Select Type</mat-option>
+                            <mat-option value="2">Product</mat-option>
+                            <mat-option value="1"> Coupon</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(couponForm.get('type')?.hasError('required') && (submitted || (couponForm.get('type')?.dirty)))">
+                        *type Field Is Required
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div *ngIf="couponForm.value.type=='1'" class="col-md-6 input-margin">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Select Coupon</mat-label>
+                        <mat-select formControlName="coupon_id">
+                            <mat-option *ngFor="let type of couponData" value={{type.id}}>
+                                {{type.coupon_code}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 input-margin">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Description</mat-label>
+                        <input matInput placeholder="Enter Description" formControlName="description">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(couponForm.get('description')?.hasError('required') && (submitted || (couponForm.get('description')?.dirty)))">
+                        * Description field is required
+                    </div>
+                </div>
+                <div class="col-md-6 input-margin">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Points</mat-label>
+                        <input matInput type="number" placeholder="Enter point" formControlName="points">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(couponForm.get('points')?.hasError('required') && (submitted || (couponForm.get('points')?.dirty)))">
+                        * Points field is required
+                    </div>
+                </div>
+                <div class="col-md-6 input-margin">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-select formControlName="status">
+                             
+                            <mat-option value="1">Active</mat-option>
+                            <mat-option value="0"> Inactive</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(couponForm.get('status')?.hasError('required') && (submitted || (couponForm.get('status')?.dirty)))">
+                        *status Field Is Required
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col">
+                    <label class="position-relative d-flex align-items-center gap-2">Upload <mat-icon class="material-symbols-sharp"
+                        matTooltip="Please select only jpeg,png format image.">info</mat-icon></label>
+                    <div class="custom-file">
+                        <input class="ng-hide" formControlName="image" (change)="onFileSelected($event)" id="input-file-id" type="file" />
+                        <label for="input-file-id">Upload Image</label>
+                    </div>
+               
+                    <div *ngIf="imageSize" class="filesize my-2">File size: {{ imageSize }}</div>
+                        
+                    </div>
+                    <div class="col">
+                        <ng-container *ngIf="image">
+                            <div class="image-preview">
+                                <img id="preview" [src]=image>
+                            </div>
+                        </ng-container>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px 20px;">
+        <button mat-raised-button [disabled]="_appService.isButtonDisabled()" color="primary" class="primary"
+            (click)="saveCategory()">Save</button>
+        <button mat-raised-button [disabled]="_appService.isButtonDisabled()" color="accent" class="accent"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>

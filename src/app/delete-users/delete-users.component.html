@@ -1,0 +1,82 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div class="WrapperArea">
+    <mat-toolbar class="pagetitle-bar">
+      <h2 class="admin-logo">Deleted Users Management</h2>
+    </mat-toolbar>
+    <mat-sidenav-container class="example-sidenav-container" autosize>
+      <div class="WrapperBox">
+        <div class="Small-Wrapper">
+          <div class="searchArea mb-3" fxLayoutAlign="space-between center" fxLayoutGap="20">
+            <form [formGroup]="searchForm" class="search-form" fxLayoutAlign="start center" fxLayoutGap="8">
+              <!-- <app-input-box [formgroup]="searchForm" [params]="controls.name"></app-input-box> -->
+              <!-- <div class="col-md-6 mb-4"> -->
+                <!-- <app-input-box [formgroup]="searchForm" [params]="controls.email"
+                    class="w-100 filter-element"></app-input-box> -->
+                    <mat-form-field class="custom-mat-form-field filter-element" appearance="outline">
+                        <mat-label>Search by Name /Email</mat-label>
+                        <input matInput placeholder="Search by Name /Email" formControlName="name">
+                    </mat-form-field>
+            <!-- </div> -->
+              <button mat-raised-button color="primary" class="primary" (click)="searchData()">Search</button>
+              <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+            </form>
+            <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+            </mat-paginator>
+          </div>
+          <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+              <ng-container matColumnDef="sr">
+                <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+                <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }} </td>
+              </ng-container>
+              <ng-container matColumnDef="fname">
+                <th mat-header-cell *matHeaderCellDef> First Name</th>
+                <td mat-cell *matCellDef="let element"> {{element.first_name?element.first_name:'N/A'}} </td>
+              </ng-container>
+              <!-- <ng-container matColumnDef="lname">
+                <th mat-header-cell *matHeaderCellDef>Last Name</th>
+                <td mat-cell *matCellDef="let element"> {{element.last_name?element.last_name:'N/A'}} </td>
+              </ng-container> -->
+              <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef>Email</th>
+                <td mat-cell *matCellDef="let element"> {{element.email?element.email:'N/A'}} </td>
+              </ng-container>
+              <ng-container matColumnDef="mobile">
+                <th mat-header-cell *matHeaderCellDef>Phone No. </th>
+                <td mat-cell *matCellDef="let element"> {{element.mobile?element.mobile:'N/A'}} </td>
+              </ng-container>
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Action </th>
+                <td mat-cell *matCellDef="let element">
+                  <button [disabled]="_appService.isButtonDisabled()" mat-raised-button [matMenuTriggerFor]="menu"
+                    color="primary" class="primary"> Options</button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="restoreUser(element)">Restore</button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+              <!-- <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef> Edit </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-mini-fab color="accent" (click)="showEditForm(element)" class="secondary">
+  
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+            </ng-container> -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+          <div>
+            <!-- <mat-paginator #paginator [length]="userlistcount" [pageIndex]="currentPage" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"  (page)="pageChanged($event)"  aria-label="Select page">
+          </mat-paginator> -->
+          </div>
+        </div>
+        <div>
+        </div>
+      </div>
+    </mat-sidenav-container>
+  </div>

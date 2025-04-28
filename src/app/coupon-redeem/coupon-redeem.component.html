@@ -1,0 +1,141 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div class="WrapperArea">
+    <mat-toolbar class="pagetitle-bar w-100 mb-0" fxLayoutAlign="space-between center" fxLayoutGap="20">
+        <h2>Explore Management</h2>
+        <button mat-raised-button color="primary" class="primary" (click)="addCoupon()">Add Redeem</button>
+    </mat-toolbar>
+    <mat-sidenav-container class="example-sidenav-container" autosize>
+        <div class="WrapperBox">
+            <div class="Small-Wrapper">
+                <div class="searchArea mb-3" fxLayoutAlign="end center" fxLayoutGap="20">
+                    <!-- <form [formGroup]="searchForm" class="search-form" fxLayoutAlign="start center">
+              <mat-form-field appearance="outline" class="searchField">
+                <mat-label>Select Discount Type</mat-label>
+                <mat-select formControlName="discount_type">
+                  <mat-option value="percentage">Percentage</mat-option>
+                  <mat-option value="flat">Flat</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="searchField">
+                <mat-label>Select Type</mat-label>
+                <mat-select formControlName="type">
+                  <mat-option value="1">For Organisation</mat-option>
+                  <mat-option value="2">Global for all users</mat-option>
+                  <mat-option value="3">For specific user</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="searchField">
+                <mat-label>Select Status</mat-label>
+                <mat-select formControlName="status">
+                  <mat-option value="1">Enabled</mat-option>
+                  <mat-option value="0">Disabled</mat-option>
+                  <mat-option value="2">expired</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-raised-button color="primary" class="primary" (click)="loadData()">Search</button>
+              <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+            </form> -->
+                    <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+                        [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+                    </mat-paginator>
+                </div>
+                <div class="table-responsive">
+                    <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+                        <ng-container matColumnDef="sr">
+                            <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+                            <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="image">
+                            <th mat-header-cell *matHeaderCellDef>Image</th>
+                            <td mat-cell *matCellDef="let element">
+                              <img (click)="previewImage(element.image)" style="max-width: 70px;" src={{element.image}}>
+                            </td>
+                          </ng-container>
+                        <ng-container matColumnDef="title">
+                            <th mat-header-cell *matHeaderCellDef>title</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.title}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="description">
+                            <th mat-header-cell *matHeaderCellDef>description</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.description}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="type">
+                            <th mat-header-cell *matHeaderCellDef>type</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.type}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="points">
+                            <th mat-header-cell *matHeaderCellDef>Points</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.points}}
+                            </td>
+                        </ng-container>
+                        <!-- <ng-container matColumnDef="organization_id">
+                            <th mat-header-cell *matHeaderCellDef>Organization Id</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.organization_id?element.organization_id:'N/A'}}
+                            </td>
+                        </ng-container> -->
+                        <ng-container matColumnDef="status">
+                            <th mat-header-cell *matHeaderCellDef>Status</th>
+                            <td mat-cell *matCellDef="let element">
+                                <span *ngIf="element.status=='1'" class="chip green">Active</span>
+                                <span *ngIf="element.status!='1'" class="chip inactive">Inactive</span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef> Update </th>
+                            <td mat-cell *matCellDef="let element">
+                                <div class="d-flex gap-1">
+                                    <button mat-mini-fab color="accent" (click)="showEditForm(element)">
+                                        <mat-icon class="material-symbols-sharp">edit</mat-icon>
+                                    </button>
+                                    <button mat-mini-fab color="warn" (click)="deleteRedeem(element)">
+                                        <mat-icon class="material-symbols-sharp"> delete</mat-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+                <div>
+                    <!-- <mat-paginator #paginator [length]="userlistcount" [pageIndex]="currentPage" [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions"  (page)="pageChanged($event)"  aria-label="Select page">
+            </mat-paginator> -->
+                </div>
+            </div>
+            <div>
+            </div>
+        </div>
+    </mat-sidenav-container>
+</div>
+
+
+
+
+
+<!-- <div fxLayout="row" fxLayoutAlign="space-between center">
+      <mat-card>Category Management</mat-card>
+      <button mat-stroked-button color="primary" class="primary"  (click)="addCategory()">Add Category</button>
+    </div> -->
+
+
+
+<!-- <mat-card>
+      <mat-card-header>
+        <mat-card-title>Actions Buttons</mat-card-title>
+        <mat-card-subtitle>End</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-actions>
+        <button mat-button>LIKE</button>
+        <button mat-button>SHARE</button>
+      </mat-card-actions>
+    </mat-card> -->

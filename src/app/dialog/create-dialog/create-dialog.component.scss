@@ -1,0 +1,254 @@
+.mat-form-field {
+  width: 100%;
+}
+
+.row {
+  width: 100%;
+}
+
+div.main-container {
+  float: left;
+  width: 100%;
+}
+
+::ng-deep .ngx-mat-select-search .mat-select-placeholder {
+  display: none;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+
+  >div {
+    flex: 50%;
+  }
+}
+
+
+
+img {
+  vertical-align: super;
+}
+
+.searchrestaurant .mat-select-search-clear.mdc-button{
+  display: none;
+}
+
+.highlight {
+  // background-color: rgb(232, 122, 122);
+  /* or any other styling you need */
+}
+
+.form-row .col {
+  flex-basis: 0;
+  flex-grow: 0;
+  max-width: 100%;
+}
+
+.image-preview {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.image-preview img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.image-preview .close {
+  position: absolute;
+  right: 0;
+  font-size: 10px;
+  top: 0;
+  transform: translate(50%, -50%);
+  color: #fff;
+  background: #000 !important;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  border-radius: 50%;
+}
+
+.has-rowbtn .full-width{
+  width: calc(100% - 60px);
+}
+
+/*.mat-card{
+    border: 2px solid green;
+    float:left;
+    width: 100%;
+  }*/
+.mat-card {
+  max-width: 900px;
+  margin: 0px auto;
+}
+
+.mat-card-content {
+  margin: 0 auto;
+  padding: 0;
+}
+
+/*.mat-card.box{
+    border: 2px solid green;
+    float:left;
+  }*/
+div.main-container .mat-form-field {
+  margin-left: 8px;
+}
+
+// mat-label{
+//   display: inline-block;
+//   margin-bottom: 6px;
+// }
+.filesize {
+  font-size: 10px;
+  letter-spacing: 0;
+  background: #ddd;
+  padding: 5px 7px;
+  line-height: 1.1;
+  border-radius: 30px;
+  display: inline-block;
+}
+
+
+.mat-mdc-option.mdc-list-item{
+  position: relative;
+}
+
+.mat-mdc-option.mdc-list-item.highlight::after {
+  content: '';
+  position: absolute;
+  right: 15px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #e53935;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.mat-mdc-option.mdc-list-item.highlight {
+  padding-right: 30px;
+}
+
+.custom-file {
+  position: relative;
+}
+
+.custom-file input[type="file"] {
+  opacity: 0;
+  width: 0;
+  height: 36px;
+}
+
+.custom-file label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  width: 250px;
+  border: 1px dashed #e53935;
+  color: #e53935;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 5px;
+  margin: 0;
+  border-radius: 4px;
+  display: block;
+  text-align: center;
+  cursor: pointer;
+}
+
+label {
+  position: relative;
+}
+
+// label{
+//   position: relative;
+// }
+.notify-icon{
+  position: static;
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .flex-row .col-sm-4 {
+    width: 100%;
+    float: left;
+    display: block;
+  }
+
+  .mat-card {
+    max-width: 768px;
+    margin: 0px auto;
+  }
+
+  .mat-card-content {
+    max-width: 768px;
+  }
+
+  .mat-card-content div {
+    max-width: 150px;
+  }
+
+  div.main-container .mat-form-field {
+    margin-left: 3px;
+  }
+
+  .mat-form-field-infix {
+    display: block;
+    position: relative;
+    flex: auto;
+    min-width: 0;
+    width: 145px;
+  }
+
+  .mat-form-field-appearance-legacy .mat-form-field-infix {
+    width: 140px
+  }
+}
+
+@media (max-width: 400px) {
+
+
+  .flex-row .col-sm-4 {
+
+    width: 100%;
+    float: left;
+    display: block;
+  }
+
+  .mat-card {
+    max-width: 360px;
+    margin: 0px auto;
+  }
+
+  .mat-card-content {
+    max-width: 360px;
+  }
+
+}
+
+.mat-button.mat-red {
+  color: rgb(255, 0, 0);
+}
+
+.mat-raised-button.mat-red,
+.mat-flat-button.mat-red {
+  background-color: rgb(255, 0, 0);
+  color: white;
+}

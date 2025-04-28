@@ -1,0 +1,90 @@
+<h2 mat-dialog-title>Filters</h2>
+<mat-dialog-content class="mat-typography">
+    <div fxLayoutAlign="space-between center" fxLayoutGap="20" class="searchArea big mb-3">
+        <form [formGroup]="searchForm" class="search-form" fxLayoutAlign="start center" fxLayoutGap="8">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Search by Booking Id</mat-label>
+                        <input matInput placeholder="Search by Booking Id" formControlName="booking_id">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <!-- <mat-label>Select Purchased Date</mat-label> -->
+                    <!-- <app-date-time-picker #dateTimePicker
+                        (dateRangeChange)="onDateRangeChange($event)"></app-date-time-picker> -->
+                    <mat-form-field appearance="outline" class="searchField w-100 filter-element">
+                        <mat-label>Select Purchased Date</mat-label>
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate #startInput placeholder="Select Purchased Start Date"
+                                formControlName="created_at_from_date" readonly="true">
+                            <input matEndDate #endInput placeholder="Select Purchased End Date"
+                                formControlName="created_at_to_date" readonly="true">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Deal Mode</mat-label>
+                        <mat-select formControlName="is_pilot">
+                            <mat-option value="1">Pilot </mat-option>
+                            <mat-option value="0"> Live</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <!-- <div class="col-md-6 mb-4">
+                    <mat-label>Select Redeemed Date</mat-label>
+                    <app-date-time-picker #dateTimePicker1
+                        (dateRangeChange)="onDateRangeChangev2($event)"></app-date-time-picker>
+                </div> -->
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField w-100 filter-element">
+                        <mat-label>Select Redeemed Date</mat-label>
+                        <mat-date-range-input [rangePicker]="picker2">
+                            <input matStartDate #startInput1 placeholder="Select Redeemed Start Date"
+                                formControlName="redeemed_at_from_date" readonly="true">
+                            <input matEndDate #endInput1 placeholder="Select Redeemed End Date"
+                                formControlName="redeemed_at_to_date" readonly="true">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker2></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Deal Type</mat-label>
+                        <mat-select formControlName="type">
+                            <mat-option value="free">Free </mat-option>
+                            <mat-option value="paid"> Paid</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Select Order Status</mat-label>
+                        <mat-select formControlName="status">
+                            <mat-option value="1">Pending</mat-option>
+                            <!-- <mat-option value="2">Completed</mat-option> -->
+                            <mat-option value="3">Paid</mat-option>
+                            <mat-option value="4">Redeemed</mat-option>
+                            <mat-option value="5">Clicked Back</mat-option>
+                            <mat-option value="-1">Expired</mat-option>
+                            <mat-option value="-2">Cancelled</mat-option>
+                            <mat-option value="-3">Declined</mat-option>
+                           
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="p-3">
+    <button mat-raised-button color="accent" (click)="backFrom()">Close</button>
+    <button mat-raised-button color="primary" class="primary" (click)="loadData()">Search</button>
+    <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+</mat-dialog-actions>

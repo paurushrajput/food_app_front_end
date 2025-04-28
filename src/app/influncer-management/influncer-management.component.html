@@ -1,0 +1,200 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div class="WrapperArea">
+  <mat-toolbar class="pagetitle-bar">
+    <h2 class="admin-logo">Influencer Management</h2>
+
+  </mat-toolbar>
+  <mat-sidenav-container class="example-sidenav-container" autosize>
+    <div class="WrapperBox">
+      <div class="Small-Wrapper">
+        <div fxLayoutGap="15" class=" mb-3 d-flex align-items-center justify-content-between">
+
+          <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+          </mat-paginator>
+        </div>
+        <!-- <div class="searchArea mb-3" fxLayoutAlign="space-between center" fxLayoutGap="20">
+            <form [formGroup]="searchForm" class="search-form" fxLayoutAlign="start center" fxLayoutGap="8">
+              <mat-form-field appearance="outline" class="searchField">
+                <mat-label>Search by Name /Email</mat-label>
+                <input matInput placeholder="Search by Name /Email" formControlName="name">
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="searchField">
+                <mat-label>Select Status</mat-label>
+                <mat-select formControlName="status">
+                  <mat-option value="1">Active</mat-option>
+                  <mat-option value="-1">Blocked</mat-option>
+                  <mat-option value="-3">Noshow</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-raised-button color="primary" class="primary" (click)="loadData()">Search</button>
+              <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+            </form>
+            <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+            </mat-paginator>
+          </div> -->
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+            <ng-container matColumnDef="sr">
+              <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+              <td [ngClass]="element.is_nukhba_user==1?'red':'green'" mat-cell *matCellDef="let element;index as i;"> {{
+                currentPage * pageSize + i + 1 }} </td>
+            </ng-container>
+            <ng-container matColumnDef="fname">
+              <th mat-header-cell *matHeaderCellDef> First Name</th>
+              <td mat-cell *matCellDef="let element"> {{element.first_name?element.first_name:'N/A'}} </td>
+            </ng-container>
+            <!-- <ng-container matColumnDef="lname">
+                <th mat-header-cell *matHeaderCellDef>Last Name</th>
+                <td mat-cell *matCellDef="let element"> {{element.last_name?element.last_name:'N/A'}} </td>
+              </ng-container> -->
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>Email</th>
+              <td mat-cell *matCellDef="let element"> {{element.email?element.email:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="mobile">
+              <th mat-header-cell *matHeaderCellDef>Phone No. </th>
+              <td mat-cell *matCellDef="let element"> {{element.mobile?element.mobile:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="booking">
+              <th mat-header-cell *matHeaderCellDef>No. of booking </th>
+              <td mat-cell *matCellDef="let element"> {{element.booking_count?element.booking_count:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="campaign_id">
+              <th mat-header-cell *matHeaderCellDef>Campaign</th>
+              <td mat-cell *matCellDef="let element"> {{element.campaign_title?element.campaign_title:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="last_login">
+              <th mat-header-cell *matHeaderCellDef>Last Login</th>
+              <td mat-cell *matCellDef="let element">
+                <div style="white-space: nowrap;text-align: center;"><span
+                    [outerHTML]="element.last_login | gmt"></span></div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="last_seen">
+              <th mat-header-cell *matHeaderCellDef>Last Seen</th>
+              <td mat-cell *matCellDef="let element">
+                <div style="white-space: nowrap;">{{dateCut(element.last_seen | date: 'dd-MMM-YY HH:mm' : 'UTC+400')}}
+                </div>
+              </td>
+            </ng-container>
+            <!-- <ng-container matColumnDef="referred_by">
+                <th mat-header-cell *matHeaderCellDef>Referred By</th>
+                <td mat-cell *matCellDef="let element"> {{element.referred_by?element.referred_by+'(' +
+                  element.referred_by_code +')':'N/A'}} </td>
+              </ng-container> -->
+            <!-- <ng-container matColumnDef="referral_code">
+                <th mat-header-cell *matHeaderCellDef>Referral Code</th>
+                <td mat-cell *matCellDef="let element"> {{element.referral_code?element.referral_code:'N/A'}} </td>
+              </ng-container> -->
+            <ng-container matColumnDef="signedupUser">
+              <th mat-header-cell *matHeaderCellDef>Referral Count</th>
+              <td mat-cell *matCellDef="let element"> {{element.total_signedup_user}} </td>
+            </ng-container>
+            <ng-container matColumnDef="verifiedUser">
+              <th mat-header-cell *matHeaderCellDef>Verified User Count</th>
+              <td mat-cell *matCellDef="let element"> {{element.total_verified_user}} </td>
+            </ng-container>
+            <ng-container matColumnDef="device_id">
+              <th mat-header-cell *matHeaderCellDef>Device Id</th>
+              <td mat-cell *matCellDef="let element"> {{element.device_id?element.device_id:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="onboard">
+              <th mat-header-cell *matHeaderCellDef>Signup</th>
+              <td mat-cell *matCellDef="let element">
+                <div style="white-space: nowrap;text-align: center;"><span
+                    [outerHTML]="element.on_boarding_at | gmt"></span></div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="commission_type">
+              <th mat-header-cell *matHeaderCellDef>Commission Type</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.commission_type}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="commission_percentage">
+              <th mat-header-cell *matHeaderCellDef>Commission</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.commission}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="pdf">
+              <th mat-header-cell *matHeaderCellDef>License Document</th>
+              <td mat-cell *matCellDef="let element">
+                <button (click)="openPdf(element.license_document)" class="btn btn-min btn-primary">View Pdf</button>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef> Status</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.influencer_status_value=='0'?'Pending':element.influencer_status_value=='1'?'Approved':'Rejected' }}
+              </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="action" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef>Action </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                  <mat-icon class="material-symbols-sharp">more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                 
+                  <button mat-menu-item *ngIf="element.influencer_status_value=='0' || element.influencer_status_value=='2'"
+                    (click)="addRemark(element,'approved')">Approve</button>
+                  <button mat-menu-item (click)="updateCommission(element)">Update Commission</button>
+                  <button mat-menu-item *ngIf="element.influencer_status_value=='0' || element.influencer_status_value=='1' "
+                    (click)="addRemark(element,'reject')">Reject</button>
+                </mat-menu>
+              </td>
+            </ng-container>
+
+
+
+         
+
+            <!-- <ng-container matColumnDef="checked">
+                <th mat-header-cell *matHeaderCellDef style="width: 100px; white-space: nowrap;"> <input type="checkbox"
+                    [(ngModel)]="selectAllValue" (change)="onSelectAllCheckboxClick()" class="mr-1">Select
+                </th>
+  
+                <td  mat-cell *matCellDef="let element">
+                  <ng-container *ngIf="!element.is_nukhba_user"><input type="checkbox" [(ngModel)]="element.checked"
+                      (change)="onCheckboxClick(element)"></ng-container>
+                  <ng-container *ngIf="element.is_nukhba_user"><input type="checkbox" checked="true"
+                      disabled="true"></ng-container>
+  
+  
+                </td>
+              </ng-container> -->
+            <!-- <ng-container matColumnDef="is_nukhba_user">
+                <th mat-header-cell *matHeaderCellDef>Is Nukbha User </th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.is_nukhba_user" class="chip green">Yes</span>
+                  <span *ngIf="!element.is_nukhba_user" class="chip">No</span>
+                </td>
+              </ng-container> -->
+            <!-- <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef> Edit </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-mini-fab color="accent" (click)="showEditForm(element)" class="secondary">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+            </ng-container> -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+        <div>
+          <!-- <mat-paginator #paginator [length]="userlistcount" [pageIndex]="currentPage" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"  (page)="pageChanged($event)"  aria-label="Select page">
+          </mat-paginator> -->
+          <!-- <button *ngIf="selectedIds" (click)="submitEmails()" class="btn btn-sm btn-success btn-min">Save</button> -->
+        </div>
+      </div>
+      <div>
+      </div>
+    </div>
+  </mat-sidenav-container>
+</div>

@@ -1,0 +1,469 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<h2 mat-dialog-title>
+  <span *ngIf="this.entity_id==undefined">Create</span>
+  <span *ngIf="this.entity_id!=undefined">Edit</span>
+  Deal
+</h2>
+<div mat-dialog-content class="pb-0">
+  <div fxLayout="column">
+    <div [formGroup]="newDeal">
+      <mat-card-content class="flex-row" fxLayoutGap="20">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-select  [formControl]="selectControl"
+            class="searchrestaurant" placeholder="Search Restaurant" formControlName="res_id"
+            (selectionChange)="getBranchList($event)" #singleSelect>
+            <mat-option>
+              <ngx-mat-select-search  [formControl]="filterControl" [placeholderLabel]="'Search items'"
+                [noEntriesFoundLabel]="'No matching entries found'"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option  [disabled]="this.newDeal.value.id ? true : false" *ngFor="let option of filteredOptions | async" [ngClass]="{'highlight': isHighlighted(option)}"
+              [value]="option">
+              {{ option }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Deal Title</mat-label>
+          <input matInput formControlName="title" placeholder="Deal Title">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Start Date </mat-label>
+          <mat-datetimepicker-toggle [for]="datetimePicker" matSuffix></mat-datetimepicker-toggle>
+          <mat-datetimepicker #datetimePicker type="datetime"> </mat-datetimepicker>
+          <input matInput #startInput formControlName="start_time" [matDatepickerFilter]="dateFilter"
+            [matDatetimepicker]="datetimePicker" required autocomplete="false" readonly="true" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>End Date </mat-label>
+          <mat-datetimepicker-toggle [for]="dateEndtimePicker" matSuffix></mat-datetimepicker-toggle>
+          <mat-datetimepicker #dateEndtimePicker type="datetime"> </mat-datetimepicker>
+          <input matInput #endInput formControlName="end_time" [matDatepickerFilter]="dateEndFilter"
+            [matDatetimepicker]="dateEndtimePicker" required autocomplete="false" readonly="true" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Select Template</mat-label>
+          <mat-select formControlName="template" (selectionChange)="onTemplateChange($event)">
+            <mat-option value="Normal">Normal</mat-option>
+            <mat-option value="Slot">Slot</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-content>
+        <ng-container *ngIf="newDeal.value.template === 'Slot'">
+          <mat-label>Select Days</mat-label>
+          <div class="flex-row gap-2 mb-4">
+            <mat-checkbox class="mt-label" *ngFor="let day of weekDays; let i = index" [formControl]="getDayControl(i)">
+              {{ day }}
+            </mat-checkbox>
+          </div>
+        </ng-container>
+        <div class="row">
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="w-100 mr-2" *ngIf="newDeal.value.template === 'Slot'">
+              <mat-label>Exclude Dates</mat-label>
+              <input (click)="picker.open()" matInput [matDatepicker]="picker" (dateChange)="addDates($event)"
+                placeholder="Select From Date" formControlName="exclude_dates" [readonly]="true" />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-8">
+            <ng-container *ngIf="newDeal.value.template === 'Slot'">
+              <mat-chip-listbox class="mb-4">
+                <mat-chip *ngFor="let chip of selectedDateChips" class="classic-chip">
+                  {{ chip| date:"dd MMM" }}
+                  <button matChipRemove (click)="removeChip(chip)" aria-label="">
+                    <mat-icon class="material-symbols-sharp">cancel</mat-icon>
+                  </button>
+                </mat-chip>
+              </mat-chip-listbox>
+            </ng-container>
+          </div>
+        </div>
+        <div *ngIf="newDeal.value.template === 'Slot'" class="p-3 border mb-4">
+          <div formArrayName="slots">
+            <div *ngFor="let slot of timeSlots.controls; let i = index" [formGroupName]="i" class="time-slot-row"
+              class="flex-row" fxLayoutGap="20">
+              <mat-form-field appearance="outline" class="w-100" *ngIf="newDeal.value.template === 'Slot'">
+                <mat-label>Interval in Minutes</mat-label>
+
+                <mat-select formControlName="interval_in_mins">
+                  <mat-option value="30">30</mat-option>
+                  <mat-option value="60">60</mat-option>
+
+                </mat-select>
+
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Start Time</mat-label>
+                <mat-select formControlName="start_at">
+                  <mat-option *ngFor="let time of startTime" [value]="time.time">{{
+                    time.value
+                    }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>End Time</mat-label>
+                <mat-select formControlName="end_at">
+                  <mat-option *ngFor="let time of endTime" [value]="time.time">{{
+                    time.value
+                    }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <button mat-icon-button color="warn" class="mt-2" (click)="removeTimeSlot(i)">
+                <mat-icon class="material-symbols-sharp">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <button mat-fab extended color="primary" (click)="addTimeSlot()"><mat-icon
+              class="material-symbols-sharp">add</mat-icon>Add</button>
+        </div>
+      </mat-card-content>
+      <mat-card-content class="flex-row" fxLayoutGap="20">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Deal Caption (Max 25 Character)</mat-label>
+          <input matInput formControlName="description" placeholder="Deal Caption"
+            (input)="onInputChange($event,'description')">
+        </mat-form-field>
+
+        <!-- <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Select Category</mat-label>
+          <mat-select formControlName="category_id">
+            <mat-option *ngFor="let type of categoryData" value={{type.uid}}>
+              {{type.name}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Deal Mode</mat-label>
+          <mat-select formControlName="is_pilot">
+            <mat-option value="1">Pilot</mat-option>
+            <mat-option value="0">Live</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Select Campaign </mat-label>
+          <mat-select formControlName="campaign_id">
+            <mat-option value=""> None</mat-option>
+            <mat-option *ngFor="let type of campaignData" value={{type.id}}>
+              {{type.title}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Select Type</mat-label>
+          <mat-select formControlName="type" (selectionChange)="changeType(newDeal.value.type)">
+            <mat-option value="free">Free</mat-option>
+            <mat-option value="paid">Paid</mat-option>
+            <mat-option value="pay_at_resto">Pay at Restaurant</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-content class="flex-row" fxLayoutGap="20">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Validity (In Days)</mat-label>
+          <input matInput formControlName="days_validity" type="number" placeholder="Validity (In Days)" min="0"
+            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Select Restaurant Branch</mat-label>
+          <mat-select formControlName="permitted_restaurant_ids" multiple>
+            <mat-option *ngFor="let type of branchdata | sort:'name'" value={{type.id}}>
+              {{type.name}} - {{type.branch_name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Device Check</mat-label>
+          <mat-select formControlName="device_check">
+            <mat-option value="1">Yes</mat-option>
+            <mat-option value="0">No</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Is Locked</mat-label>
+          <mat-select formControlName="is_locked">
+            <mat-option value="1">Yes</mat-option>
+            <mat-option value="0">No</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Free with Nukhba Credits</mat-label>
+          <mat-select formControlName="free_with_nukhba_credits">
+            <mat-option value="1">Yes</mat-option>
+            <mat-option value="0">No</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Sold Out</mat-label>
+          <mat-select formControlName="sold_out">
+            <mat-option *ngIf="this.selectedDeal.id" value="1">Yes</mat-option>
+            <mat-option value="0">No</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+      </mat-card-content>
+      <mat-card-content *ngIf="newDeal.value.is_locked==1" class="flex-row" fxLayoutGap="20">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Referral</mat-label>
+          <mat-select formControlName="referral">
+            <mat-option value="1">Yes</mat-option>
+            <mat-option value="0">No</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Referral Mobile Verified</mat-label>
+          <mat-select formControlName="referral_mobile_verified">
+            <mat-option value="1">Yes</mat-option>
+            <mat-option value="0">No</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-content class="mb-4 d-block">
+        <label>Deal Highlights</label>
+        <quill-editor formControlName="deal_highlights"></quill-editor>
+      </mat-card-content>
+      <mat-card-content class="mb-4 d-block">
+        <label>Deal Conditions</label>
+        <quill-editor formControlName="deal_conditions"></quill-editor>
+      </mat-card-content>
+      <mat-card-content class="flex-row my-4" fxLayoutGap="20">
+        <div class="row w-100 align-items-center position-relative">
+          <div class="col-md-4">
+            <label class="d-flex align-items-center gap-2">Home page Image <mat-icon
+                class="material-symbols-sharp notify-icon"
+                matTooltip="Please select only jpeg,png format image.">info</mat-icon></label>
+            <div class="custom-file">
+              <input class="ng-hide" formControlName="image" (click)="onFileSelectedv2($event)" id="input-file-id-1"
+                type="submit" style="display: none;" />
+              <label for="input-file-id-1">File Upload</label>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="form-row mt-3">
+              <div class="col">
+                <ng-container *ngIf="image">
+                  <div class="image-preview">
+                    <img id="preview" [src]=image>
+                    <!-- <button type="button" class="close" (click)="removeHomeImage(image)">&#x2715;</button> -->
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-content class="flex-row my-4" fxLayoutGap="20">
+        <div class="row w-100 align-items-center position-relative">
+          <div class="col-md-4">
+            <label class="d-flex align-items-center gap-2">Deal Images <mat-icon
+                class="material-symbols-sharp notify-icon"
+                matTooltip="Please select only jpeg,png format image.">info</mat-icon></label>
+            <div class="custom-file">
+              <input formControlName="image" (click)="onFileSelected($event)" id="input-file-id" type="submit"
+                style="display: none;" />
+              <label for="input-file-id">File Upload</label>
+            </div>
+
+            <!-- <div *ngIf="imageSize" class="filesize">File size: {{ _appService.formatBytes(imageSize) }}</div> -->
+          </div>
+          <div class="col-md-8">
+            <div class="form-row justify-content-start mt-3" style="row-gap: 12px;" *ngIf="imageURL.length > 0">
+
+              <div class="col" *ngFor="let url of imageURL ;let i = index">
+                <div class="image-preview">
+                  <img id="preview" [src]="url" alt="Image Preview">
+                  <!-- <button type="button" class="close" (click)="removeImage(i,url)">&#x2715;</button> -->
+                </div>
+                <div class="text-danger"
+                  *ngIf="(newDeal.get('image')?.hasError('required') && (submitted || (newDeal.get('image')?.dirty)))">
+                  *Image Field Is Required
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </mat-card-content>
+      <mat-card-content class="flex-row my-4" fxLayoutGap="20">
+        <div class="card mb-4">
+          <div class="card-header" id="headingTwo">
+            <h5 class="mb-0">
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="left-box">
+                  <div class="title">Select Deal Category</div>
+                </div>
+              </div>
+            </h5>
+          </div>
+          <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion3">
+            <div class="card-body">
+              <div class="row mb-3">
+                <ng-container *ngFor="let category of categoryData; let i = index">
+                  <div class="col-6 col-sm-4 col-md-4 col-lg-3 mb-2" *ngIf="showAllCategories || i < 10">
+                    <p><mat-checkbox (input)="onCategoryChange($event)" [checked]="category.checked"
+                        [value]="category.uid" class="matcheckbox">{{ category.name
+                        }} </mat-checkbox></p>
+                  </div>
+                </ng-container>
+                <div class="col-md-4 col-sm-6 col-12 d-flex align-items-center mb-1" *ngIf="categoryData?.length > 10">
+                  <a href="javascript:void(0)" class="link d-flex align-items-center pl-2"
+                    (click)="toggleShowAllCategories()">
+                    <mat-icon *ngIf="!showAllCategories" class="material-symbols-sharp mr-1">add</mat-icon>
+                    {{ showAllCategories ? 'Show Less' : 'Load More' }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+      <div [formGroup]="newDeal">
+        <div formArrayName="options">
+          <ng-container *ngFor="let optionForm of option.controls ; let i = index" class="mb-3">
+            <div fxLayout="column" class="w-100 mb-3">
+              <div [formGroupName]="i" class="lesson-form-row" fxFlex="100">
+                <label>Option {{i+1}}</label>
+                <div class="d-flex has-rowbtn justify-content-start align-items-center gap-2">
+                  <mat-card-content class="full-width flex-row position-relative" fxLayoutGap="10">
+                    <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+                      <mat-label>Enter Title</mat-label>
+                      <input matInput type="text" formControlName="title" placeholder="Enter Title">
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+                      <mat-label>Enter Actual Price</mat-label>
+                      <input matInput type="number" formControlName="actual_price" placeholder="Enter Actual Price"
+                        min="0">
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+                      <mat-label>Enter Discounted Price</mat-label>
+                      <input matInput type="number" formControlName="discounted_price"
+                        placeholder="Enter Discounted Price" min="0">
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+                      <mat-label>Total Available Deals</mat-label>
+                      <input matInput type="number" formControlName="max_use" placeholder="Enter Max Use" min="0"
+                        oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Max Deals Per User</mat-label>
+                      <mat-select formControlName="uses_per_user">
+                        <mat-option value="1">1</mat-option>
+                        <mat-option *ngIf="newDeal.value.type!='free'" value="2">2</mat-option>
+                        <mat-option *ngIf="newDeal.value.type!='free'" value="3">3</mat-option>
+                        <mat-option *ngIf="newDeal.value.type!='free'" value="4">4</mat-option>
+                        <mat-option *ngIf="newDeal.value.type!='free'" value="5">5</mat-option>
+                        <mat-option *ngIf="newDeal.value.type!='free'" value="6">6</mat-option>
+                        <mat-option *ngIf="newDeal.value.type!='free'" value="7">7</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>For Home Page</mat-label>
+                      <mat-select formControlName="show_on_home_page" (selectionChange)="setOnlyOneHomePageOption1(i)">
+                        <mat-option value="1">Yes</mat-option>
+                        <mat-option value="0">No</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+                      <mat-label> Max Quantity</mat-label>
+                      <input matInput type="number" formControlName="max_qty_pr_purchase" placeholder="Enter Max Use"
+                        min="0"
+                        oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="w-100">
+
+                      <mat-label>Pax Commission Type</mat-label>
+                      <mat-select formControlName="pax_comission_type">
+                        <mat-option value="1">Fixed per Pax</mat-option>
+                        <mat-option value="2">Varies per pax</mat-option>
+                        <mat-option value="3">Fixed per Booking</mat-option>
+
+                      </mat-select>
+
+                    </mat-form-field>
+
+
+
+                  </mat-card-content>
+
+
+
+
+                  <button *ngIf="!this.selectedDeal.id|| this.selectedDeal.status==-4" mat-icon-button
+                    class="delete-btn" (click)="removeoption(i,optionForm)">
+                    <mat-icon class="material-symbols-sharp">delete</mat-icon>
+                  </button>
+                </div>
+                <div *ngIf="optionForm.get('pax_comission_type')?.value == 1" class="has-rowbtn w-50 mt-4 border p-3">
+                  <mat-card-content formGroupName="pax_details" class="full-width" fxLayoutGap="10">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Amount Fixed Per Pax</mat-label>
+                      <input matInput type="number" formControlName="fixed_per_pax"
+                        placeholder="Enter Amount Fixed Per Pax" min="0">
+                    </mat-form-field>
+                  </mat-card-content>
+                </div>
+
+                <div *ngIf="optionForm.get('pax_comission_type')?.value == 2" class="has-rowbtn w-50 mt-4 border p-3">
+                  <div formGroupName="pax_details" class="full-width">
+                    <div formArrayName="varies_per_pax">
+                      <mat-card-content class="w-100 flex-row align-items-center mb-3" fxLayoutGap="10"
+                        *ngFor="let pax of  getVariesPerPax(optionForm).controls; let j = index" [formGroupName]="j">
+                        <mat-form-field appearance="outline" class="w-100">
+                          <mat-label>Quantity</mat-label>
+                          <input matInput type="number" formControlName="num_person" placeholder="Quantity" min="0"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="w-100">
+                          <mat-label>Amount</mat-label>
+                          <input matInput type="number" formControlName="amount" placeholder="Enter Amount" min="0">
+                        </mat-form-field>
+
+                        <button mat-icon-button (click)="removeVariesPerPax(optionForm, j)" class="delete-btn">
+                          <mat-icon class="material-symbols-sharp">delete</mat-icon>
+                        </button>
+                      </mat-card-content>
+                    </div>
+                    <button mat-fab extended color="primary" class="primary" (click)="addVariesPerPax(optionForm)">
+                      <mat-icon class="material-symbols-sharp">add</mat-icon>Add More Pax
+                    </button>
+                  </div>
+                </div>
+
+                <div *ngIf="optionForm.get('pax_comission_type')?.value == 3" class="has-rowbtn w-50 mt-4 border p-3">
+                  <mat-card-content formGroupName="pax_details" class="flex-row full-width">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label> Amount Fixed Per Booking</mat-label>
+                      <input matInput type="number" formControlName="fixed_per_booking"
+                        placeholder="Enter Amount Fixed Per Booking" min="0">
+                    </mat-form-field>
+                  </mat-card-content>
+                </div>
+              </div>
+
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <button mat-fab extended *ngIf="newDeal.value.type"
+        [disabled]="newDeal.value.type =='free' && newDeal.value.options.length==1" color="primary" class="primary"
+        (click)="addOption()">
+        <mat-icon class="material-symbols-sharp">add</mat-icon>Add
+      </button>
+    </div>
+  </div>
+</div>
+<div>
+
+  <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 10px 20px 20px;">
+    <button *ngIf="this.entity_id==undefined" [disabled]="_appService.isButtonDisabled() " class="primary"
+      (click)="saveDeal()" mat-raised-button color="primary">Publish</button>
+    <button *ngIf="this.entity_id!=undefined" [disabled]="_appService.isButtonDisabled() " class="primary"
+      (click)="saveDeal()" mat-raised-button color="primary">Update</button>
+    <button [disabled]="_appService.isButtonDisabled()" (click)="closeDialogBox()" mat-raised-button color="accent"
+      class="accent">Close</button>
+  </div>
+</div>

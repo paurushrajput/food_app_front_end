@@ -1,0 +1,117 @@
+<div class="WrapperArea">
+  <mat-toolbar class="pagetitle-bar w-100 mb-0" fxLayoutAlign="space-between center" fxLayoutGap="20">
+    <h2>Config Management
+    </h2>
+    <div class="search-form" fxLayoutAlign="start center">
+      <button mat-raised-button color="accent" (click)="updateRule()">Update Leaderboard Rules</button>
+    </div>
+  </mat-toolbar>
+  <mat-sidenav-container class="example-sidenav-container" autosize>
+    <div class="WrapperBox">
+      <div class="Small-Wrapper">
+        <form [formGroup]="configForm">
+          <div class="mw-500">
+            <div fxLayout="column" fxLayoutAlign="start center">
+              <!-- <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                  <mat-form-field class="example-full-width w-100" appearance="outline">
+                    <mat-label>Title<em>*</em></mat-label>
+                    <input matInput placeholder="Enter title" readonly formControlName="title">
+                  </mat-form-field>
+                </div>
+              </div> -->
+              <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                  <mat-form-field class="example-full-width w-100" appearance="outline">
+                    <mat-label>Telr Live<em>*</em></mat-label>
+                    <mat-select formControlName="telr_live">
+                      <mat-option value="1">Active</mat-option>
+                      <mat-option value="0">Inactive</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                  <mat-form-field class="example-full-width w-100" appearance="outline">
+                    <mat-label>Skip Allowed Android<em>*</em></mat-label>
+                    <mat-select formControlName="skip_allowed_android">
+                      <mat-option value="1">Active</mat-option>
+                      <mat-option value="0">Inactive</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                  <mat-form-field class="example-full-width w-100" appearance="outline">
+                    <mat-label>Skip Allowed Ios<em>*</em></mat-label>
+                    <mat-select formControlName="skip_allowed_ios">
+                      <mat-option value="1">Active</mat-option>
+                      <mat-option value="0">Inactive</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                  <mat-form-field class="example-full-width w-100" appearance="outline">
+                    <mat-label>User Invite Enable<em>*</em></mat-label>
+                    <mat-select formControlName="is_user_invite_enable">
+                      <mat-option value="1">Active</mat-option>
+                      <mat-option value="0">Inactive</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                  <mat-form-field class="example-full-width w-100" appearance="outline">
+                    <mat-label>Referral Code Needed<em>*</em></mat-label>
+                    <mat-select formControlName="is_referral_code_needed">
+                      <mat-option value="1">Active</mat-option>
+                      <mat-option value="0">Inactive</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row" fxFlex="100" class="w-100">
+                <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+                  <mat-label>Max days for onboarding benefit</mat-label>
+                  <input matInput formControlName="usr_min_boarding_days"
+                    placeholder="Enter Max days for onboarding benefit">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                  <mat-form-field class="example-full-width w-100" appearance="outline">
+                    <mat-label>Deal Booked<em>*</em></mat-label>
+                    <mat-select formControlName="deal_booked">
+                      <mat-option value="1">Active</mat-option>
+                      <mat-option value="0">Inactive</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                  <mat-form-field class="example-full-width w-100" appearance="outline">
+                    <mat-label>User Invite Skip<em>*</em></mat-label>
+                    <mat-select formControlName="user_invite_messages">
+                      <mat-option value="1">Active</mat-option>
+                      <mat-option value="0">Inactive</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <button [disabled]="_appService.isButtonDisabled()" mat-raised-button [disabled]="configForm.invalid"
+              color="primary" class="primary" (click)="updateConfig()">Save</button>
+          </div>
+        </form>
+      </div>
+      <div>
+      </div>
+    </div>
+  </mat-sidenav-container>
+</div>

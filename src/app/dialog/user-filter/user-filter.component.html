@@ -1,0 +1,147 @@
+<h2 mat-dialog-title>Filters</h2>
+<mat-dialog-content class="mat-typography">
+    <div fxLayoutAlign="space-between center" fxLayoutGap="20" class="searchArea big mb-3">
+        <form [formGroup]="searchForm" class="search-form" fxLayoutAlign="start center" fxLayoutGap="8">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Search by Name /Email</mat-label>
+                        <input matInput placeholder="Search by Name /Email" formControlName="name">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Search by Campaign</mat-label>
+                        <input matInput placeholder="Search by campaign" formControlName="campaign_title">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Select Status</mat-label>
+                        <mat-select formControlName="status">
+                            <mat-option value="1">Active</mat-option>
+                            <mat-option value="-1">Blocked</mat-option>
+                            <mat-option value="-3">Noshow</mat-option>
+                            <!-- <mat-option value="0">Deleted</mat-option> -->
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Search by Referral/Agent Code</mat-label>
+                        <input matInput placeholder="Referred by/Agent Code" formControlName="referred_by">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Select Booking Count</mat-label>
+                        <mat-select formControlName="booking_count">
+                            <mat-option value="1">Yes</mat-option>
+                            <mat-option value="0">No</mat-option>
+                            <mat-option value="2">Made 1 Booking</mat-option>
+                            <mat-option value="3">Made 2 Bookings</mat-option>
+                            <mat-option value="4">Made 3 or more Bookings</mat-option>
+                            <mat-option value="5">Made 5 or more Bookings</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <!-- <app-date-time-picker #dateTimePicker (dateRangeChange)="onDateRangeChange($event)"></app-date-time-picker> -->
+                    <mat-form-field appearance="outline" class="searchField w-100 filter-element">
+                        <mat-label> Select Signup Date Range</mat-label>
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate #startInput placeholder="Booking Start Date" formControlName="from_date"
+                                readonly="true">
+                            <input matEndDate #endInput placeholder="Booking End Date" formControlName="to_date"
+                                readonly="true">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Select User Type</mat-label>
+                        <mat-select formControlName="is_nukhba_user">
+                            <mat-option value="1">Test User</mat-option>
+                            <mat-option value="0">Actual User</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Contact Invite</mat-label>
+                        <mat-select formControlName="user_invites_status">
+                            <mat-option value="1">Added</mat-option>
+                            <mat-option value="0">Pending</mat-option>
+                            <!-- <mat-option value="-1">Skipped</mat-option> -->
+
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Select Country</mat-label>
+                        <mat-select formControlName="country_code">
+                            <mat-option value="91">India</mat-option>
+                            <mat-option value="971">UAE</mat-option>
+                            <mat-option value="-1">Others Country</mat-option>
+
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Is Pilot User</mat-label>
+                        <mat-select formControlName="is_pilot">
+                            <mat-option value="1">Yes</mat-option>
+                            <mat-option value="0">No</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Search by DeviceId</mat-label>
+                        <input matInput placeholder="Search by DeviceId" formControlName="device_id">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Select Referral Count</mat-label>
+                        <mat-select formControlName="referral_count">
+                            <mat-option value="1">Yes</mat-option>
+                            <mat-option value="0">No</mat-option>
+                            <mat-option value="2"> 1 User</mat-option>
+                            <mat-option value="3"> 2 Users</mat-option>
+                            <mat-option value="4"> 3 or more Users</mat-option>
+                            <mat-option value="5"> 5 or more Users</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Campaign</mat-label>
+                        <mat-select formControlName="allow_campaign">
+                            <mat-option value="1">Yes</mat-option>
+                            <mat-option value="0">No</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Referral Code</mat-label>
+                        <mat-select formControlName="allow_referral">
+                            <mat-option value="1">Yes</mat-option>
+                            <mat-option value="0">No</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="p-3">
+    <button mat-raised-button color="accent" (click)="backFrom()">Close</button>
+    <button mat-raised-button color="primary" class="primary" (click)="loadData()">Search</button>
+    <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+</mat-dialog-actions>

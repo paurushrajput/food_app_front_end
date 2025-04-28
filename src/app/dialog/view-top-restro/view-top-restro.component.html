@@ -1,0 +1,57 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div>
+  <h2 mat-dialog-title>Top Restaurant List</h2>
+  <mat-dialog-content class="mat-typography">
+    <mat-sidenav-container class="example-sidenav-container" autosize>
+      <div class="WrapperBox">
+        <div class="Small-Wrapper px-0">
+          <div class="searchArea mb-3" fxLayoutAlign="space-between center" fxLayoutGap="20">
+            <form [formGroup]="searchForm" class="search-form flex-wrap">
+              <!-- <mat-form-field appearance="outline" class="searchField">
+                <mat-label>Enter a date range</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate #startInput placeholder="From Date" formControlName="from_date" readonly="true">
+                  <input matEndDate #endInput placeholder="To Date" formControlName="to_date"  readonly="true">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field> -->
+              <app-date-time-picker #dateTimePicker (dateRangeChange)="onDateRangeChange($event)"></app-date-time-picker>
+              <button mat-raised-button color="primary" (click)="loadData()" class="primary">Search</button>
+              <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+            </form>
+          </div>
+          <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+              <ng-container matColumnDef="sr">
+                <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+                <td mat-cell *matCellDef="let element;index as i;"> {{ i + 1 }} </td>
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let element"> {{element.restaurant_name?element.restaurant_name:'N/A'}} </td>
+              </ng-container>
+              <ng-container matColumnDef="count">
+                <th mat-header-cell *matHeaderCellDef> Booking Count</th>
+                <td mat-cell *matCellDef="let element"> {{element.reservation_count?element.reservation_count:'0'}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="viewBooking">
+                <th mat-header-cell *matHeaderCellDef>View Bookings</th>
+                <td mat-cell *matCellDef="let element">
+                  <button class="btn btn-sm btn-success btn-min"
+                    (click)="viewRestroBooking(element,searchForm.value)">View Bookings</button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </mat-sidenav-container>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end" class="px-3 pb-3">
+    <button mat-raised-button color="accent" class="accent" mat-dialog-close>Close</button>
+  </mat-dialog-actions>
+</div>

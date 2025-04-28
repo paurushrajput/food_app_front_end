@@ -1,0 +1,110 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div class="WrapperArea">
+  <mat-toolbar class="pagetitle-bar">
+    <h2>Merchant Management</h2>
+  </mat-toolbar>
+  <mat-sidenav-container class="example-sidenav-container" autosize>
+    <div class="WrapperBox">
+      <div class="Small-Wrapper">
+        <div class="searchArea mb-3" fxLayoutAlign="space-between center" fxLayoutGap="20">
+          <form [formGroup]="searchForm" class="search-form" fxLayoutAlign="start center">
+            <!-- <app-input-box [formgroup]="searchForm" [params]="controls.name"></app-input-box> -->
+            <mat-form-field appearance="outline" class="searchField">
+              <mat-label>Search by Email /Mobile /Name</mat-label>
+              <input matInput placeholder="Search by Email /Mobile /Name" formControlName="name">
+            </mat-form-field>
+            <button mat-raised-button color="primary" class="primary" (click)="searchData()">Search</button>
+            <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+          </form>
+          <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+          </mat-paginator>
+        </div>
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+            <ng-container matColumnDef="sr">
+              <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+              <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }} </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name</th>
+              <td mat-cell *matCellDef="let element"> {{element.name?element.name:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="location">
+              <th mat-header-cell *matHeaderCellDef> Location</th>
+              <td mat-cell *matCellDef="let element"> {{element.location_name?element.location_name:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="resCount">
+              <th mat-header-cell *matHeaderCellDef> Total <br/> Restaurant Count</th>
+              <td mat-cell *matCellDef="let element"> {{element.resturant_count?element.resturant_count:'0'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>Email</th>
+              <!-- <td mat-cell *matCellDef="let element"> {{element.image}} </td> -->
+              <td mat-cell *matCellDef="let element"> {{element.email?element.email:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="loginCount">
+              <th mat-header-cell *matHeaderCellDef>Login <br/>Device Count</th>
+              <!-- <td mat-cell *matCellDef="let element"> {{element.image}} </td> -->
+              <td mat-cell *matCellDef="let element"> {{element.login_count?element.login_count:'0'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="resName">
+              <th mat-header-cell *matHeaderCellDef>Restaurant Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.restaurant_name?element.restaurant_name:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="mobile">
+              <th mat-header-cell *matHeaderCellDef>Mobile</th>
+              <td mat-cell *matCellDef="let element"> {{element.mobile?element.mobile:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> View Restaurants </th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                <button mat-mini-fab class="btn-warning" [disabled]="element.restaurant_count=='0'" (click)="viewRestaurant(element)">
+                  <mat-icon *ngIf="element.restaurant_count!='0'" class="material-symbols-sharp">visibility</mat-icon>
+                  <mat-icon *ngIf="element.restaurant_count=='0'"
+                    class="material-symbols-sharp">visibility_off</mat-icon>
+
+                </button>
+              </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="force">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Force<br/> Password Update </th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                <button mat-mini-fab color="accent" (click)="forcePassUpdate(element)">
+                  <mat-icon class="material-symbols-sharp">data_info_alert</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <!-- <ng-container matColumnDef="login">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Merchant Login </th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                <button mat-mini-fab color="accent" (click)="viewDashboard(element)">
+                  <mat-icon class="material-symbols-sharp">data_info_alert</mat-icon>
+                </button>
+              </td>
+            </ng-container> -->
+            <ng-container matColumnDef="login">
+              <th mat-header-cell *matHeaderCellDef>Access </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                  <mat-icon class="material-symbols-sharp">more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item   (click)="viewDashboard(element)">Merchant Login </button>
+                  </mat-menu>
+                 
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+        <div>
+        </div>
+      </div>
+      <div>
+      </div>
+    </div>
+  </mat-sidenav-container>
+</div>

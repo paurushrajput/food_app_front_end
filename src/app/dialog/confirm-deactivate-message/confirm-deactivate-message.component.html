@@ -1,0 +1,27 @@
+<div class="Decline">
+    <!-- <a href="javascript:void(0);" class="CloseModal" data-dismiss="modal"></a> -->
+    <h2 mat-dialog-title>Confirm {{status}}</h2>
+    <div mat-dialog-content>
+        <p>Are you sure you want to {{status}} this restaurant ?</p>
+        <form class="innerbox mt-3" [formGroup]="searchForm">
+            <mat-card-content class="flex-row mb-0" fxLayoutAlign="start center" fxFlex="100">
+                <div class="w-100">
+
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Enter a reason</mat-label>
+                        <input matInput placeholder="Enter a reason" formControlName="reason">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(searchForm.get('reason')?.hasError('required') && (submitted || (searchForm.get('reason')?.dirty)))">
+                        *Reason Is Required
+                    </div>
+                </div>
+            </mat-card-content>
+        </form>
+    </div>
+    
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button class="primary" (click)="confirmStatus()" color="primary" mat-raised-button>Yes</button>
+        <button class="accent" (click)="closeDialogBox()" color="accent" mat-raised-button>No</button>
+    </div>
+</div>

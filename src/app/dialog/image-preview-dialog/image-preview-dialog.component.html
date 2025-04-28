@@ -1,0 +1,5 @@
+<h2 mat-dialog-title class="p-3 mb-0">Preview Image <p style="align-items: center;">{{data.id}}</p><button class="close" (click)="closeDialog()">&times;</button></h2>
+<div mat-dialog-content class="d-flex p-3">
+    <img [src]="data.imageLink" alt="" class="img-fluid m-auto"
+        style="max-width: 600px; min-width: 500px; max-height: 80vh; object-fit: contain;" />
+</div>

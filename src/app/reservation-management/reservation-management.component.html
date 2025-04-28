@@ -1,0 +1,155 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div class="WrapperArea">
+  <mat-toolbar class="pagetitle-bar">
+    <h2>Booking Management</h2>
+    <div class="ml-auto">
+      <ul class="d-flex justify-content-end align-items-center gap-3 instruction">
+        <li>
+          <div class="d-flex align-items-center green"><span></span>Actual User</div>
+        </li>
+        <li>
+          <div class="d-flex align-items-center red"><span></span>Test User</div>
+        </li>
+      </ul>
+    </div>
+  </mat-toolbar>
+  <mat-sidenav-container class="example-sidenav-container" autosize>
+    <div class="WrapperBox">
+      <div class="Small-Wrapper">
+        <div class="searchArea mb-3" fxLayoutAlign="space-between center" fxLayoutGap="20">
+          <div class="d-flex gap-2">
+            <button mat-raised-button color="primary" class="primary" (click)="reservationFilter()">Filter</button>
+            <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+          </div>
+          <div class="d-flex justify-content-end">
+            <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+            </mat-paginator>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+            <ng-container matColumnDef="sr">
+              <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+              <td mat-cell [ngClass]="element.is_nukhba_user==1?'red':'green'" *matCellDef="let element;index as i;"> {{
+                currentPage * pageSize + i + 1 }} </td>
+            </ng-container>
+            <ng-container matColumnDef="id" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef> Booking Id</th>
+              <td mat-cell *matCellDef="let element"> {{element.id?element.id:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="resName">
+              <th mat-header-cell *matHeaderCellDef>Restaurant Name</th>
+              <td mat-cell *matCellDef="let element"> {{element.res_name?element.res_name:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="coupon_amount">
+              <th mat-header-cell *matHeaderCellDef>Coupon <br /> Amount Used</th>
+              <td mat-cell *matCellDef="let element"> {{element.coupon_amount?element.coupon_amount:'0'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="coupon_code">
+              <th mat-header-cell *matHeaderCellDef>Coupon <br /> Code</th>
+              <td mat-cell *matCellDef="let element"> {{element.coupon_code?element.coupon_code:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="coupon_discount">
+              <th mat-header-cell *matHeaderCellDef>Coupon <br /> Discount</th>
+              <td mat-cell *matCellDef="let element"> {{ element.coupon_discount?'AED '+element.coupon_discount:'0'}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="discount">
+              <th mat-header-cell *matHeaderCellDef>Discount</th>
+              <td mat-cell *matCellDef="let element"> {{element.discount?element.discount +' %':'0'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="commission">
+              <th mat-header-cell *matHeaderCellDef>Booking <br /> Fee</th>
+              <td mat-cell *matCellDef="let element"> {{element.booking_fee?'AED '+element.booking_fee:'0'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="scheduled_at">
+              <th mat-header-cell *matHeaderCellDef>Slot Time</th>
+              <td mat-cell *matCellDef="let element">
+                <div style="white-space: nowrap;text-align: center;"><span
+                    [outerHTML]="dateCut(element.scheduled_at)"></span></div>
+              </td>
+
+              <!-- <td mat-cell *matCellDef="let element">{{dateCut(element.scheduled_at )}}</td> -->
+            </ng-container>
+            <ng-container matColumnDef="campaign_code">
+              <th mat-header-cell *matHeaderCellDef>Campaign<br /> Code</th>
+              <td mat-cell *matCellDef="let element"> {{element.campaign_code?element.campaign_code:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="pax">
+              <th mat-header-cell *matHeaderCellDef style="width: 120px;">Number Of<br /> People (pax)</th>
+              <td mat-cell *matCellDef="let element"> {{element.total_guest?element.total_guest:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="bookingDate">
+              <th mat-header-cell *matHeaderCellDef>Booking<br /> Date</th>
+              <td mat-cell *matCellDef="let element">
+                <div style="white-space: nowrap;text-align: center;"><span
+                    [outerHTML]="element.booking_date | gmt"></span></div>
+              </td>
+              <!-- element.booking_date*1000 | date:'dd-MMM-YY hh:mm:aa' -->
+            </ng-container>
+            <ng-container matColumnDef="cname">
+              <th mat-header-cell *matHeaderCellDef>User Name</th>
+              <td mat-cell *matCellDef="let element" [innerHTML]="element.username"> {{element.username}} </td>
+            </ng-container>
+            <ng-container matColumnDef="cemail">
+              <th mat-header-cell *matHeaderCellDef>User Email</th>
+              <td mat-cell *matCellDef="let element"> {{element.user_email}} </td>
+            </ng-container>
+            <!-- <ng-container matColumnDef="is_nukhba_user">
+              <th mat-header-cell *matHeaderCellDef> Test User </th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.is_nukhba_user" class="chip green">Yes</span>
+                <span *ngIf="!element.is_nukhba_user" class="chip">No</span>
+              </td>
+            </ng-container> -->
+            <ng-container matColumnDef="status" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let element">
+                <!-- <span class="chip green"> {{element.status?.text}}</span> -->
+                <span *ngIf="element.status?.key=='approved'" class="chip brown">{{element.status?.text}}</span>
+                <span *ngIf="element.status?.key=='pending'" class="chip yellow">{{element.status?.text}}</span>
+                <span *ngIf="element.status?.key=='rejected'" class="chip red">{{element.status?.text}}</span>
+                <span *ngIf="element.status?.key=='noshow'" class="chip">{{element.status?.text}}</span>
+                <span *ngIf="element.status?.key=='booking_not_accepted'"
+                  class="chip yellow">{{element.status?.text}}</span>
+                <span *ngIf="element.status?.key=='rejected_by_admin'"
+                  class="chip yellow">{{element.status?.text}}</span>
+                <span *ngIf="element.status?.key=='arrived'" class="chip blue">{{element.status?.text}}</span>
+                <!-- <span *ngIf="element.status?.key=='rejected_by_admin'" class="chip red">{{element.status?.text}}</span> -->
+                <span *ngIf="element.status?.key=='cancelled'" class="chip red">{{element.status?.text}}</span>
+                <span *ngIf="element.status?.key=='payment_completed'"
+                  class="chip skyblue">{{element.status?.text}}</span>
+                <span *ngIf="element.status?.key=='deleted'" class="chip red">{{element.status?.text}}</span>
+
+                <!-- <ng-container
+                *ngIf="element?.cancel_reason">({{element.cancel_reason }})</ng-container></td> -->
+            </ng-container>
+            <ng-container matColumnDef="cmobile">
+              <th mat-header-cell *matHeaderCellDef>User Mobile</th>
+              <td mat-cell *matCellDef="let element"> {{element.user_mobile}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef style="width: 100px; white-space: nowrap;"> <input type="checkbox"
+                  [(ngModel)]="selectAllValue" (change)="onSelectAllCheckboxClick()"> Refund
+              </th>
+
+              <td mat-cell *matCellDef="let element">
+                <ng-container *ngIf="element.status?.value != -8"><input type="checkbox"
+                    [(ngModel)]="element.checked" (change)="onCheckboxClick(element)"></ng-container>
+                <ng-container *ngIf="element.status?.value == -8"><input type="checkbox" checked="true"
+                    disabled="true"></ng-container>
+
+
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-container>
+</div>

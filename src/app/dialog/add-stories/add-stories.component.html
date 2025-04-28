@@ -1,0 +1,208 @@
+<h2 mat-dialog-title>
+  {{!newStories.get('id')?.value?'Create':'Update'}} Story
+</h2>
+<form class="innerbox" [formGroup]="newStories">
+  <div mat-dialog-content>
+    <div fxLayout="column">
+      <mat-card-content class="row mb-4">
+        <div class="col">
+          <label class="position-relative d-flex align-items-center gap-2">Image <em>*</em> <mat-icon class="material-symbols-sharp"
+              matTooltip="Please select only jpeg,png format image.">info</mat-icon></label>
+          <div class="custom-file">
+            <input type="file" class="file-upload" (change)="onFileSelected($event)" formControlName="image_id" id="input-file-id">
+              <label for="input-file-id">Upload Image</label>
+          </div>
+          <div *ngIf="imageSize" class="filesize my-2">File size: {{ imageSize }}</div>
+          <label *ngIf="imageURL ==''  && isValidFormSubmitted != null && !isValidFormSubmitted" class="text-danger">
+            Image required.
+          </label>
+          <div class="text-danger"
+            *ngIf="(newStories.get('image_id')?.hasError('required') && (!isValidFormSubmitted || (newStories.get('image_id')?.dirty)))">
+            *Image Field Is Required
+          </div>    
+          </div>
+          <div class="col">
+              <ng-container *ngIf="image">
+                  <div class="image-preview">
+                      <img id="preview" [src]=image>
+                  </div>
+              </ng-container>
+              <ng-container *ngIf="imageURL">
+                <div class="image-preview">
+                  <img id="preview" [src]=imageURL>
+                </div>
+              </ng-container>
+          </div>
+
+      </mat-card-content>
+      <!-- <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+        
+          <div fxFlex="100">
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+              <input matInput type="text" formControlName="action" placeholder="Enter Action">
+            </mat-form-field>
+            <label
+              *ngIf="newStories.get('action')?.hasError('required')  && isValidFormSubmitted != null && !isValidFormSubmitted"
+              class="text-danger">
+              Action required.
+            </label>
+          </div>
+        </mat-card-content> -->
+      <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+        <div fxFlex="100">
+          <!-- <div class="teamlable">Title<em>*</em></div> -->
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <input matInput type="text" formControlName="title" placeholder="Enter Title">
+          </mat-form-field>
+          <label
+            *ngIf="newStories.get('title')?.hasError('required')  && isValidFormSubmitted != null && !isValidFormSubmitted"
+            class="text-danger">
+            Title required.
+          </label>
+        </div>
+      </mat-card-content>
+      <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+        <div fxFlex="100">
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Duration (second)</mat-label>
+            <mat-select formControlName="duration" placeholder="Select Duration">
+              <mat-option *ngFor="let value of durationValues" [value]="value">{{ value }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <label
+            *ngIf="newStories.get('duration')?.hasError('required')  && isValidFormSubmitted != null && !isValidFormSubmitted"
+            class="text-danger">
+            Duration required.
+          </label>
+        </div>
+
+        <!-- <div *ngIf="this.action=='2'" fxFlex="100">
+                <div class="teamlable">Action<em>*</em></div>
+                <mat-form-field class="example-full-width w-100">
+                  <mat-label>Select</mat-label>
+                  <mat-select formControlName="action">
+                    <mat-option value="invite">INVITE</mat-option>
+                    <mat-option value="tournament">TOURNAMENT</mat-option>
+                    <mat-option value="deposit">DEPOSIT</mat-option>
+                    <mat-option value="game">GAME</mat-option>
+                    <mat-option value="updateProfile">UPDATE PROFILE</mat-option>
+                    <mat-option value="miningScreen">MINING SCREEN</mat-option>
+                    <mat-option value="matchContest">MATCH CONTEST</mat-option>
+                    <mat-option value="wallet">WALLET</mat-option>
+                    <mat-option value="referAndEarn">REFER AND EARN</mat-option>
+                    <mat-option value="networkReferral">Network Referral</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <label
+                  *ngIf="newStories.get('action')?.hasError('required')  && isValidFormSubmitted != null && !isValidFormSubmitted"
+                  class="text-danger">
+                  Action required.
+                </label>
+              </div> -->
+        <!-- <div fxFlex="100">
+            <div class="teamlable">Placement<em>*</em></div>
+            <mat-form-field class="example-full-width w-100">
+              <mat-label>Select</mat-label>
+              <mat-select formControlName="bannerType" (selectionChange)="checkBannerType()">
+                <mat-option value="all">Home</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <label
+              *ngIf="newStories.get('bannerType')?.hasError('required')  && isValidFormSubmitted != null && !isValidFormSubmitted"
+              class="text-danger">
+              Banner Type required.
+            </label>
+          </div>
+          <div fxFlex="100">
+            <div class="teamlable">Size<em>*</em></div>
+            <mat-form-field class="example-full-width w-100">
+              <mat-label>Select</mat-label>
+              <mat-select formControlName="bannerSize">
+                <mat-option value="small">Small</mat-option>
+                <mat-option value="full">Full</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <label
+              *ngIf="newStories.get('bannerSize')?.hasError('required')  && isValidFormSubmitted != null && !isValidFormSubmitted"
+              class="text-danger">
+              Size required.
+            </label>
+          </div>
+          <div fxFlex="100">
+            <div class="teamlable">App Type<em>*</em></div>
+            <mat-form-field class="example-full-width w-100">
+              <mat-label>Select</mat-label>
+              <mat-select formControlName="type">
+                <mat-option value="free">Free</mat-option>
+                <mat-option value="pro">Pro</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <label
+              *ngIf="newStories.get('type')?.hasError('required')  && isValidFormSubmitted != null && !isValidFormSubmitted"
+              class="text-danger">
+              App Type required.
+            </label>
+          </div> -->
+
+      </mat-card-content>
+      <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+        <div fxFlex="100">
+          <!-- <div class="teamlable">Screen Type<em>*</em></div> -->
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Select Type</mat-label>
+            <mat-select formControlName="type">
+              <mat-option value="1">HOME(Explore)</mat-option>
+              <mat-option value="2">SIGNUP</mat-option>
+              <mat-option value="3">MORE PAGE (Home)</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <label
+            *ngIf="newStories.get('type')?.hasError('required')  && isValidFormSubmitted != null && !isValidFormSubmitted"
+            class="text-danger">
+            Type is required.
+          </label>
+        </div>
+      </mat-card-content>
+      <!-- <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+        <div fxFlex="100">
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Select Screen Type</mat-label>
+            <mat-select formControlName="screen_type">
+              <mat-option value="morepage">More Page</mat-option>
+              <mat-option value="home">Home</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <label
+            *ngIf="newStories.get('type')?.hasError('required')  && isValidFormSubmitted != null && !isValidFormSubmitted"
+            class="text-danger">
+            Screen Type is required.
+          </label>
+        </div>
+      </mat-card-content> -->
+      <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+        <div fxFlex="100">
+          <!-- <div class="teamlable">Type<em>*</em></div> -->
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Select Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option value="1">Active</mat-option>
+              <mat-option value="0">Inactive</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <label
+            *ngIf="newStories.get('status')?.hasError('required')  && isValidFormSubmitted != null && !isValidFormSubmitted"
+            class="text-danger">
+            Status required.
+          </label>
+        </div>
+      </mat-card-content>
+
+    </div>
+  </div>
+  <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+    <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="primary"
+      (click)="saveBanner()">{{!newStories.get('id')?.value?'Add':'Update'}}</button>
+    <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent"
+      (click)="closeDialogBox()">Close</button>
+  </div>
+</form>

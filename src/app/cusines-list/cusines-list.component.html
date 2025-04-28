@@ -1,0 +1,136 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div [ngClass]="data?'':'WrapperArea'">
+    <mat-toolbar class="pagetitle-bar w-100 mb-0" fxLayoutAlign="space-between center" fxLayoutGap="20">
+        <h2 mat-dialog-title>Suggested Cuisines List</h2>
+        
+    </mat-toolbar>
+    <mat-sidenav-container class="example-sidenav-container" autosize>
+        <div class="WrapperBox">
+            <div class="Small-Wrapper">
+                <div class="searchArea mb-3" fxLayoutAlign="space-between center" fxLayoutGap="20">
+                    <form [formGroup]="searchForm" class="search-form searchField" fxLayoutAlign="start center" fxLayoutGap="8">
+                        <!-- <app-input-box [formgroup]="searchForm" [params]="controls.name"></app-input-box> -->
+                        <mat-form-field class="custom-mat-form-field" appearance="outline">
+                          <mat-label>Search By cuisines/restaurant name</mat-label>
+                          <input matInput placeholder="Search By cuisines/restaurant name" formControlName="name">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="searchField">
+                            <mat-label>Select Status</mat-label>
+                            <mat-select formControlName="status">
+                              <mat-option value="yes"> Cuisine Updated</mat-option>
+                              <mat-option value="no"> Cuisine Not Updated</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                  
+                        <button mat-raised-button color="primary" class="primary" (click)="searchData()">Search</button>
+                        <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+                      </form>
+                    <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+                        [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+                    </mat-paginator>
+                </div>
+                <div class="table-responsive">
+                    <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+                        <ng-container matColumnDef="sr">
+                            <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+                            <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="userName">
+                            <th mat-header-cell *matHeaderCellDef> User Name</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element?.user_name?element?.user_name:'N/A'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="email">
+                            <th mat-header-cell *matHeaderCellDef>User Email</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element?.user_email?element?.user_email:'N/A'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="restaurant_name">
+                            <th mat-header-cell *matHeaderCellDef>Restaurant Name</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element?.restaurant_name?element?.restaurant_name:'N/A'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="price_level">
+                            <th mat-header-cell *matHeaderCellDef> Restaurant Price Level</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element?.restaurant_price_level?element?.restaurant_price_level:'N/A'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="phone">
+                            <th mat-header-cell *matHeaderCellDef>Phone</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element?.restaurant_phone?element?.restaurant_phone:'N/A'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="address">
+                            <th mat-header-cell *matHeaderCellDef>Address</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element?.restaurant_address?element?.restaurant_address:'N/A'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="details">
+                            <th mat-header-cell *matHeaderCellDef class="text-center"> Options </th>
+                            <td mat-cell *matCellDef="let element" class="text-center">
+                                <button mat-icon-button [matMenuTriggerFor]="menu"
+                                    aria-label="Example icon-button with a menu">
+                                    <mat-icon class="material-symbols-sharp">more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                  
+                                    <button (click)="viewSuggestedCuisineList(element)" mat-menu-item>
+                                        <span> Cusines Suggested</span>
+                                    </button>
+                                    <button (click)="cusinesUpdate(element)" mat-menu-item>
+                                        <span> Update Cusines</span>
+                                    </button>
+                                  
+                                    <!-- <button *ngIf="element.verified ==null || element.verified ==0" (click)="approveRestaurantCities(element)" mat-menu-item>
+                                        <span>Approve</span>
+                                    </button> -->
+                                </mat-menu>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="createdAt">
+                            <th mat-header-cell *matHeaderCellDef>Suggested Date</th>
+                            <td mat-cell *matCellDef="let element;">
+                                {{element.suggested_cuisine_created_at |
+                                date:
+                                'dd-MMM-yy'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="category">
+                            <th mat-header-cell *matHeaderCellDef> Suggested Cuisines </th>
+                            <td mat-cell *matCellDef="let element" style="white-space: nowrap;">
+                              <ng-container *ngIf="element.cuisines.length > 0; else noCuisine">
+                                <a (click)="openCuisinePopup(element.cuisines)" class="link">
+                                  {{ element.cuisines[0] }}<span *ngIf="element.cuisines.length > 1">...</span>
+                                </a>
+                              </ng-container>
+                              <ng-template #noCuisine>
+                                <span>N/A</span>
+                              </ng-template>
+                            </td>
+                          </ng-container>
+                          <ng-container matColumnDef="restaurant_cuisines">
+                            <th mat-header-cell *matHeaderCellDef> Updated Cuisines </th>
+                            <td mat-cell *matCellDef="let element" style="white-space: nowrap;">
+                              <ng-container *ngIf="element.restaurant_cuisines.length > 0; else noCuisines">
+                                <a (click)="openCuisinePopup(element.restaurant_cuisines)" class="link">
+                                  {{ element.restaurant_cuisines[0] }}<span *ngIf="element.restaurant_cuisines.length > 1">...</span>
+                                </a>
+                              </ng-container>
+                              <ng-template #noCuisines>
+                                <span>N/A</span>
+                              </ng-template>
+                            </td>
+                          </ng-container>
+                          
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav-container>
+    <mat-dialog-actions *ngIf="data" align="end" class="px-3">
+        <button mat-raised-button mat-dialog-close color="accent">Close</button>
+    </mat-dialog-actions>
+</div>

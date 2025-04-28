@@ -1,0 +1,85 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div [ngClass]="data?'':'WrapperArea'">
+    <mat-toolbar class="pagetitle-bar w-100 mb-0" fxLayoutAlign="space-between center" fxLayoutGap="20">
+        <h2>Notification Template Management</h2>
+        <button mat-raised-button color="primary" class="primary" (click)="addTemplate()">New Template</button>
+    </mat-toolbar>
+    <mat-sidenav-container class="example-sidenav-container" autosize>
+        <div class="WrapperBox">
+            <div class="Small-Wrapper">
+                <div fxLayoutAlign="end center" fxLayoutGap="20" class="searchArea mb-3">
+                    <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+                        [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+                    </mat-paginator>
+                </div>
+                <div class="table-responsive">
+                    <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+                        <ng-container matColumnDef="sr">
+                            <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+                            <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="title">
+                            <th mat-header-cell *matHeaderCellDef> Title</th>
+                            <td mat-cell *matCellDef="let element"> {{element.title?element.title:'N/A'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="topic">
+                            <th mat-header-cell *matHeaderCellDef>Topic</th>
+                            <td mat-cell *matCellDef="let element"> {{element.topic?element.topic:'N/A'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="message">
+                            <th mat-header-cell *matHeaderCellDef>Message</th>
+                            <td mat-cell *matCellDef="let element"> {{element.message?element.message:'N/A'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="device">
+                            <th mat-header-cell *matHeaderCellDef>Device Type</th>
+                            <td mat-cell *matCellDef="let element"> {{element.device_type?element.device_type:'N/A'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="actionUrl">
+                            <th mat-header-cell *matHeaderCellDef>Action Url</th>
+                            <td mat-cell *matCellDef="let element"> {{element.action_url?element.action_url:'N/A'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="date">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">Date & Time</th>
+                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.date |
+                                date:'dd-MMM-YY hh:mm:aa'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="actionType">
+                            <th mat-header-cell *matHeaderCellDef>Action Type</th>
+                            <td mat-cell *matCellDef="let element"> {{element.action_type?element.action_type:'N/A'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="image">
+                            <th mat-header-cell *matHeaderCellDef>Image</th>
+                            <!-- <td mat-cell *matCellDef="let element"> {{element.image}} </td> -->
+                            <td mat-cell *matCellDef="let element">
+                                <img style="max-width: 70px;" src={{element.image}}>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef> Update </th>
+                            <td mat-cell *matCellDef="let element">
+                                <button mat-mini-fab color="accent" (click)="showEditForm(element)">
+                                    <mat-icon class="material-symbols-sharp">edit</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+                        <!-- <ng-container matColumnDef="action">
+                  <th mat-header-cell *matHeaderCellDef> Edit </th>
+                  <td mat-cell *matCellDef="let element">
+                    <button mat-mini-fab color="accent" (click)="showEditForm(element)" class="secondary">
+      
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </td>
+                </ng-container> -->
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav-container>
+</div>

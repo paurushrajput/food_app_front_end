@@ -1,0 +1,53 @@
+<h2 mat-dialog-title>
+    <span *ngIf="this.entity_id==undefined">New</span>
+    <span *ngIf="this.entity_id!=undefined">Edit</span>
+    User Role
+</h2>
+<form class="innerbox" [formGroup]="UserRoleForm">
+    <div mat-dialog-content>
+        <div fxLayout="column">
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <!-- <div class="teamlable">Name<em>*</em></div> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Role</mat-label>
+                        <mat-select formControlName="role_id" >
+                            <mat-option *ngFor="let type of roleData" value={{type.id}}>
+                                {{type.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(UserRoleForm.get('role_id')?.hasError('required') && (submitted || (UserRoleForm.get('role_id')?.dirty)))">
+                        *Role Field Is Required
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                   
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Admin</mat-label>
+                        <mat-select formControlName="user_id" >
+                            <mat-option *ngFor="let type of adminData" value={{type.id}}>
+                                {{type.email}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(UserRoleForm.get('user_id')?.hasError('required') && (submitted || (UserRoleForm.get('user_id')?.dirty)))">
+                        *User Field Is Required
+                    </div>
+                </div>
+            
+            </div>
+           
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px">
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button [disabled]="UserRoleForm.invalid"
+            color="primary" class="primary" (click)="saveModule()">Save</button>
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="secondary"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>
+
+

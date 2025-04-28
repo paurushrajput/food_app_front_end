@@ -1,0 +1,93 @@
+.card.dashboard-card{
+    border: 1px solid #D9D9D9;
+    background: linear-gradient(to bottom, #ffffff 0%, #ffffff 60%, #dbdbdb 100%);
+    padding: 8px;
+    height: 100%;
+    border-radius: 8px;
+    justify-content: flex-start;
+    box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+    margin-bottom: 30px;
+}
+.card.dashboard-card .card-header{
+    border: 0;
+    padding: 8px;
+    background-color: transparent;
+}
+.card.dashboard-card .card-body{
+    padding: 8px;
+}
+.card.dashboard-card .card-header h5{
+    color: #939292;
+    font-size: 14px;
+}
+.card-row{
+    margin: 0 -8px;
+}
+.card-row .item{
+    padding: 8px;
+    flex: 1 1 33.33%;
+}
+.card-row .item .title{
+    color: #333;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.card-row .item .value{
+    color: #C1280F;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.search-form {
+    display: flex;
+    gap: 8px;
+    // margin-bottom: 15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.Button {
+    border: none;
+    height: 50px;
+    padding: 10px 30px;
+    text-align: center;
+    transition: 0.5s all ease-in-out;
+    font-weight: 500;
+    display: inline-block;
+    position: relative;
+    background-image: #007bff;
+    font-size: 15px;
+    color: #fff;
+    text-transform: capitalize;
+    letter-spacing: .5px;
+    border-radius: 5px;
+    outline: 0 !important;
+    box-shadow: none;
+    font-family: 'Roboto';
+}
+
+th {
+    white-space: normal;
+}
+
+.resetButton {
+    border: none;
+    height: 50px;
+    padding: 10px 30px;
+    text-align: center;
+    transition: 0.5s all ease-in-out;
+    font-weight: 500;
+    display: inline-block;
+    position: relative;
+    background-image: #007bff;
+    font-size: 15px;
+    color: #fff;
+    text-transform: capitalize;
+    letter-spacing: .5px;
+    border-radius: 5px;
+    outline: 0 !important;
+    box-shadow: none;
+    font-family: 'Roboto';
+}

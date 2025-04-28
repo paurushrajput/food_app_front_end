@@ -1,0 +1,485 @@
+body {
+    font-family: 'Mulish', sans-serif !important;
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+  
+}
+
+input[type=date]::-webkit-inner-spin-button,
+input[type=date]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+a:not([href]):not([class]){
+    color: var(--colorWhite);
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+/* .clearfix {
+    *zoom: 1;
+} */
+
+.clearfix:before,
+.clearfix:after {
+    content: "";
+    line-height: 0;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clr,
+.clear {
+    clear: both;
+}
+
+header,
+footer,
+aside,
+article,
+section,
+nav,
+figure {
+    position: relative;
+    overflow:hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+li,
+ol {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    outline: none;
+    cursor: pointer;
+}
+
+a:hover,
+a:focus {
+    text-decoration: none !important;
+    outline: none;
+}
+
+
+img {
+    border: 0;
+    outline: none;
+    max-width: 100%;
+}
+
+.formcontrol{
+    font-size: 14px;
+   
+    height: auto;
+    padding: 10px 15px;
+    border-radius: 8px;
+}
+.LoginPage{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+.LoginBox{
+    padding: 20px 20px 20px 20px;
+    border-radius: 8px;
+    width: 550px;
+}
+
+.LoginBox .logo{}
+.logo figure{
+    width: 140px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+section{
+    overflow: visible;
+}
+.logo figure img{}
+.ParaLogin{
+    text-align: center;
+}
+.ParaLogin h4{
+    font-size: 16px;
+    color: #000;
+    font-weight: 600;
+   
+}
+.ParaLogin p{    
+    font-size: 14px;
+   
+    font-weight: 500;
+    color: slategrey;
+}
+.formgrp{
+    padding: 30px;
+}
+.Lable{
+    font-size: 14px;
+    color: #000;
+    font-weight: 600;
+   
+}
+.form-group{
+    position: relative;
+}
+.form-control:focus{
+    box-shadow: none;
+    border: 1px solid #fd516f;
+}
+.Button2 .btn{
+width: 100%;
+}
+.btn:focus{
+    box-shadow: none;
+}
+.formgrp span {
+    position: absolute;
+    right: 7px;
+    top: 41px;
+}
+.formgrp span i {
+    font-size: 17px;
+    color: grey;
+}
+.Remenber .form-group {
+    display: block;
+    margin-bottom: 0px;
+  }
+  
+  .Remenber .form-group input {
+    padding: 0;
+    height: initial;
+    width: initial;
+    margin-bottom: 0;
+    display: none;
+    cursor: pointer;
+  }
+  
+  .Remenber .form-group label {
+    position: relative;
+    cursor: pointer;
+    font-size: 12px;
+   
+    font-weight: 500;
+    color: #000;
+  }
+  
+  .Remenber .form-group label:before {
+    content: '';
+    -webkit-appearance: none;
+    background-color: #fe5d65;
+    border: 2px solid #fe4a76;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 5%), inset 0px -15px 10px -12px rgb(0 0 0 / 5%);
+    padding: 10px;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-right: 5px;
+    border-radius: 6px;
+  }
+  
+  .Remenber .form-group input:checked + label:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 4px;
+    left: 9px;
+    width: 6px;
+    height: 14px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg); 
+  }
+  a.forgot{
+    font-size: 12px;
+   
+    font-weight: 500;
+    color: #000;
+  }
+  .ForgotPassword {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+  }
+
+/* .angle1 {
+    width: 30px;
+    height: 60px;
+    border-right: solid 200px rgb(254 93 101);
+    border-bottom: solid 121px transparent;
+    border-top: solid 121px transparent;
+
+    border-radius: 50%;
+    position: absolute;
+    right: -87px;
+    top: -65px;
+} */
+.angle2 {
+    width: 250px;
+    height: 250px;
+    display: block;
+    background: #fe4b7775;
+    border-radius: 50%;
+    position: absolute;
+    left: -87px;
+    bottom: -65px;
+}
+.LoginPage1{
+    background-color: #fe9da226;
+    position: relative;
+    overflow: hidden;
+    height: 100vh;
+    padding: 20px;
+}
+.LoginPage1 .LoginPage {
+}
+  .LoginPage1 .LoginBox {
+    background: transparent;
+    box-shadow:none;
+  
+}
+.LeftLogin{
+    padding: 150px 0 0 180px;
+}
+.LeftLogin h1 {
+    font-size: 50px;
+   
+    font-weight: 800;
+    background: -webkit-linear-gradient(111deg , #fe4a76, #fe5d65);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: capitalize;
+}
+.LeftLogin p{
+    font-size: 16px;
+   
+    color: grey;
+    font-weight: 500;
+    padding-top: 10px;
+}
+.SignIn{
+    display: block;
+    margin-top: 25px;
+    text-align: left;
+}
+.SignIn span{
+    font-size: 24px;
+    font-weight: 500;
+    border: 1px solid #f79cb2;
+    color: #fd526e;
+    padding: 8px 50px;
+    border-radius: 30px;
+}
+.formgrp .GotoBack {
+    margin-top: 10px;
+    text-align: right;
+}
+.formgrp .GotoBack a{font-size: 13px;font-family: 'Poppins';color: #000;}
+.formgrp .GotoBack a i{color: #000;padding-right: 5px;}
+.overviewBox{
+    background: #f1f1f1;
+    padding: 25px 25px;
+    border-left: 5px solid #b5b5b5;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+.overviewBox h2{
+    font-size: 16px;
+    color: #000;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.overFlex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.overFlex i {
+    font-size: 30px;
+    color: #000;
+}
+.overFlex h3{
+    font-size: 33px;
+    color: #000000;
+    font-weight: 800;
+}
+.TableList a.Renew{
+    padding: 4px 10px;
+    color: #fff !important;
+    border-radius: 5px;
+    width: auto;
+    display: block;
+    text-align: center;
+    font-size: 12px;
+    background-color: #fd516f;
+}
+p.ModalRenew{
+
+font-size: 15px;
+
+margin-bottom: 14px;
+
+color: #fd5071;
+}
+p.ModalRenew strong{
+    color: #000;
+    font-family: 'Roboto';
+    font-weight: 500;
+    padding-right: 4px;
+}
+.RenewDetail{
+    margin-bottom: 10px;
+}
+.SaloonProfile{
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+.SaloonProfile figure{
+    width: 70px;
+    margin: 0;
+}
+.SaloonProfile figure img{}
+.SaloonProfile  p{
+    color: #000;
+    font-size: 14px;
+    font-family: roboto;
+    padding-left: 20px;
+    font-weight: 600;
+}
+.DetailsContent{}
+.DetailsContent .TitleBox{
+    
+}
+h4.TitleSecond{
+    margin: 0;
+    font-weight: 600;
+    text-transform: capitalize;
+    font-size: 22px;
+    font-family: 'Roboto';
+    color: #fd5d66;
+}
+.DetailsContent .TitleBox p{
+    color: #fe546e;
+    font-size: 16px;
+    font-family: 'Roboto';
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+.DetailsArea.DetailsArea2 {
+display: block;
+margin-bottom: 20px;
+  
+}
+.StaticBoxArea .panel-group{margin:0;}
+.StaticBoxArea .panel-group .panel{border: 1px solid #e9e9e9;border-radius:0;}
+.StaticBoxArea .panel-group .panel+.panel{margin: 20px 0 0 0;}
+.StaticBoxArea .panel-group .panel .panel-heading{cursor:pointer;background-color: #e9e9e9;border-radius:0;padding: 15px 55px 15px 20px;position:relative;display:flex;align-items:center;justify-content:space-between;}
+.StaticBoxArea .panel-group .panel .panel-heading:after{content:'\f107';font-family:FontAwesome;color:#000;position:absolute;top:18px;right:20px;font-size:19px;font-weight:600;line-height:14px;transition:0.5s all ease-in-out}
+.StaticBoxArea .panel-group .panel .panel-heading[aria-expanded="true"]:after{transform:rotate(180deg)}
+.StaticBoxArea .panel-group .panel .panel-heading h4{font-size: 17px;color:#000;}
+.StaticBoxArea .panel-group .panel .panel-heading a{color:#000;font-size:14px}
+.StaticBoxArea .panel-group .panel .panel-body{ padding: 15px; }
+.StaticBoxArea .panel-group .panel .panel-body:before{content:none}
+.StaticBoxArea .panel-group .panel .panel-body p{font-size:15px;line-height:28px;font-weight:400;color: #404040;}
+.StaticBoxArea .panel-group .panel .panel-body p+p{margin-top:15px}
+.Button2.btn2{
+    width: 20%;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+.Formarea{
+    box-shadow: 0 1px 4px #ddd;
+    padding: 20px;
+    margin: 0;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.PannelOne{
+    cursor: pointer;
+    background-color: #e9e9e9;
+    border-radius: 0;
+    padding: 15px 15px 15px 15px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.PannelOne h4{
+    font-weight: 500;
+    font-size: 17px;
+    color: #000;
+}
+.PannelOne span{
+    padding-right: 10px;
+}
+.StaticBoxArea .panel-group .panel .panel-heading span{
+    padding-right: 10px;
+}
+.StaticBoxArea .panel-body .CommonForm{padding: 10px;}
+.StaticBoxArea .panel-body .CommonForm .Button2.btn2{
+    width: 25%;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+.panel-body ul{
+    padding: 20px 20px 0 20px;
+    display: flex;
+    align-items: center;
+}
+.panel-body ul li{
+    padding-right: 50px;
+}
+.panel-body .Remenber .form-group label::before {
+    content: "";
+    background-color: #fff;
+    padding: 8px;
+    margin-right: 10px;
+}
+.panel-body  .Remenber .form-group input:checked + label:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 5px;
+    left: 7px;
+    width: 6px;
+    height: 10px;
+    border: solid #fe546e;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+.panel-body  .Remenber .form-group label {
+    position: relative;
+    cursor: pointer;
+    font-size: 15px;
+    color: #000;
+}

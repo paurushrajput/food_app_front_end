@@ -1,0 +1,305 @@
+<div class="WrapperArea">
+    <mat-toolbar class="pagetitle-bar w-100 mb-0" fxLayoutAlign="space-between center" fxLayoutGap="20">
+        <h2>Dashboard</h2>
+        <form [formGroup]="searchForm" class="search-form flex-wrap">
+            <!-- <mat-form-field appearance="outline" class="searchField">
+                <mat-label>Enter a date range</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate #startInput  placeholder="Start Date" formControlName="startDate" readonly="true">
+                    <input matEndDate #endInput placeholder="End Date" formControlName="endDate" [readonly]="true">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field> -->
+            <app-date-time-picker (dateRangeChange)="onDateRangeChange($event)" [defaultValue]="true"></app-date-time-picker>
+
+            <mat-form-field appearance="outline" class="searchField">
+                <mat-label>Select user type</mat-label>
+                <mat-select formControlName="is_nukhba_user">
+                  <mat-option value="1">Test User</mat-option>
+                  <mat-option value="0">Actual User</mat-option>
+                </mat-select>
+              </mat-form-field> 
+            <button mat-raised-button color="primary" (click)="loadData()" class="primary">Search</button>
+            <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+        </form>
+        <!-- <button mat-raised-button color="primary" class="primary">Filters</button> -->
+    </mat-toolbar>
+    <mat-sidenav-container class="example-sidenav-container" autosize>
+        <div class="WrapperBox">
+            <div class="Small-Wrapper">
+                <div class="row">
+                    <!-- <div class="col-lg-4 col-12 col-md-6 mb-4">
+                        <div class="card dashboard-card">
+                            <div class="card-header">
+                                <h5>User Engagement Metrics</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-row d-flex flex-wrap justify-content-start align-items-start">
+                                    <div class="item">
+                                        <div class="title">Active Users</div>
+                                        <div class="value">{{dashboardData.total_bookings}}</div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Active Users</div>
+                                        <div class="value">{{dashboardData.total_bookings}}</div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Active Users</div>
+                                        <div class="value">{{dashboardData.total_bookings}}</div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Active Users</div>
+                                        <div class="value">{{dashboardData.total_bookings}}</div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Active Users</div>
+                                        <div class="value">{{dashboardData.total_bookings}}</div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Active Users</div>
+                                        <div class="value">{{dashboardData.total_bookings}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="col-lg-4 col-12 col-md-6 mb-4">
+                        <div class="card dashboard-card">
+                            <div class="card-header">
+                                <h5>Acquisition Metrics</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-row d-flex flex-wrap justify-content-start align-items-start">
+                                    <div class="item">
+                                        <div class="title">Referrals</div>
+                                        <div class="value">
+                                            {{dashboardData?.total_referrals| number:'1.0-1'}}</div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">IOS Users</div>
+                                        <div class="value">
+                                            {{dashboardData?.daily_active_users_ios| number:'1.0-1'}}
+                                            <a class="link" (click)="viewUsers(searchForm.value,'ios')">___</a>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Android Users</div>
+                                        <div class="value">
+                                            {{dashboardData?.daily_active_users_android| number:'1.0-1'}}
+                                            <a class="link" (click)="viewUsers(searchForm.value,'android')">___</a>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Total Diners</div>
+                                        <div class="value">
+                                            {{dashboardData?.total_diners| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Actual Diners</div>
+                                        <div class="value">
+                                            {{dashboardData?.actual_diners| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Total Signup</div>
+                                        <div class="value">
+                                            {{dashboardData?.daily_signups| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Total IOS Signup</div>
+                                        <div class="value">
+                                            {{dashboardData?.ios_signups| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Total Android Signup</div>
+                                        <div class="value">
+                                            {{dashboardData?.android_signups| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-12 col-md-6 mb-4">
+                        <div class="card dashboard-card">
+                            <div class="card-header">
+                                <h5>Transaction Metrics</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-row d-flex flex-wrap justify-content-start align-items-start">
+                                    <div class="item">
+                                        <div class="title">Number of Bookings Made</div>
+                                        <div class="value">
+                                            {{dashboardData?.daily_booking.total| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Booking Rate</div>
+                                        <div class="value">
+                                            {{dashboardData?.booking_rate?.unique_booking | number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Number of Cancellations</div>
+                                        <div class="value">
+                                            {{dashboardData?.daily_booking.all_cancelled| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Average Revenue Per User (ARPU)</div>
+                                        <div class="value">
+                                            {{dashboardData?.avg_revenue_per_user| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Average transaction Value (ATV)</div>
+                                        <div class="value">
+                                            {{dashboardData?.avg_transaction_value| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">No Shows</div>
+                                        <div class="value">
+                                            {{dashboardData?.daily_booking.noshow| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Cart Abandoned</div>
+                                        <div class="value">
+                                            {{dashboardData?.cart_abandoned| number:'1.0-1'}}</div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Total Booking Fee</div>
+                                        <div class="value">
+                                            {{dashboardData?.total_booking_fee_received| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Total Voucher Count</div>
+                                        <div class="value">
+                                            {{dashboardData?.vouchers?.total_active_voucher_count| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Total Voucher Amount Used</div>
+                                        <div class="value">
+                                            {{dashboardData?.vouchers?.total_voucher_amount| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Voucher Amount Redeem</div>
+                                        <div class="value">
+                                            {{dashboardData?.vouchers?.total_voucher_amount_redeemed| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Expired Coupon Count</div>
+                                        <div class="value">
+                                            {{dashboardData?.vouchers?.expired_coupon_count| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Total Used Coupon Count</div>
+                                        <div class="value">
+                                            {{dashboardData?.vouchers?.used_coupon_count| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Total Unused Coupon Count</div>
+                                        <div class="value">
+                                            {{dashboardData?.vouchers?.unused_coupon_count| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Active Deals</div>
+                                        <div class="value">
+                                            {{dashboardData?.deals?.deals_active| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Created Deals</div>
+                                        <div class="value">
+                                            {{dashboardData?.deals?.deals_created| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Redeemed Deals</div>
+                                        <div class="value">
+                                            {{dashboardData?.deals?.deals_redeemed| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Sold Deals</div>
+                                        <div class="value">
+                                            {{dashboardData?.deals?.deals_sold| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-12 col-md-6 mb-4 d-flex flex-column">
+                        <div class="card dashboard-card half">
+                            <div class="card-header">
+                                <h5>Restaurant Performance Metrics</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-row d-flex flex-wrap justify-content-start align-items-start">
+                                    <div class="item">
+                                        <div class="title">Total Booking</div>
+                                        <div class="value">
+                                            {{dashboardData?.other_details?.reservations_count| number:'1.0-1'}}
+                                            <a class="link" (click)="viewTopRestaurant(searchForm.value)">View
+                                                Top Restaurant</a>  
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Unique User Booking</div>
+                                        <div class="value">
+                                            {{dashboardData?.other_details?.total_unique_users_booking| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="title">Failed Booking</div>
+                                        <div class="value">
+                                            {{dashboardData?.other_details?.failed_transactions| number:'1.0-1'}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card dashboard-card half mb-0">
+                            <div class="card-header">
+                                <h5>Financial Metrics</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-row d-flex flex-wrap justify-content-start align-items-start">
+                                    <div class="item">
+                                        <div class="title">Revenue</div>
+                                        <div class="value">
+                                            {{dashboardData?.total_revenue| number:'1.0-1'}}</div>
+                                    </div>
+                                    <!-- <div class="item">
+                                        <div class="title">Costs</div>
+                                        <div class="value">{{dashboardData.avg_revenue_per_booking}}</div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <!-- <mat-paginator #paginator [length]="userlistcount" [pageIndex]="currentPage" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"  (page)="pageChanged($event)"  aria-label="Select page">
+          </mat-paginator> -->
+                </div>
+            </div>
+            <div>
+            </div>
+        </div>
+    </mat-sidenav-container>
+</div>

@@ -1,0 +1,53 @@
+<h2 mat-dialog-title>View Details</h2>
+<mat-dialog-content class="mat-typography">
+
+    <table class="table table-bordered">
+        <tr>
+            <th><b>Note</b></th>
+            <td>{{this.postDetails?.note?this.postDetails?.note:'N/A'}}</td>
+        </tr>
+        <!-- <tr>
+            <th><b>Labels</b></th>
+            <td>
+                <div *ngFor="let item of this.postDetails?.labels">
+                    {{ item }}
+                </div>
+            </td>
+        </tr> -->
+        <tr>
+            <th><b>Visit Date</b></th>
+            <td *ngIf="!this.postDetails?.visit_date">
+                N/A
+            </td>
+            <td *ngIf="this.postDetails?.visit_date">
+                {{this.postDetails?.visit_date*1000 |date:'dd-MMM-yy'}}
+            </td>
+        </tr>
+        <tr>
+            <th><b>Dishes</b></th>
+            <td>{{this.postDetails?.favorite_dishes?this.postDetails?.favorite_dishes:'N/A'}}</td>
+        </tr>
+        <tr>
+            <th><b>Score</b></th>
+            <td>{{this.postDetails?.score?this.postDetails?.score:'N/A'}}</td>
+        </tr>
+        <tr>
+            <th><b>Photos</b></th>
+            <div *ngIf="postDetailsImage.length >0" class="pic-list d-flex justify-content-start align-items-center">
+                <div *ngFor="let item of postDetailsImage" class="item">
+                    <img (click)="previewImage(item)" src="{{item}}" class="img-fluid img-thumbnail" alt="" />
+                </div>
+            </div>
+            <td *ngIf="postDetailsImage.length <=0">N/A</td>
+
+        </tr>
+        <tr>
+            <th><b>Secret Mode</b></th>
+            <td>{{this.postDetails?.secret_mode ==1 ?'ON':'OFF'}}</td>
+        </tr>
+    </table>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
+</mat-dialog-actions>

@@ -1,0 +1,135 @@
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+<h2 mat-dialog-title>
+  Create Winner Breakup
+</h2>
+<div mat-dialog-content>
+  <div class="flex-column">
+    <form [formGroup]="newBreakup" fxFlex="100">
+      <mat-card-content class="flex-column" fxLayoutGap="20" fxFlex="100">
+        <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+          <input matInput type="text" placeholder="Enter Name" formControlName="name">
+        </mat-form-field>
+        <div class="text-danger"
+          *ngIf="(newBreakup.get('name')?.hasError('required') && (submitted || (newBreakup.get('name')?.dirty)))">
+          *Name is required
+        </div>
+
+        <!-- <div fxLayout="column">
+            <div class="teamlable">Select Category<em>*</em></div>
+            <mat-form-field class="example-full-width" fxFlex="100">
+              <mat-label>Select</mat-label>
+              <mat-select formControlName="category">
+                <mat-option value="0">Tournament</mat-option>
+                <mat-option value="1">Contest</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="text-danger"
+            *ngIf="(newBreakup.get('category')?.hasError('required') && (submitted || (newBreakup.get('category')?.dirty)))">
+            *Category Field Is Required
+          </div>
+          </div> -->
+
+      </mat-card-content>
+
+    </form>
+    <div [formGroup]="newBreakup">
+      <div formArrayName="break_up">
+        <ng-container *ngFor="let winningForm of break_up.controls ; let i = index; trackBy: trackByIndex" class="mb-3">
+          <div fxLayout="column" class="mb-3">
+            <div fxFlex>
+              <div [formGroupName]="i" class="lesson-form-row mr-3" fxFlex="100">
+                <mat-card-content class="flex-row position-relative" fxLayoutGap="20">
+                  <div fxLayout="column">
+                    <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+                      <input matInput type="number" formControlName="rank" placeholder="rank">
+                    </mat-form-field>
+                    <div class="text-danger"
+                      *ngIf="break_up.controls[i].get('rank')?.errors?.['required'] && submitted ">
+                      * Rank Is Required
+                    </div>
+
+                    <div class="row">
+                      <div class="col">
+                        <label class="position-relative d-flex align-items-center gap-2">Upload <mat-icon class="material-symbols-sharp"
+                            matTooltip="Please select only jpeg,png format image.">info</mat-icon></label>
+                        <div class="custom-file">
+                          <input class="ng-hide" formControlName="image" (change)="onFileSelect($event, i)"
+                          id="file-input-{{ i }}" type="file" />
+                            <label for="file-input-{{ i }}">Upload Image</label>
+                        </div>
+                   
+                        <div *ngIf="imageSize" class="filesize my-2">File size: {{ imageSize }}</div>
+                        <div class="text-danger"
+                          *ngIf="break_up.controls[i].get('image')?.errors?.['required'] && submitted ">
+                        * Image Is Required
+                      </div>
+                        </div>
+                        <div class="col">
+                         
+                            <ng-container *ngIf="break_up.controls[i].get('image')?.value">
+                              <div class="image-preview">
+                                <img id="preview" [src]="break_up.controls[i].get('image')?.value">
+                              </div>
+                            </ng-container>
+                        </div>
+        
+                    </div>
+                  </div>
+                  <!-- <div fxLayout="column">
+                <div class="teamlable">To<em>*</em></div>
+                <mat-form-field class="example-full-width" fxFlex="100">
+                  <input matInput type="number" formControlName="rank_to" placeholder="rank_to">
+                </mat-form-field>
+                <div class="text-danger" *ngIf="break_up.controls[i].get('rank_to')?.errors?.['required'] && submitted ">
+                  *Rank To Is Required
+                </div>
+              </div>
+              <div fxLayout="column">
+                <div class="teamlable">Amount<em>*</em></div>
+                <mat-form-field class="example-full-width" fxFlex="100">
+                  <input matInput  type="number" formControlName="price_amount" placeholder="price_amount">
+                </mat-form-field>
+                <div class="text-danger"
+                  *ngIf="break_up.controls[i].get('price_amount')?.errors?.['required'] && submitted ">
+                  *Price Amount Is Required
+                </div>
+              </div> -->
+                  <!-- <div fxLayout="column">
+                <div class="teamlable">Type<em>*</em></div>
+                <mat-form-field class="example-full-width" fxFlex="100">
+                  <mat-label>Select</mat-label>
+                  <mat-select formControlName="type">
+                    <mat-option value="1">Reward</mat-option>
+                    <mat-option value="2">Assets</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div class="text-danger"
+                  *ngIf="break_up.controls[i].get('type')?.errors?.['required'] && submitted ">
+                  *type Type Is Required
+                </div>
+              </div> -->
+                </mat-card-content>
+              </div>
+              <button [disabled]="_appService.isButtonDisabled()" mat-icon-button class="delete-btn"
+                (click)="removeWinning(i,winningForm)">
+                <mat-icon class="material-symbols-sharp">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <button [disabled]="_appService.isButtonDisabled()" mat-fab extended color="primary" class="primary" (click)="addWinnings()">
+    <mat-icon class="material-symbols-sharp">add</mat-icon>Add
+  </button>
+</div>
+<div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px">
+  <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="primary" class="primary"
+    (click)="saveBreakup()">Save
+    Breakup</button>
+  <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="accent"
+    (click)="closeDialogBox()">Close</button>
+</div>

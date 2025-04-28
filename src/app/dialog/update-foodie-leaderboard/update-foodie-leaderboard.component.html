@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>
+    Update Foodie Leaderboard
+</h2>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<div mat-dialog-content>
+    <form [formGroup]="updateLeaderboardForm" fxFlex="100">
+        <mat-card-content class="flex-row" fxFlex="100">
+            <!-- <div fxLayout="column">
+                <label>Title</label>
+                <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+                    <input matInput type="text" readonly="" formControlName="title">
+                </mat-form-field>
+            </div> -->
+            <div fxLayout="column">
+                <mat-card-content class="mb-4 d-block">
+                    <label>Enter Rules</label>
+                    <quill-editor formControlName="data"></quill-editor>
+                  </mat-card-content>
+            </div>
+        </mat-card-content>
+    </form>
+</div>
+<div mat-dialog-actions fxLayoutAlign="end center" style="padding: 10px 20px 20px;">
+    <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="primary" class="primary"
+        (click)="submit()">Update</button>
+    <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="accent"
+        (click)="closeDialogBox()">Close</button>
+</div>

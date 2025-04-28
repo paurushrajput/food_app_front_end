@@ -1,0 +1,209 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div [ngClass]="data?'':'WrapperArea'">
+  <h2 mat-dialog-title>View User Deal</h2>
+
+  <mat-dialog-content class="mat-typography">
+    <mat-sidenav-container class="example-sidenav-container" autosize>
+      <div class="searchArea mb-3" fxLayoutAlign="space-between center" fxLayoutGap="20">
+        <form [formGroup]="searchForm" class="search-form inline-form" fxLayoutAlign="start center">
+          <mat-form-field appearance="outline" class="searchField">
+            <mat-label>Select Order Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option value="1">Pending</mat-option>
+              <!-- <mat-option value="2">Completed</mat-option> -->
+              <mat-option value="3">Paid</mat-option>
+              <mat-option value="4">Redeemed</mat-option>
+              <mat-option value="5">Clicked Back</mat-option>
+              <mat-option value="-1">Expired</mat-option>
+              <mat-option value="-2">Cancelled</mat-option>
+              <mat-option value="-3">Declined</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="searchField">
+            <mat-label>Search by Username</mat-label>
+            <input matInput placeholder="Search by Username" formControlName="name">
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" class="primary" (click)="searchData()">Search</button>
+          <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+        </form>
+        <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+        </mat-paginator>
+      </div>
+      <div class="table-responsive">
+        <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+          <ng-container matColumnDef="sr">
+            <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+            <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }} </td>
+          </ng-container>
+          <ng-container matColumnDef="username">
+            <th mat-header-cell *matHeaderCellDef>Username</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.username"> {{element.username}} </td>
+          </ng-container>
+          <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef>Quantity</th>
+            <td mat-cell *matCellDef="let element">
+              {{element.quantity?element.quantity:'N/A'}} </td>
+          </ng-container>
+          <ng-container matColumnDef="total_price">
+            <th mat-header-cell *matHeaderCellDef>Total Amount</th>
+            <td mat-cell *matCellDef="let element"> {{element.discounted_price| number : '1.2-2'}} </td>
+          </ng-container>
+          <ng-container matColumnDef="restro">
+            <th mat-header-cell *matHeaderCellDef>Restaurant Name</th>
+            <td mat-cell *matCellDef="let element"> {{element.restaurant_name?element.restaurant_name:'N/A'}} </td>
+          </ng-container>
+          <ng-container matColumnDef="deal">
+            <th mat-header-cell *matHeaderCellDef>Deal Title</th>
+            <td mat-cell *matCellDef="let element"> {{element.deal_title?element.deal_title:"N/A"}} </td>
+          </ng-container>
+          <ng-container matColumnDef="is_pilot">
+            <th mat-header-cell *matHeaderCellDef>Deal Mode</th>
+            <td mat-cell *matCellDef="let element"> {{element.is_pilot==1?"Pilot":"Live"}} </td>
+          </ng-container>
+          <ng-container matColumnDef="selected">
+            <th mat-header-cell *matHeaderCellDef>Selected Branch</th>
+            <td mat-cell *matCellDef="let element">
+              {{element.selected_restaurant?.branch_name?element.selected_restaurant?.branch_name:'N/A'}} </td>
+          </ng-container>
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>Deal Type</th>
+            <td mat-cell *matCellDef="let element"> {{element.deal_type |titlecase}} </td>
+          </ng-container>
+          <ng-container matColumnDef="option">
+            <th mat-header-cell *matHeaderCellDef>Deal Option Title</th>
+            <td mat-cell *matCellDef="let element"> {{element.deal_option_title?element.deal_option_title:"N/A"}} </td>
+          </ng-container>
+          <!-- <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>status</th>
+                <td mat-cell *matCellDef="let element"> {{element.payment_status.key?element.payment_status.key:'N/A'}} </td>
+              </ng-container> -->
+          <ng-container matColumnDef="purchaseDate">
+            <th mat-header-cell *matHeaderCellDef>Purchase Date</th>
+            <td mat-cell *matCellDef="let element">
+              <div style="white-space: nowrap;text-align: center;"><span [outerHTML]="element.created_at | gmt"></span>
+              </div>
+            </td>
+            <!-- element.booking_date*1000 | date:'dd-MMM-YY hh:mm:aa' -->
+          </ng-container>
+          <ng-container matColumnDef="dealId">
+            <th mat-header-cell *matHeaderCellDef>Booking Id</th>
+            <td mat-cell *matCellDef="let element"> {{element.id?element.id:'N/A'}} </td>
+          </ng-container>
+          <ng-container matColumnDef="expiryDate">
+            <th mat-header-cell *matHeaderCellDef>Expiry Date</th>
+            <td mat-cell *matCellDef="let element">
+              <div style="white-space: nowrap;text-align: center;"><span [outerHTML]="element.end_time | gmt"></span>
+              </div>
+            </td>
+            <!-- element.booking_date*1000 | date:'dd-MMM-YY hh:mm:aa' -->
+          </ng-container>
+          <ng-container matColumnDef="redeemed_date">
+            <th mat-header-cell *matHeaderCellDef>Redeemed Date</th>
+            <td mat-cell *matCellDef="let element">
+              <div style="white-space: nowrap;text-align: center;"><span [outerHTML]="element.redeemed_at | gmt"></span>
+              </div>
+            </td>
+          </ng-container>
+          <!-- <ng-container matColumnDef="status" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef> Payment Status </th>
+            <td mat-cell *matCellDef="let element">
+              <span *ngIf="element.user_deal_status.key=='payment_pending'" class="chip yellow">Payment Pending</span>
+              <span *ngIf="element.user_deal_status.key=='expired'" class="chip pink">Expired</span>
+              <span *ngIf="element.user_deal_status.key=='payment_completed'" class="chip green">Payment
+                Completed</span>
+              <span *ngIf="element.user_deal_status.key=='auto_cancelled'" class="chip red">Auto Cancelled</span>
+
+              <span *ngIf="element.user_deal_status.key=='redeemed'" class="chip yellow">Redeemed</span>
+            </td>
+          </ng-container> -->
+          <ng-container matColumnDef="statusCode">
+            <th mat-header-cell *matHeaderCellDef> Status <br />Code </th>
+            <td mat-cell *matCellDef="let element">
+              {{element?.txn_details?.code?element?.txn_details?.code:'N/A'}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="status1" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef> Order Status </th>
+            <td mat-cell *matCellDef="let element">
+
+              <!-- <span class="chip green"> {{element.payment_status | titlecase}}</span> -->
+              <!-- <span *ngIf="element.payment_status=='refunded'"
+                    class="chip pink">{{element.payment_status | titlecase}}</span> -->
+              <span *ngIf='element.redeemed_at==null &&  element.order_status_code===3 || element.order_status_code=== 2' [ngClass]="{'chip green': element.order_status_code===3 || element.order_status_code=== 2}">
+                {{element.payment_details?.text | titlecase}}
+              </span>
+              <span *ngIf='element.redeemed_at==null && element.order_status_code===-3 || element.order_status_code=== -2' [ngClass]="{'chip red': element.order_status_code===-3 || element.order_status_code=== -2}">
+                {{element.payment_details?.text | titlecase}}
+              </span>
+              <span *ngIf='element.redeemed_at==null && element.order_status_code===1 && element.payment_status.value !=5' [ngClass]="{'chip yellow': element.order_status_code===1 && element.payment_status.value !=5 }">
+                {{element.payment_details?.text | titlecase}}
+              </span>
+              <span  *ngIf='element.redeemed_at!=null' [ngClass]="{'chip yellow': element.redeemed_at!==null}">
+                Redeemed
+              </span>
+              <span  *ngIf='(element.order_status_code==null || element.order_status_code=="" )&& element.redeemed_at==null' [ngClass]="{'chip yellow': element.order_status_code==null || element.order_status_code=='' }">
+                Pending
+              </span>
+              <span *ngIf='element.redeemed_at==null && element.payment_status.value ==5' [ngClass]="{'chip red': element.payment_status.value===5 }">
+               Clicked Back
+              </span>
+              <!-- <span *ngIf="element.deal_type=='free'&&element.user_deal_status.value != 2" class="chip yellow">{{
+                element.user_deal_status?.key | titlecase}}</span>
+              <span
+                *ngIf="element.deal_type!='free'&&element.payment_details.code==3 && element.user_deal_status.value!=3"
+                class="chip green">{{element.payment_details?.text}}</span>
+
+              <span
+                *ngIf="element.deal_type!='free'&&element.payment_details.code==3 && element.user_deal_status.value==3"
+                class="chip yellow">{{element.user_deal_status?.key |titlecase}}</span>
+
+              <span *ngIf="element.deal_type!='free'&&element.payment_details.code!=3"
+                class="chip red">{{element.payment_details?.text}}</span> -->
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="action1" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef>Action </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                <mat-icon class="material-symbols-sharp">more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item *ngIf="!element.is_nukhba_user" (click)="txnDetails(element)">View Details
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+          <!-- <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Update </th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-mini-fab color="accent" (click)="showEditForm(element)">
+                    <mat-icon class="material-symbols-sharp">edit</mat-icon>
+                  </button>
+                </td>
+              </ng-container> -->
+          <ng-container matColumnDef="userDeal">
+            <th mat-header-cell *matHeaderCellDef class="text-center"> View User Deal </th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+              <ng-container>
+                <button mat-mini-fab>
+                  <mat-icon class="material-symbols-sharp">visibility</mat-icon>
+                  <!-- <mat-icon *ngIf="element.restaurant_count=='0'"
+                        class="material-symbols-sharp">visibility_off</mat-icon> -->
+
+                </button>
+              </ng-container>
+
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </mat-sidenav-container>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end" class="px-3 pb-3">
+    <button mat-raised-button mat-dialog-close class="accent" color="accent">Close</button>
+  </mat-dialog-actions>
+</div>

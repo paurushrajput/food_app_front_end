@@ -1,0 +1,330 @@
+<div class="SidenavBar" mode="side" opened="true" [ngClass]="isExpanded?'open':'close'">
+  <div *ngIf="!isExpanded" class="search-container px-3">
+    <input type="text" class="form-control" [(ngModel)]="searchTerm" placeholder="Search..."
+      (keyup)="filterMenuItems()">
+    <div class="icon"><i class="material-symbols-sharp">search</i></div>
+  </div>
+
+  <ul>
+    <li *ngFor="let item of filteredMenuItems" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="[item.route]">
+        <span><i class="material-symbols-sharp" [ngStyle]="{'color': getColor(item.icon)}">{{ item.icon }}</i></span>{{
+        item.label }}
+      </a>
+    </li>
+   
+    <li class="nav-item" *ngIf="rolefilterSubmenuItems.length>0">
+      <a class="nav-link d-flex align-items-center" (click)="toggleRoleCollapse()"
+        [ngClass]="{'closed': !isRolMenuVisible, 'open': isRolMenuVisible}"><span> <mat-icon
+            class="material-symbols-sharp">settings</mat-icon></span>Role <mat-icon
+          class="material-symbols-sharp ml-auto">arrow_right</mat-icon></a>
+      <div id="submenu-3" [ngClass]="{'collapse': !isRolMenuVisible, 'show': isRolMenuVisible}" class="submenu">
+        <ul class="nav flex-column">
+          <li *ngFor="let roleItem of rolefilterSubmenuItems" [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="[roleItem.route]">
+              <span><i class="material-symbols-sharp" [ngStyle]="{'color': roleItem.color}">{{ roleItem.icon }}</i></span>
+              {{ roleItem.label }}
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item"  *ngIf="reportFilterSubmneu.length>0">
+      <a class="nav-link d-flex align-items-center" (click)="toggleCollapse()"
+        [ngClass]="{'closed': !isSubMenuVisible, 'open': isSubMenuVisible}"><span> <mat-icon
+            class="material-symbols-sharp">settings</mat-icon></span>Reports <mat-icon
+          class="material-symbols-sharp ml-auto">arrow_right</mat-icon></a>
+      <div id="submenu-3" [ngClass]="{'collapse': !isSubMenuVisible, 'show': isSubMenuVisible}" class="submenu">
+        <ul class="nav flex-column">
+          <li *ngFor="let report of reportFilterSubmneu" [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact: true}">
+            <a [routerLink]="[report.link]">
+              <span>
+                <i class="material-symbols-sharp" [ngStyle]="{'color': report.iconColor}">{{report.iconName}}</i>
+              </span>
+              {{ report.label }}
+            </a>
+          </li>
+          <!-- <li [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="['/partnership-tracking/report']">
+              <span><i class="material-symbols-sharp" style="color: #397de4;">group</i></span>Partnership Tracking
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="['/booking-details/report']">
+              <span><i class="material-symbols-sharp" style="color: #a539e4;">build</i></span>Booking Details
+            </a>
+          </li></ul></div></li> -->
+        </ul>
+      </div>
+    </li>
+
+    <li class="nav-item"  *ngIf="socialFilterSubmneu.length>0">
+      <a class="nav-link d-flex align-items-center" (click)="toggleSocialCollapse()"
+        [ngClass]="{'closed': !isSocialMenuVisible, 'open': isSocialMenuVisible}"><span> <mat-icon
+            class="material-symbols-sharp">travel_explore</mat-icon></span>Social <mat-icon
+          class="material-symbols-sharp ml-auto">arrow_right</mat-icon></a>
+      <div id="submenu-3" [ngClass]="{'collapse': !isSocialMenuVisible, 'show': isSocialMenuVisible}" class="submenu">
+        <ul class="nav flex-column">
+          <li *ngFor="let report of socialFilterSubmneu" [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact: true}">
+            <a [routerLink]="[report.route]">
+              <span>
+                <i class="material-symbols-sharp" [ngStyle]="{'color': report.iconColor}">{{report.iconName}}</i>
+              </span>
+              {{ report.label }}
+            </a>
+          </li>
+          <!-- <li [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="['/partnership-tracking/report']">
+              <span><i class="material-symbols-sharp" style="color: #397de4;">group</i></span>Partnership Tracking
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="['/booking-details/report']">
+              <span><i class="material-symbols-sharp" style="color: #a539e4;">build</i></span>Booking Details
+            </a>
+          </li></ul></div></li> -->
+        </ul>
+      </div>
+    </li>
+  </ul>
+
+  <!-- <ul>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/dashboard']">
+        <span><i class="material-symbols-sharp" style="color: #0a53ff;">image</i></span>Dashboard
+      </a>
+    </li>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/category/list']">
+        <span><i class="material-symbols-sharp" style="color: #ffbe0a;">sell</i></span>Cuisines Management
+      </a>
+    </li>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/amenities/list']">
+        <span><i class="material-symbols-sharp" style="color: #d628d6;">forum</i></span>Amenities Management
+      </a>
+    </li>
+  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/location/list']">
+        <span><i class="material-symbols-sharp" style="color: #9637f5;">location_on</i></span>Location Management
+      </a>
+    </li>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/transaction/list']">
+        <span><i class="material-symbols-sharp" style="color: #28e778;">receipt_long</i></span>Transaction Management
+      </a>
+    </li>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/reservation/list']">
+        <span><i class="material-symbols-sharp" style="color: #e82c2b;">event_seat</i></span>Reservation Management
+      </a>
+    </li>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/feedback/list']">
+        <span><i class="material-symbols-sharp" style="color: #248fd0;">reviews</i></span>Feedback Management
+      </a>
+    </li>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/campaign/list']">
+        <span><i class="material-symbols-sharp" style="color: #e6cf08;">campaign</i></span>Campaign Management
+      </a>
+    </li>
+                          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                            <a [routerLink]="['/campaign-notification/list']">
+                              <span><i class="material-symbols-sharp" style="color: #a539e4;">event_seat</i></span>Campaign & Notification Management
+                            </a>
+                          </li>
+                          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                            <a [routerLink]="['/dialog/list']">
+                              <span><i class="material-symbols-sharp" style="color: #f54d37">business_center</i></span>Dialog Management
+                            </a>
+                          </li>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/banner/list']">
+        <span><i class="material-symbols-sharp" style="color: #4a37f5;">image</i></span>Banner Management
+      </a>
+    </li>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/merchant/list']">
+        <span><i class="material-symbols-sharp" style="color: #f54d37">business_center</i></span>Merchant Management
+      </a>
+    </li>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/restaurant/list']">
+        <span><i class="material-symbols-sharp" style="color: #00bc5e">restaurant</i></span>Restaurant Management
+      </a>
+    </li>
+
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/stories/list']">
+        <span><i class="material-symbols-sharp" style="color: #ff6b22;">auto_stories</i></span>Stories Management
+      </a>
+    </li>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/user/list']">
+        <span><i class="material-symbols-sharp" style="color: #1d599f;">group</i></span>User Management
+      </a>
+    </li>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/config']">
+        <span><i class="material-symbols-sharp" style="color: #8c1d9f;">manufacturing</i></span>Config Management
+      </a>
+    </li>
+
+
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                  <a [routerLink]="['/dinning/list']">
+                    <span><i class="material-symbols-sharp" style="color: #ff6f6f;">table_restaurant</i></span>Dinning Management
+                  </a>
+                </li>
+
+
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center" (click)="toggleCollapse()" [ngClass]="{'closed': !isSubMenuVisible, 'open': isSubMenuVisible}"><span> <mat-icon class="material-symbols-sharp">settings</mat-icon></span>Others Management <mat-icon class="material-symbols-sharp ml-auto">arrow_right</mat-icon></a>
+      <div id="submenu-3"  [ngClass]="{'collapse': !isSubMenuVisible, 'show': isSubMenuVisible}" class="submenu">
+        <ul class="nav flex-column">
+          <li [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="['/redeem/list']">
+              <span><i class="material-symbols-sharp" style="color: #e9c920;">explore</i></span>Explore Management
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="['/notification/list']">
+              <span><i class="material-symbols-sharp" style="color: #1eca2c;">notifications</i></span>Notification Management
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="['/notification-template/list']">
+              <span><i class="material-symbols-sharp" style="color: #397de4;">group</i></span>Notification Template Management
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="['/build/list']">
+              <span><i class="material-symbols-sharp" style="color: #a539e4;">build</i></span>Build Management
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="['/game/list']">
+              <span><i class="material-symbols-sharp" style="color: #f53737;">stadia_controller</i></span>Game Management
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="['/coupon/list']">
+              <span><i class="material-symbols-sharp" style="color: #1bdda3;">developer_guide</i></span>Voucher Management
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="['/tournament/list']">
+              <span><i class="material-symbols-sharp" style="color: #4a37f5;">Trophy</i></span>Tournament Management
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="['/tournament-rule/list']">
+              <span><i class="material-symbols-sharp" style="color: #f86a3e;">military_tech</i></span>Tournament Rule Management
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="['/breakup/list']">
+              <span><i class="material-symbols-sharp" style="color: #ffbe0a;">backup</i></span>Breakup Management
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="['/app-setting/list']">
+              <span><i class="material-symbols-sharp" style="color: #a539e4;">phone_iphone</i></span>App Setting Management
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" class="nav-item" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="['/deleted/users']">
+              <span><i class="material-symbols-sharp" style="color: #e43939;">group</i></span>Deleted Users Management
+            </a>
+          </li> 
+                        <li class="nav-item" routerLinkActive="active">
+                          <a class="nav-link" routerLink="/add-restaurant-info">
+                            Restaurant Information
+                          </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active" *ngIf="isRestaurantInfoSubmitted">
+                          <a class="nav-link" routerLink="/add-restaurant-operational-hours">
+                            Restaurant Type and Timings
+                          </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active" *ngIf="isRestaurantInfoSubmitted">
+                          <a class="nav-link" routerLink="/restaurant-slot">
+                            Slot Management
+                          </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active" *ngIf="isRestaurantInfoSubmitted">
+                          <a class="nav-link" routerLink="/add-restaurant-menu/{{id}}">
+                            Upload Menu Images
+                          </a>
+                        </li>
+        </ul>
+      </div>
+    </li>
+
+
+
+                  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                    <a [routerLink]="['/notification/list']">
+                      <span><i class="material-symbols-sharp" style="color: #1eca2c;">notifications</i></span>Notification Management
+                    </a>
+                  </li>
+                  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                    <a [routerLink]="['/build/list']">
+                      <span><i class="material-symbols-sharp" style="color: #a539e4;">build</i></span>Build Management
+                    </a>
+                  </li>
+                  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                    <a [routerLink]="['/game/list']">
+                      <span><i class="material-symbols-sharp" style="color: #f53737;">stadia_controller</i></span>Game Management
+                    </a>
+                  </li>
+                  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                    <a [routerLink]="['/tournament/list']">
+                      <span><i class="material-symbols-sharp" style="color: #4a37f5;">Trophy</i></span>Tournament Management
+                    </a>
+                  </li>
+                  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                    <a [routerLink]="['/tournament-rule/list']">
+                      <span><i class="material-symbols-sharp" style="color: #f86a3e;">military_tech</i></span>Tournament Rule Management
+                    </a>
+                  </li>
+                  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                    <a [routerLink]="['/breakup/list']">
+                      <span><i class="material-symbols-sharp" style="color: #ffbe0a;">backup</i></span>Breakup Management
+                    </a>
+                  </li>
+                  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                    <a [routerLink]="['/app-setting/list']">
+                      <span><i class="material-symbols-sharp" style="color: #a539e4;">build</i></span>App Setting Management
+                    </a>
+                  </li>
+                  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                    <a [routerLink]="['/deleted/users']">
+                      <span><i class="material-symbols-sharp" style="color: #a539e4;">group</i></span>Deleted Users Management
+                    </a>
+                  </li> -->
+  <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                    <a (click)="adminLogout()">
+                      <span><i class="material-symbols-sharp" style="color: rgb(0, 0, 0);">logout</i></span>Logout
+                    </a>
+                  </li>
+  </ul> -->
+</div>
+
+<!-- 
+<mat-drawer-container class="example-container" autosize>
+    <mat-drawer #drawer class="example-sidenav" mode="side">
+        <p>Auto-resizing sidenav</p>
+        <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
+        <button (click)="showFiller = !showFiller" mat-raised-button>
+            Toggle extra text
+        </button>
+    </mat-drawer>
+    <div class="example-sidenav-content">
+        <button type="button" mat-button (click)="drawer.toggle()">
+            Toggle sidenav
+        </button>
+    </div>
+</mat-drawer-container> -->

@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>
+   Update Commission
+       </h2>
+   <form class="innerbox" [formGroup]="commissionForm">
+       <div mat-dialog-content>
+           <div fxLayout="column">
+               <div fxLayout="row" fxFlex="100" class="w-100">
+                   <div fxFlex="100">
+                       <!-- <div class="teamlable">Name<em>*</em></div> -->
+                       <mat-form-field class="example-full-width w-100" appearance="outline">
+                           <input matInput placeholder="Enter Commission" formControlName="commission">
+                       </mat-form-field>
+                       <div class="text-danger"
+                           *ngIf="(commissionForm.get('commisision')?.hasError('required') && (submitted || (commissionForm.get('commisision')?.dirty)))">
+                           *commisision Field Is Required
+                       </div>
+                   </div>
+               </div>
+               <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <!-- <div class="teamlable">Name<em>*</em></div> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-select formControlName="commission_type">
+                            <mat-option value="">Commission Type</mat-option>
+                            <mat-option value="flat">Flat</mat-option>
+                            <mat-option value="percentage">Percentage</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(commissionForm.get('commission_type')?.hasError('required') && (submitted || (commissionForm.get('commission_type')?.dirty)))">
+                        *commisision type Field Is Required
+                    </div>
+                </div>
+            </div>
+              
+           </div>
+       </div>
+       <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px">
+           <button  mat-raised-button [disabled]="commissionForm.invalid"
+               color="primary" class="primary" (click)="saveLocation()">Approve</button>
+           <button  mat-raised-button color="accent" class="secondary"
+               (click)="closeDialogBox()">Cancel</button>
+       </div>
+   </form>

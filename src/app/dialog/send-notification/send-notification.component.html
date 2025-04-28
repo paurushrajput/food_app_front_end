@@ -1,0 +1,134 @@
+<h2 mat-dialog-title>Send Notification</h2>
+<form class="innerbox" [formGroup]="notiForm">
+    <div mat-dialog-content>
+        <div fxLayout="column">
+            <div fxLayout="row" fxLayoutGap="20" fxFlex="100" class="w-100">
+                <div fxFlex="50">
+                    
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Topic</mat-label>
+                        <mat-select formControlName="topic">
+                            <mat-option value="">Select</mat-option>
+                            <mat-option value="food_app_all">Food App All</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(notiForm.get('topic')?.hasError('required') && (submitted || (notiForm.get('topic')?.dirty)))">
+                        *Topic Is Required
+                    </div>
+                </div>
+                <div fxFlex="50">
+                    
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Title</mat-label>
+                        <input matInput placeholder="Enter title" formControlName="title">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(notiForm.get('title')?.hasError('required') && (submitted || (notiForm.get('title')?.dirty)))">
+                        *Title Is Required
+                    </div>
+                </div>
+                </div>
+                <div fxLayout="row" fxLayoutGap="20" fxFlex="100" class="w-100">
+                <div fxFlex="50">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Device Type</mat-label>
+                        <mat-select formControlName="deviceType" multiple>
+                            <!-- <mat-option value="">Select</mat-option> -->
+                            <mat-option value="1">ANDROID</mat-option>
+                            <mat-option value="2">IOS</mat-option>
+                            <mat-option value="3">WEB</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(notiForm.get('deviceType')?.hasError('required') && (submitted || (notiForm.get('deviceType')?.dirty)))">
+                        *Device Type Is Required
+                    </div>
+                </div>
+                <div fxFlex="50">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Message</mat-label>
+                        <input matInput placeholder="Enter message" formControlName="message">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutGap="20" fxFlex="100" class="w-100">    
+                <div fxFlex="50">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Description</mat-label>
+                        <input matInput placeholder="Enter description" formControlName="description">
+                    </mat-form-field>
+                </div>
+                <div fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Action Type</mat-label>
+                        <mat-select formControlName="actionType">
+                            <mat-option value="">Select</mat-option>
+                            <mat-option value="restaurant">Restaurant</mat-option>
+                            <mat-option value="game">Game Play</mat-option>
+                            <mat-option value="shareapp">Share App</mat-option>
+                            <mat-option value="manual">Manual</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutGap="20" fxFlex="100" class="w-100">
+                <div *ngIf="notiForm.value.actionType=='manual'" fxFlex="50">
+                    
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Action Url</mat-label>
+                        <input matInput placeholder="Enter Action url" formControlName="actionUrl">
+                    </mat-form-field>
+                </div>
+                <div *ngIf="notiForm.value.actionType=='restaurant'" fxFlex="100">
+                    <!-- <div class="teamlable">Select Restaurant<em>*</em></div> -->
+                    
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Restaurant</mat-label>
+                        <mat-select formControlName="res_id">
+                            <mat-option value="">Select</mat-option>
+                            <mat-option *ngFor="let type of restaurantData | sort:'name'" value={{type.id}}>
+                                {{type.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <!-- <div fxFlex="50">
+                    <mat-label>Action Button Name</mat-label>
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <input matInput placeholder="Enter Action Button Name" formControlName="actionButton">
+                    </mat-form-field>
+                </div> -->
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <label class="position-relative d-flex align-items-center gap-2">Upload <mat-icon class="material-symbols-sharp"
+                        matTooltip="Please select only jpeg,png format image.">info</mat-icon></label>
+                    <div class="custom-file">
+                        <input class="ng-hide" formControlName="image" (change)="onFileSelected($event)" id="input-file-id" type="file" />
+                        <label for="input-file-id">Upload Image</label>
+                    </div>
+               
+                    <div *ngIf="imageSize" class="filesize my-2">File size: {{ imageSize }}</div>
+                      <div class="text-danger"
+                        *ngIf="(notiForm.get('image')?.hasError('required') && (submitted || (notiForm.get('image')?.dirty)))">
+                        *Image Is Required
+                      </div>
+                    </div>
+                    <div class="col">
+                        <ng-container *ngIf="image">
+                            <div class="image-preview">
+                                <img id="preview" [src]=image>
+                            </div>
+                        </ng-container>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px">
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="primary" class="primary"
+            (click)="sendNotification()">Send</button>
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="secondary"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>

@@ -1,0 +1,105 @@
+.mat-form-field{
+    width: 100%;
+  }
+  .row{
+    width: 100%;
+  }
+  div.main-container{
+    float: left;
+    width: 100%;
+  }
+  .flex-row {
+    display: flex;
+    flex-direction: row;
+  
+    > div {
+      flex: 50%;
+    }
+  }
+  .flex-row .col-sm-4{
+  }
+  /*.mat-card{
+    border: 2px solid green;
+    float:left;
+    width: 100%;
+  }*/
+  .mat-card{
+    max-width: 900px;
+    margin: 0px auto;
+  }
+  .mat-card-content{
+    margin: 0 auto;
+    padding: 0;
+  }
+  /*.mat-card.box{
+    border: 2px solid green;
+    float:left;
+  }*/
+  div.main-container .mat-form-field{
+    margin-left: 8px;
+  }
+  @media (max-width: 768px){
+    .flex-row .col-sm-4{
+      width: 100%;
+      float: left;
+      display: block;
+    }
+    .mat-card{
+      max-width: 768px;
+      margin: 0px auto;
+    }
+    .mat-card-content{
+      max-width: 768px;
+    }
+    .mat-card-content div{
+      max-width: 150px;
+    }
+    div.main-container .mat-form-field{
+      margin-left: 3px;
+    }
+    .mat-form-field-infix {
+      display: block;
+      position: relative;
+      flex: auto;
+      min-width: 0;
+      width: 145px;
+  }
+  .mat-form-field-appearance-legacy .mat-form-field-infix{
+    width: 140px
+  }
+  }
+  @media (max-width: 400px){
+    .flex-row {
+      display: flex;
+      flex-direction:column;
+    
+      > div {
+        flex: 50%;
+      }
+    }
+    .flex-row .col-sm-4{
+  
+      width: 100%;
+      float: left;
+      display: block;
+    }
+    .mat-card{
+      max-width: 360px;
+      margin: 0px auto;
+    }
+    .mat-card-content{
+      max-width: 360px;
+    }
+  
+  }
+  
+  .mat-button.mat-red {
+    color: rgb(255, 0, 0);
+  }
+  
+  .mat-raised-button.mat-red, .mat-flat-button.mat-red{
+    background-color: rgb(255, 0, 0);
+    color: white;
+  }
+  
+  

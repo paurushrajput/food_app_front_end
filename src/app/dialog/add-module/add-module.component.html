@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>
+    <span *ngIf="this.entity_id==undefined">New</span>
+    <span *ngIf="this.entity_id!=undefined">Edit</span>
+    Module
+</h2>
+<form class="innerbox" [formGroup]="moduleForm">
+    <div mat-dialog-content>
+        <div fxLayout="column">
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <!-- <div class="teamlable">Name<em>*</em></div> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <input matInput placeholder="Enter Name" formControlName="name">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(moduleForm.get('name')?.hasError('required') && (submitted || (moduleForm.get('name')?.dirty)))">
+                        *Name Field Is Required
+                    </div>
+                </div>
+            </div>
+           
+           
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px">
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button [disabled]="moduleForm.invalid"
+            color="primary" class="primary" (click)="saveModule()">Save</button>
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="secondary"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>

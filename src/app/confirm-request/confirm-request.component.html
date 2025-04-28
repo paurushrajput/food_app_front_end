@@ -1,0 +1,228 @@
+<div class="Decline">
+    <!-- <a href="javascript:void(0);" class="CloseModal" data-dismiss="modal"></a> -->
+    <h2 mat-dialog-title> {{prefix}} Restaurant</h2>
+    <!-- <div mat-dialog-content>
+        <p>Are you sure you want to approve this request ?</p>
+    </div> -->
+    <form class="innerbox" [formGroup]="approveForm">
+        <div mat-dialog-content>
+            <div fxLayout="column">
+                <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+                    <div fxFlex="100">
+                        <div class="teamlable">Instant Payment<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="enable_instant_payment">
+                                <mat-option value="1">Enable</mat-option>
+                                <mat-option value="0">Disable</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100">
+                        <div class="teamlable">Instant Payment Percent <em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <input matInput type="number" formControlName="instant_pay_amt_pct"
+                                placeholder="Enter Value">
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+                <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+                    <div fxFlex="100">
+                        <div class="teamlable">Booking Type<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="rev_msg_template">
+                                <mat-option value="0">Booking Fee</mat-option>
+                                <mat-option value="1">Advance Payment</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100">
+                        <div class="teamlable">Voucher Applicable <em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="voucher_applicable">
+                                <mat-option value="1">Yes</mat-option>
+                                <mat-option value="0">No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+                <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+                    <!-- <div fxFlex="100">
+                        <div class="teamlable">Approve Request<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="approve">
+                                <mat-option value="approved">Approve</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div> -->
+                    <div fxFlex="100">
+                        <div class="teamlable">Credit Applicable <em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="credits_applicable">
+                                <mat-option value="1">Yes</mat-option>
+                                <mat-option value="0">No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100">
+                        <div class="teamlable">Restaurant Type<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="restaurant_type">
+                                <mat-option value="0">ALL</mat-option>
+                                <mat-option value="1">DEAL</mat-option>
+                                <mat-option value="2">RESERVATION</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    
+                </mat-card-content>
+                <mat-card-content>
+                    <div *ngIf="approveForm.value.restaurant_type!='1'" fxFlex="100">
+                        <div class="teamlable">Select Commission Type<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="pax_commission_type">
+                                <mat-option value="1">Fixed Per Pax</mat-option>
+                                <mat-option value="2">Varies Per Pax</mat-option>
+                                <mat-option value="3">Fixed Per Booking</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+                <mat-card-content  *ngIf="approveForm.value.restaurant_type!='1'" fxLayout="column" class="mb-4">
+                    <div *ngIf="approveForm.value.pax_commission_type==1" fxFlex="100">
+                        <div class="teamlable">Enter value<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <input matInput type="number" formControlName="fixed_per_pax"
+                                placeholder="Enter Value">
+                        </mat-form-field>
+                        <!-- <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select readonly formControlName="fixed_per_pax">
+                                <mat-option *ngFor="let option of restaurant_pax_list"
+                                    value="{{option.value}}">{{option.value}}</mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                    </div>
+                    <div *ngIf="approveForm.value.pax_commission_type==3" fxFlex="100">
+                        <div class="teamlable">Enter value<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <input matInput type="number" formControlName="fixed_per_booking"
+                                placeholder="Enter Value">
+                        </mat-form-field>
+                        <!-- <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select readonly formControlName="fixed_per_booking">
+                                <mat-option *ngFor="let option of fixed_per_booking"
+                                    value="{{option.value}}">{{option.value}}</mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                    </div>
+                    <div fxFlex="100" *ngIf="approveForm.value.pax_commission_type == 2" [formGroup]="approveForm">
+                        <div formArrayName="details">
+                            <ng-container *ngFor="let details of pax_details.controls ; let i = index" class="mb-3">
+                                <div>
+                                    <div fxFlex class="d-flex align-items-center">
+                                        <div [formGroupName]="i" class="lesson-form-row mr-3" fxFlex="100">
+                                            <mat-card-content class="d-flex flex-row position-relative"
+                                                fxLayoutGap="20">
+                                                <div fxLayout="column" fxFlex="100">
+                                                    <mat-label>Guest Count</mat-label>
+                                                    <mat-form-field class="example-full-width" appearance="outline"
+                                                        fxFlex="100">
+                                                        <input matInput readonly type="number"
+                                                            formControlName="num_person" placeholder="Guest Count">
+                                                    </mat-form-field>
+                                                </div>
+                                                <div fxLayout="column" fxFlex="100">
+                                                    <mat-label>Commission</mat-label>
+                                                    <mat-form-field class="example-full-width" appearance="outline"
+                                                        fxFlex="100">
+                                                        <input matInput type="number" formControlName="amount"
+                                                            placeholder="Commission">
+                                                    </mat-form-field>
+                                                </div>
+                                            </mat-card-content>
+                                        </div>
+                                        <!-- <button mat-mini-fab class="delete-btn" (click)="removeDetails(i,details)">
+                                            <mat-icon class="material-symbols-sharp">remove</mat-icon>
+                                        </button> -->
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <!-- <button *ngIf="approveForm.value.pax_commission_type == 2" mat-fab color="primary" class="primary"
+                        (click)="addDetails()">
+                        <mat-icon class="material-symbols-sharp">add</mat-icon>
+                    </button> -->
+                </mat-card-content>
+                <!-- <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+                    <div fxFlex="100">
+                        <div class="teamlable">Select Type<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="restaurant_type">
+                                <mat-option value="0">ALL</mat-option>
+                                <mat-option value="1">DEAL</mat-option>
+                                <mat-option value="2">RESERVATION</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content> -->
+                <mat-card-content *ngIf="approveForm.value.restaurant_type!='1'" class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+                    <div fxFlex="100">
+                        <div class="teamlable">Auto Booking<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="auto_booking">
+                                <mat-option value="1">Activate</mat-option>
+                                <mat-option value="0">Deactivate</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100">
+                        <div class="teamlable">Booking Fee Required<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="booking_fee_required">
+                                <mat-option value="1">Yes</mat-option>
+                                <mat-option value="0">No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+                <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+                    <div fxFlex="100">
+                        <div class="teamlable">On Boarded By<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="on_boarded_by">
+                                <mat-option *ngFor="let option of this.adminUsers"
+                                    value="{{option.value}}">{{option.key}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100">
+                        <div class="teamlable">Approved By<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="approved_by">
+                                <mat-option *ngFor="let option of this.adminUsers"
+                                    value="{{option.value}}">{{option.key}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+                <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+                    <div fxFlex="100">
+                        <div class="teamlable">Otp Required<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="otp_required">
+                                <mat-option value="1">Yes</mat-option>
+                                <mat-option value="0">No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+            </div>
+        </div>
+    </form>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button [disabled]="_appService.isButtonDisabled()" (click)="approveRestaurant()" class="primary"
+            color="primary" mat-raised-button>Save</button>
+        <button [disabled]="_appService.isButtonDisabled()" (click)="closeDialogBox()" class="secondary" color="accent"
+            mat-raised-button>Cancel</button>
+    </div>
+</div>

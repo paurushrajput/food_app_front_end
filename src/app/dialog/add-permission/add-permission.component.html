@@ -1,0 +1,59 @@
+<h2 mat-dialog-title>
+    <span *ngIf="this.entity_id==undefined">New</span>
+    <span *ngIf="this.entity_id!=undefined">Edit</span>
+    Permission
+</h2>
+<form class="innerbox" [formGroup]="permisionForm">
+    <div mat-dialog-content>
+        <div fxLayout="column">
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <!-- <div class="teamlable">Name<em>*</em></div> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Type</mat-label>
+                        <mat-select formControlName="type" >
+                            <mat-option  value="update">
+                                Update</mat-option>
+                                <mat-option  value="read">
+                                    Read</mat-option>
+                                    <mat-option  value="create">
+                                        Write</mat-option>
+                                        <mat-option  value="delete">
+                                            Delete</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(permisionForm.get('type')?.hasError('required') && (submitted || (permisionForm.get('type')?.dirty)))">
+                        *Type Field Is Required
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                   
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Module</mat-label>
+                        <mat-select formControlName="module_id" >
+                            <mat-option *ngFor="let type of moduleData" value={{type.id}}>
+                                {{type.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(permisionForm.get('module_id')?.hasError('required') && (submitted || (permisionForm.get('module_id')?.dirty)))">
+                        *Module Field Is Required
+                    </div>
+                </div>
+            
+            </div>
+           
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px">
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button [disabled]="permisionForm.invalid"
+            color="primary" class="primary" (click)="saveModule()">Save</button>
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="secondary"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>
+
+

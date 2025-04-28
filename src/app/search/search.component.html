@@ -1,0 +1,12 @@
+<div class="search-box" [formGroup]="searchForm">
+    <input type="text" placeholder="Search By Name" formControlName="name" class="form-control lg"
+      (keyup)="checkSearchText($event)" />
+    <button (click)="search()" class="btn search-icon" *ngIf="!searchTextNotEmpty">
+      <mat-icon class="material-symbols-sharp">search</mat-icon>
+    </button>
+    <button class="btn close-icon" style="margin-left: 10px;" *ngIf="searchTextNotEmpty"
+      >
+      <mat-icon class="material-symbols-sharp"(click)="clear()">close</mat-icon>
+    </button>
+  </div>
+  

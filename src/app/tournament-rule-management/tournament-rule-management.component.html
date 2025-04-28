@@ -1,0 +1,53 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div class="WrapperArea">
+  <mat-toolbar class="pagetitle-bar w-100 mb-0" fxLayoutAlign="space-between center" fxLayoutGap="20">
+    <h2>Tournament Rule Management</h2>
+    <button mat-raised-button color="primary" class="primary" (click)="addRule()">Add Rule</button>
+  </mat-toolbar>
+  <mat-sidenav-container class="example-sidenav-container" autosize>
+    <div class="WrapperBox">
+      <div class="Small-Wrapper">
+      <div class="searchArea mb-3" fxLayoutAlign="space-between center" fxLayoutGap="20">
+        <form [formGroup]="searchForm" class="search-form" fxLayoutAlign="start center">
+          <app-input-box [formgroup]="searchForm" [params]="controls.name"></app-input-box>
+          <button mat-raised-button color="primary" class="primary" (click)="searchData()">Search</button>
+          <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+        </form>
+        <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+      </mat-paginator>
+      </div>
+        <div class="table-responsive">
+          <table mat-table [dataSource]="ruleData" class="w-100 sticky-table">
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="sr">
+              <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+              <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }} </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.name?element.name:"N/A"}} </td>
+            </ng-container>
+            <ng-container matColumnDef="view">
+              <th mat-header-cell *matHeaderCellDef> View Rules </th>
+              <td mat-cell *matCellDef="let element" fxLayoutGap="10">
+                <button mat-mini-fab class="btn-warning" (click)="ruleDetails(element)">
+                  <mat-icon class="material-symbols-sharp">visibility</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+        <div>
+          <!-- <mat-paginator #paginator [length]="userlistcount" [pageIndex]="currentPage" [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions"  (page)="pageChanged($event)"  aria-label="Select page">
+            </mat-paginator> -->
+        </div>
+      </div>
+      <div>
+      </div>
+    </div>
+  </mat-sidenav-container>
+</div>

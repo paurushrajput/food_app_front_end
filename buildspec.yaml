@@ -1,0 +1,26 @@
+version: 0.2
+env:
+  variables:
+    S3_BUCKET: "dashboard.nukhba.com"
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+  pre_build:
+    commands:
+      - echo Installing source NPM dependencies...
+      - npm install --legacy-peer-deps
+      - npm install -g @angular/cli
+  build:
+    commands:
+      - echo Build started on `date`
+      - ng build --configuration production --aot
+  post_build:
+     commands:
+      - aws s3 cp dist/food-app-admin/ s3://${S3_BUCKET} --recursive
+      - echo Build completed on `date`
+artifacts:
+  files:
+      - '**/*'
+  base-directory: 'dist/food-app-admin/*'
+  discard-paths: yes

@@ -1,0 +1,20 @@
+
+  mat-error {
+    color: red; /* Error text color */
+    font-size: 14px; /* Adjust font size */
+    font-weight: bold;
+    margin-top: 4px;
+    display: block; /* Ensures it appears below the field */
+  }
+  
+
+  
+  .searchField  mat-error {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 0;
+    white-space: nowrap; /* Prevents text wrapping */
+  }
+    
+ 

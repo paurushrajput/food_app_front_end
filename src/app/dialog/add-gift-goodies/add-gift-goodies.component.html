@@ -1,0 +1,139 @@
+<h2 mat-dialog-title>
+    <span *ngIf="this.data.index==undefined">Add</span>
+    <span *ngIf="this.data.index!=undefined">Update</span>
+    Gift & Goodies
+</h2>
+<form class="innerbox" [formGroup]="categoryForm">
+    <div mat-dialog-content>
+        <div fxLayout="column">
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <div class="teamlable">Title</div>
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <input matInput placeholder="Enter title" formControlName="title"
+                            (input)="onInputChange($event)">
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <div class="teamlable">Description</div>
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <input matInput placeholder="Enter description" formControlName="description">
+                    </mat-form-field>
+                </div>
+            </div> -->
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Type</mat-label>
+                        <mat-select formControlName="type">
+                            <!-- <mat-option value="1">Coupon</mat-option> -->
+                            <mat-option value="2">Product</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100" *ngIf="categoryForm.value.type=='1'">
+                <mat-form-field class="example-full-width w-100" appearance="outline">
+                    <mat-label>Select Coupon</mat-label>
+                    <mat-select formControlName="coupon_id">
+                        <mat-option *ngFor="let type of couponData | sort:'name'" value={{type.id}}>
+                            {{type.coupon_code}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <div class="teamlable">Points</div>
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <input matInput type="number" placeholder="Enter points" formControlName="points"
+                            (input)="onInputChange($event)">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="column" formArrayName="terms_and_conditions">
+                <div class="teamlable">Terms And Condition</div>
+
+                <div *ngFor="let rule of termsArray.controls; let i = index" fxLayout="row" fxLayoutGap="10" class="w-100">
+                   <div style="flex: 1 1 auto;">
+                       <mat-form-field appearance="outline" class="example-full-width w-100">
+                           <input matInput type="text" placeholder="Enter Text" formControlName={{i}}>
+                       </mat-form-field>
+                   </div>
+                   <button mat-mini-fab class="delete-btn" (click)="removeRule(i)">
+                     <mat-icon class="material-symbols-sharp">remove</mat-icon>
+                   </button>
+                 </div> 
+                 <button mat-fab class="primary" color="primary" (click)="addRules()">
+                   <mat-icon class="material-symbols-sharp">add</mat-icon>
+                 </button>
+               
+            
+           </div>
+            <!-- <div class="row">
+                <div class="col">
+                    <label class="position-relative d-flex align-items-center gap-2">Upload <mat-icon
+                            class="material-symbols-sharp"
+                            matTooltip="Please select only jpeg,png format image.">info</mat-icon></label>
+                    <div class="custom-file">
+                        <input class="ng-hide" formControlName="image_id" (change)="onFileSelectedv2($event)"
+                            id="input-file-id" type="file" />
+                        <label for="input-file-id">Upload Image</label>
+                    </div>
+                    <div *ngIf="imageSize" class="filesize my-2">File size: {{ imageSize }}</div>
+                    <div class="text-danger"
+                        *ngIf="(categoryForm.get('icon')?.hasError('required') && (submitted || (categoryForm.get('icon')?.dirty)))">
+                        *Image Is Required
+                    </div>
+                </div>
+                <div class="col">
+                    <ng-container *ngIf="image">
+                        <div class="image-preview">
+                            <img id="preview" [src]=image>
+                        </div>
+                    </ng-container>
+                </div>
+            </div> -->
+
+            <mat-card-content class="flex-row my-4" fxLayoutGap="20">
+                <div class="row w-100 align-items-center position-relative">
+                  <div class="col-md-12">
+                    <label class="d-flex align-items-center gap-2">Images <mat-icon
+                        class="material-symbols-sharp notify-icon"
+                        matTooltip="Please select only jpeg,png format image.">info</mat-icon></label>
+                    <div class="custom-file">
+                      <input formControlName="image_id" (click)="onFileSelectedv2($event)" id="input-file-id" type="submit"
+                        style="display: none;" />
+                      <label for="input-file-id">File Upload</label>
+                    </div>
+        
+                    <!-- <div *ngIf="imageSize" class="filesize">File size: {{ _appService.formatBytes(imageSize) }}</div> -->
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-row justify-content-start mt-3" style="row-gap: 12px;" *ngIf="imageURL.length > 0">
+        
+                      <div class="col" *ngFor="let url of imageURL ;let i = index">
+                        <div class="image-preview">
+                          <img id="preview" [src]="url" alt="Image Preview">
+                          <!-- <button type="button" class="close" (click)="removeImage(i,url)">&#x2715;</button> -->
+                        </div>
+                      </div>
+        
+                    </div>
+                  </div>
+        
+                </div>
+        
+              </mat-card-content>
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button *ngIf="this.data.index==undefined" mat-raised-button color="primary" class="primary"
+            (click)="update()">Save</button>
+        <button *ngIf="this.data.index!=undefined" mat-raised-button color="primary" class="primary"
+            (click)="update()">Update</button>
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="accent"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>

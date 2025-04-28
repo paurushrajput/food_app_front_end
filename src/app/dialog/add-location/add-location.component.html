@@ -1,0 +1,115 @@
+<h2 mat-dialog-title>
+    <span *ngIf="this.entity_id==undefined">New</span>
+    <span *ngIf="this.entity_id!=undefined">Edit</span>
+    Location
+</h2>
+<form class="innerbox" [formGroup]="locationForm">
+    <div mat-dialog-content>
+        <div fxLayout="column">
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <!-- <div class="teamlable">Name<em>*</em></div> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <input matInput placeholder="Enter Name" formControlName="name">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(locationForm.get('name')?.hasError('required') && (submitted || (locationForm.get('name')?.dirty)))">
+                        *Name Field Is Required
+                    </div>
+                </div>
+            </div>
+            <!-- <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                   
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Country</mat-label>
+                        <mat-select formControlName="country_id" (selectionChange)="getCityData($event)">
+                            <mat-option *ngFor="let type of countryData" value={{type.id}}>
+                                {{type.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(locationForm.get('country_id')?.hasError('required') && (submitted || (locationForm.get('country_id')?.dirty)))">
+                        *Country Field Is Required
+                    </div>
+                </div>
+
+            </div> -->
+            <!-- <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                  
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Area</mat-label>
+                        <mat-select formControlName="city_id">
+                            <mat-option *ngFor="let type of cityData" value={{type.id}}>
+                                {{type.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(locationForm.get('city_id')?.hasError('required') && (submitted || (locationForm.get('city_id')?.dirty)))">
+                        *City Field Is Required
+                    </div>
+                </div>
+            </div> -->
+                <!-- <div fxFlex="50">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select</mat-label>
+                        <mat-select formControlName="operational">
+                            <mat-option value="1">True</mat-option>
+                            <mat-option value="0">False</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(locationForm.get('operational')?.hasError('required') && (submitted || (locationForm.get('operational')?.dirty)))">
+                        *operational Field Is Required
+                    </div>
+                </div> -->
+                <div fxLayout="row" fxFlex="100" class="w-100">
+                    <div fxFlex="100">
+                        <!-- <div class="teamlable">Select Status<em>*</em></div> -->
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-label>Select Status</mat-label>
+                            <mat-select formControlName="status">
+                                <mat-option value="1">Active</mat-option>
+                                <mat-option value="0">Inactive</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div class="text-danger"
+                            *ngIf="(locationForm.get('status')?.hasError('required') && (submitted || (locationForm.get('status')?.dirty)))">
+                            *status Field Is Required
+                        </div>
+                    </div>
+
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class="position-relative d-flex align-items-center gap-2">Upload <mat-icon class="material-symbols-sharp"
+                        matTooltip="Please select only jpeg,png format image.">info</mat-icon></label>
+                    <div class="custom-file">
+                        <input class="ng-hide" formControlName="icon" (click)="onFileSelected($event)" id="input-file-id" type="submit" style="display:none;" />
+                        <label for="input-file-id">Upload Image</label>
+                    </div>
+               
+                    <div *ngIf="imageSize" class="filesize my-2">File size: {{ imageSize }}</div>
+                        <div class="text-danger"
+                            *ngIf="(locationForm.get('icon')?.hasError('required') && (submitted || (locationForm.get('icon')?.dirty)))">
+                            *Image Field Is Required
+                        </div>
+                    </div>
+                    <div class="col">
+                        <ng-container *ngIf="image">
+                            <div class="image-preview">
+                                <img id="preview" [src]=image>
+                            </div>
+                        </ng-container>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px">
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button [disabled]="locationForm.invalid"
+            color="primary" class="primary" (click)="saveLocation()">Save</button>
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="secondary"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>

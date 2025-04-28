@@ -1,0 +1,79 @@
+<h2 mat-dialog-title>
+    <span *ngIf="this.entity_id==undefined">Create</span>
+    <span *ngIf="this.entity_id!=undefined">Edit</span>
+    Template
+</h2>
+<form class="innerbox" [formGroup]="notiForm">
+    <div mat-dialog-content>
+        <div fxLayout="column" fxLayoutAlign="start center">
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <!-- <div class="teamlable">Name<em>*</em></div> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <input matInput placeholder="Enter title" formControlName="title">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(notiForm.get('title')?.hasError('required') && (submitted || (notiForm.get('title')?.dirty)))">
+                        *title Field Is Required
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <!-- <div class="teamlable">Name<em>*</em></div> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <input matInput placeholder="Enter message" formControlName="message">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(notiForm.get('message')?.hasError('required') && (submitted || (notiForm.get('message')?.dirty)))">
+                        *message Field Is Required
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100 mb-4">
+                <div fxFlex="100">
+                    <!-- <div class="teamlable">Name<em>*</em></div> -->
+                    <textarea class="form-control w-100" placeholder="Enter other details in JSON format"
+                    formControlName="other_details"></textarea>
+                    <!-- <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <textarea  matInput placeholder="Enter other details in JSON format" formControlName="other_details"></textarea>
+                    </mat-form-field> -->
+                    <div class="text-danger"
+                        *ngIf="(notiForm.get('other_details')?.hasError('required') && (submitted || (notiForm.get('other_details')?.dirty)))">
+                        *other_details Field Is Required
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class="position-relative d-flex align-items-center gap-2">Upload <mat-icon class="material-symbols-sharp"
+                        matTooltip="Please select only jpeg,png format image.">info</mat-icon></label>
+                    <div class="custom-file">
+                        <input class="ng-hide" formControlName="image_id" (change)="onFileSelected($event)"
+                        id="input-file-id" type="file" />
+                        <label for="input-file-id">Upload Image</label>
+                    </div>
+               
+                        <div *ngIf="imageSize" class="filesize my-2">File size: {{ imageSize }}</div>
+                        <div class="text-danger"
+                            *ngIf="(notiForm.get('image_id')?.hasError('required') && (submitted || (notiForm.get('image_id')?.dirty)))">
+                            *Image Field Is Required
+                        </div>
+                    </div>
+                    <div class="col">
+                        <ng-container *ngIf="image">
+                            <div class="image-preview">
+                                <img id="preview" [src]=image>
+                            </div>
+                        </ng-container>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px">
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button [disabled]="notiForm.invalid"
+            color="primary" class="primary" (click)="saveCategory()">Submit</button>
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="accent"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>

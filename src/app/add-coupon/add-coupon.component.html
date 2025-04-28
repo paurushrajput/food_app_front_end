@@ -1,0 +1,227 @@
+<h2 mat-dialog-title>
+    {{ isEditMode ? 'Edit Voucher' : 'Add Voucher' }}
+
+</h2>
+
+<form class="innerbox" [formGroup]="couponForm">
+    <div mat-dialog-content>
+        <div fxLayout="column" fxLayoutAlign="start center">
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100" class="input-margin">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Voucher Code</mat-label>
+                        <input matInput placeholder="Enter Voucher code" formControlName="coupon_code">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(couponForm.get('coupon_code')?.hasError('required') && (submitted || (couponForm.get('coupon_code')?.dirty)))">
+                        * Voucher code field is required
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100 gap-3">
+                <div fxFlex="100" class="input-margin">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-select formControlName="discount_type">
+                            <mat-option value="">Discount Type</mat-option>
+                            <mat-option value="flat">Flat</mat-option>
+                            <mat-option value="percentage">Percentage</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(couponForm.get('discount_type')?.hasError('required') && (submitted || (couponForm.get('discount_type')?.dirty)))">
+                        *Discount Type Field Is Required
+                    </div>
+                </div>
+                <div fxFlex="100" class="input-margin">
+                    <!-- <div class="teamlable">Select Status<em>*</em></div> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-select formControlName="type">
+                            <mat-option value="">Select Type</mat-option>
+                            <mat-option value="1">For Specific organisation</mat-option>
+                            <mat-option value="2"> Global for all users</mat-option>
+                            <mat-option value="3">For specific user</mat-option>
+                            <mat-option value="4">Store</mat-option>
+                            <mat-option value="5">Campaign</mat-option>
+                            <mat-option value="6">Agent</mat-option>
+                            <mat-option value="7">Referral</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(couponForm.get('type')?.hasError('required') && (submitted || (couponForm.get('type')?.dirty)))">
+                        *type Field Is Required
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100 gap-3">
+                <!-- Display organization list here -->
+                <!-- Example: -->
+                <div fxFlex="100" *ngIf="couponForm.get('type')?.value === '1'">
+                    <div fxFlex="100" class="input-margin">
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-label>Organization</mat-label>
+                            <mat-select formControlName="organization_id">
+                                <mat-option *ngFor="let org of organisationData" [value]="org.id">{{ org.name |titlecase
+                                    }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div *ngIf="couponForm.get('organization_id')?.hasError('required') && (submitted || couponForm.get('organization_id')?.dirty)"
+                            class="text-danger">
+                            * Organization field is required
+                        </div>
+                        <!-- Add validation messages if necessary -->
+                    </div>
+                </div>
+                <div fxFlex="100" *ngIf="couponForm.get('type')?.value === '3'">
+                    <div fxFlex="100" class="input-margin">
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-label>Users List</mat-label>
+                            <!-- <input matInput placeholder="Filter Users" (input)="onFilterChange($event)"> -->
+                            <mat-select formControlName="user_id">
+                                <!-- Display filtered options -->
+                                <mat-option *ngFor="let user of userList" [value]="user.id">{{ user.first_name
+                                    }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div *ngIf="couponForm.get('user_id')?.hasError('required') && (submitted || couponForm.get('user_id')?.dirty)"
+                            class="text-danger">
+                            * User Id field is required
+                        </div>
+                        <!-- Add validation messages if necessary -->
+                    </div>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxFlex="100" class="w-100 gap-3">
+                <div fxFlex="100" class="input-margin">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Discount</mat-label>
+                        <input matInput placeholder="Enter Discount" formControlName="discount" type="number">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(couponForm.get('discount')?.hasError('required') && (submitted || (couponForm.get('discount')?.dirty)))">
+                        * Discount field is required
+                    </div>
+                    <div class="text-danger"
+                        *ngIf="couponForm.hasError('invalidDiscount') && (submitted || (couponForm.get('discount')?.dirty))">
+                        * Discount should be equal to or less than max discount
+                    </div>
+                </div>
+                <div fxFlex="100" class="input-margin">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Max Discount</mat-label>
+                        <input matInput placeholder="Enter Max Discount" formControlName="max_discount" type="number">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(couponForm.get('max_discount')?.hasError('required') && (submitted || (couponForm.get('max_discount')?.dirty)))">
+                        * Max Discount field is required
+                    </div>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxFlex="100" class="w-100 gap-3">
+                <div fxFlex="100" class="input-margin">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Min Use</mat-label>
+                        <input matInput placeholder="Enter Min Use" formControlName="min_use" type="number">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(couponForm.get('min_use')?.hasError('required') && (submitted || (couponForm.get('min_use')?.dirty)))">
+                        * Min Use field is required
+                    </div>
+                </div>
+                <div fxFlex="100" class="input-margin">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Max Use</mat-label>
+                        <input matInput placeholder="Enter Max Use" formControlName="max_use" type="number">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(couponForm.get('max_use')?.hasError('required') && (submitted || (couponForm.get('max_use')?.dirty)))">
+                        * Max Use field is required
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100 gap-3">
+                <div fxFlex="100" class="input-margin mb-3">
+                    <input type="checkbox" formControlName="override_coupon_code" (change)="onCheckboxChange($event)">
+                    Override Voucher Code
+                    <!--                     
+                    <mat-checkbox formControlName="override_coupon_code" (change)="onCheckboxChange($event)">Override Coupon Code</mat-checkbox> -->
+                </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100 gap-3">
+                <div fxFlex="100" class="input-margin">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Uses Per User</mat-label>
+                        <input matInput placeholder="Enter Uses Per User" formControlName="uses_per_user" type="number">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(couponForm.get('uses_per_user')?.hasError('required') && (submitted || (couponForm.get('uses_per_user')?.dirty)))">
+                        * Uses Per User field is required
+                    </div>
+                </div>
+                <div fxFlex="100" class="input-margin">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Description</mat-label>
+                        <input matInput placeholder="Enter Description" formControlName="description">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(couponForm.get('description')?.hasError('required') && (submitted || (couponForm.get('description')?.dirty)))">
+                        * Description field is required
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100" class="input-margin">
+                    <!-- <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Expiration Date</mat-label>
+                        <input matInput [matDatepicker]="picker" placeholder="Choose Expiration Date"
+                            formControlName="expiration">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field> -->
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Expiration Date </mat-label>
+                        <mat-datetimepicker-toggle [for]="datetimePicker" matSuffix></mat-datetimepicker-toggle>
+                        <mat-datetimepicker #datetimePicker type="datetime"> </mat-datetimepicker>
+                        <input matInput #startInput formControlName="expiration" [matDatetimepicker]="datetimePicker" required
+                          autocomplete="false" readonly="true"/>
+                      </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(couponForm.get('expiration')?.hasError('required') && (submitted || (couponForm.get('expiration')?.dirty)))">
+                        * Expiration Date field is required
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100" class="input-margin" formArrayName="rules">
+                    <div *ngFor="let rule of rulesArray.controls; let i = index" fxLayout="row" fxLayoutGap="10" class="w-100">
+                        <div style="flex: 1 1 auto;">
+                            <mat-form-field appearance="outline" class="example-full-width w-100">
+                                <input matInput type="text" placeholder="Enter Rule" formControlName={{i}}>
+                            </mat-form-field>
+                            <div class="text-danger"
+                                *ngIf="(couponForm.get('rule')?.hasError('required') && (submitted || (couponForm.get('rule')?.dirty)))">
+                                *rule is required
+                            </div>
+                        </div>
+                        <button mat-icon-button class="delete-btn" (click)="removeRule(i)">
+                          <mat-icon class="material-symbols-sharp">delete</mat-icon>
+                        </button>
+                      </div> 
+                      <button mat-fab extended class="primary" color="primary" (click)="addRules()">
+                        <mat-icon class="material-symbols-sharp">add</mat-icon>Add
+                      </button>
+                    
+                </div>
+            </div>
+            <!-- Add other form fields similarly -->
+        </div>
+    </div>
+   
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 0 20px 20px;">
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button [disabled]="couponForm.invalid"
+            color="primary" class="primary" (click)="saveCategory()">Save</button>
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="accent"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>

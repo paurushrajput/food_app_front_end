@@ -1,0 +1,31 @@
+<div class="Decline">
+    <!-- <a href="javascript:void(0);" class="CloseModal" data-dismiss="modal"></a> -->
+    <h2 mat-dialog-title> Update Request Status</h2>
+    <!-- <div mat-dialog-content>
+        <p>Are you sure you want to approve this request ?</p>
+    </div> -->
+    <form class="innerbox" [formGroup]="approveForm">
+        <div mat-dialog-content>
+            <div fxLayout="column">
+                <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+                    <div fxFlex="100">
+                        <div class="teamlable">Select Status<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="approved_status">
+                                <!-- <mat-option value="0">Pending</mat-option> -->
+                                <mat-option value="1">Approved</mat-option>
+                                <mat-option value="-1">Rejected</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+            </div>
+        </div>
+    </form>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button [disabled]="approveForm.invalid" (click)="approveRestaurant()" class="primary"
+            color="primary" mat-raised-button>Update</button>
+        <button [disabled]="_appService.isButtonDisabled()" (click)="closeDialogBox()" class="secondary" color="accent"
+            mat-raised-button>Cancel</button>
+    </div>
+</div>

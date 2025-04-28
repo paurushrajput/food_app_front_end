@@ -1,0 +1,109 @@
+<h2 mat-dialog-title>Media Selection</h2>
+<mat-dialog-content class="mat-typography">
+    <div class="search-form d-flex justify-content-between align-items-center gap-3">
+        <div class="search-box">
+            <mat-form-field class="searchField" appearance="outline">
+                <mat-label>Select Media</mat-label>
+                <mat-select [(ngModel)]="searchBy" (selectionChange)="onSearchByChange()">
+                    <mat-option *ngFor="let option of searchByOptions" [value]="option.value">
+                        {{ option.viewValue }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="action-btns d-flex justify-content-end align-items-center gap-2">
+            <!-- <button mat-raised-button color="primary" class="primary">Upload</button> -->
+            <div class="custom-file" style="width: 130px;">
+
+                <input class="ng-hide" (change)="onFileSelecteds($event)" id="input-file-ids" type="file" />
+                <label for="input-file-ids" style="width: 130px;">Upload Image</label>
+            </div>
+            <button mat-raised-button color="accent" class="accent">Delete</button>
+        </div>
+    </div>
+    <mat-tab-group>
+        <mat-tab label="Image ({{paginator.length}})">
+            <div class="py-3">
+                <!-- <h3>Recent Media</h3>
+                <div class="media-list d-flex flex-wrap justify-content-start gap-3 pb-4">
+            
+                    <div *ngFor="let item of recentData" class="item">
+                        <div class="image-preview">
+                          <img [src]="item.image" alt="Image preview"  id="preview" >
+                          <div class="overlay">
+                            <div class="d-flex align-items-center justify-content-center gap-2 w-100">
+                              <a href="#"><mat-icon class="material-symbols-sharp">visibility</mat-icon></a>
+                              <a href="#"><mat-icon class="material-symbols-sharp">link</mat-icon></a>
+                              <a href="#"><mat-icon class="material-symbols-sharp">download</mat-icon></a>
+                            </div>
+                            <div class="select-btn">
+                              <button class="btn btn-white">Select</button>
+                            </div>
+                          </div>
+                          <mat-checkbox class="checkme"></mat-checkbox>
+                        </div>
+                        <div class="filename">{{ item.filename }}</div>
+                      </div>
+                </div> -->
+                <!-- <nav aria-label="..." class="w-100 d-flex justify-content-end align-items-center">
+                    <ul class="pagination">
+                      <li class="page-item disabled">
+                        <span class="page-link">Previous</span>
+                      </li>
+                      <li class="page-item"><a class="page-link" href="#">1</a></li>
+                      <li class="page-item active">
+                        <span class="page-link">
+                          2
+                          <span class="sr-only">(current)</span>
+                        </span>
+                      </li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                      </li>
+                    </ul>
+                  </nav> -->
+                <hr>
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- <h3 class="mb-0"><mat-checkbox class="example-margin">All Images</mat-checkbox></h3> -->
+                    <h3 class="mb-0">All Images</h3>
+                    <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+                        [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+                    </mat-paginator>
+                </div>
+                <div class="media-list d-flex flex-wrap justify-content-start gap-3 py-4">
+                    <div *ngFor="let item of data" class="item position-relative">
+                        <div class="image-preview">
+                            <img [src]="item.image" alt="Image preview">
+                            <div class="overlay">
+                                <div class="d-flex align-items-center justify-content-center gap-2 w-100">
+                                    <a href="#"><mat-icon class="material-symbols-sharp">visibility</mat-icon></a>
+                                    <a href="#"><mat-icon class="material-symbols-sharp">link</mat-icon></a>
+                                    <a href="#"><mat-icon class="material-symbols-sharp">download</mat-icon></a>
+                                </div>
+                                <div class="select-btn" *ngIf="datas.selectImage">
+                                    <button class="btn btn-white" (click)="selectItem(item)">Select</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="c-checkbox" *ngIf="datas.selectImage">
+                            <mat-checkbox class="checkme" [(ngModel)]="item.selected"
+                                (change)="selectItem(item,$event)"></mat-checkbox>
+                        </div>
+                        <div class="filename">{{ item.filename }}</div>
+                    </div>
+                </div>
+
+            </div>
+        </mat-tab>
+        <!-- <mat-tab label="Audio (0)"> Content 2 </mat-tab>
+        <mat-tab label="Video (0)"> Content 3 </mat-tab>
+        <mat-tab label="File (0)"> Content 3 </mat-tab> -->
+    </mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="px-4 pb-3">
+    <button mat-raised-button color="accent" mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" (click)="submitData()" cdkFocusInitial
+        [disabled]="!selectedItemId || selectedItemId.length ==0">Select</button>
+</mat-dialog-actions>

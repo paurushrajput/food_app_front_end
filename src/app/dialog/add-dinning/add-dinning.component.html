@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>
+    <span *ngIf="this.entity_id==undefined">New</span>
+    <span *ngIf="this.entity_id!=undefined">Edit</span>
+    Add Amenities
+</h2>
+<form class="innerbox" [formGroup]="dinningForm">
+    <div mat-dialog-content>
+        <div fxLayout="column" fxLayoutAlign="start center">
+            <div fxLayout="row" fxLayoutGap="20" fxFlex="100" class="w-100">
+                <div fxFlex="50">
+                    <!-- <div class="teamlable">Name<em>*</em></div> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <input matInput placeholder="Enter name" formControlName="name">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(dinningForm.get('name')?.hasError('required') && (submitted || (dinningForm.get('name')?.dirty)))">
+                        *name Field Is Required
+                    </div>
+                </div>
+
+                <div fxFlex="50">
+                    <!-- <div class="teamlable">Select Status<em>*</em></div> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select</mat-label>
+                        <mat-select formControlName="status">
+                            <mat-option value="1">Active</mat-option>
+                            <mat-option value="0">Inactive</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(dinningForm.get('status')?.hasError('required') && (submitted || (dinningForm.get('status')?.dirty)))">
+                        *status Field Is Required
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button [disabled]="dinningForm.invalid"
+            color="primary" class="primary" (click)="saveDinning()">Add</button>
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="accent"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>

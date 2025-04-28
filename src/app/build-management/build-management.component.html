@@ -1,0 +1,61 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div [ngClass]="data?'':'WrapperArea'">
+    <mat-toolbar class="pagetitle-bar">
+        <h2>Build Management</h2>
+    </mat-toolbar>
+    <mat-sidenav-container class="example-sidenav-container" autosize>
+        <div class="WrapperBox">
+            <div class="Small-Wrapper">
+                <!-- <div fxLayoutAlign="end center" fxLayoutGap="20" class="mb-3">
+                    <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+                        [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+                    </mat-paginator>
+                </div> -->
+                <div class="table-responsive">
+                    <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+                        <ng-container matColumnDef="sr">
+                            <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+                            <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="title">
+                            <th mat-header-cell *matHeaderCellDef> Title</th>
+                            <td mat-cell *matCellDef="let element"> {{element.value?.build?.title?element.value?.build?.title:'N/A'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ver">
+                            <th mat-header-cell *matHeaderCellDef>Version</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element?.value?.version?element?.value?.version:'N/A'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="forceUpdate">
+                            <th mat-header-cell *matHeaderCellDef>Force Update</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.value.force_update ===false?'False':'True' }} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="availabever">
+                            <th mat-header-cell *matHeaderCellDef>Available Version</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.value.available_version?element.value.available_version:'N/A'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="device">
+                            <th mat-header-cell *matHeaderCellDef>Device</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.title?element.title:'N/A'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef> Edit </th>
+                            <td mat-cell *matCellDef="let element">
+                                <button mat-mini-fab color="accent" (click)="updateBuild(element)" class="secondary">
+                                    <span class="material-symbols-sharp">edit</span>
+                                </button>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav-container>
+</div>

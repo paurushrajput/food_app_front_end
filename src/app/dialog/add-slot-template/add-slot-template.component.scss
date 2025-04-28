@@ -1,0 +1,15 @@
+.form-container{
+    display: flex;
+    flex-wrap: nowrap;
+}
+.form-container mat-form-field + mat-form-field {
+    margin-left: 8px;
+    flex: 1 1 auto;
+  }
+.mdc-label{
+    margin: 0 !important;
+}
+.start-time,
+.end-time{
+    width: 150px;
+}

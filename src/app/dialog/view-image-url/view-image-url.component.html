@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>
+    View Image Url
+</h2>
+<div mat-dialog-content>
+    Url:-{{this.data}}
+</div>
+<div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+    <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="accent"
+        (click)="closeDialogBox()">Close</button>
+</div>

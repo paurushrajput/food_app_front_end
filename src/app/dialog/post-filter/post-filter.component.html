@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>Filters</h2>
+<mat-dialog-content class="mat-typography">
+    <div fxLayoutAlign="space-between center" fxLayoutGap="20" class="searchArea big mb-3">
+        <form [formGroup]="searchForm" class="search-form" fxLayoutAlign="start center" fxLayoutGap="8">
+            <div class="row">
+                <!-- <div class="col-md-6 mb-4">
+                    <app-date-time-picker #dateTimePicker (dateRangeChange)="onDateRangeChange($event)"></app-date-time-picker>
+                </div> -->
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Select User Type</mat-label>
+                        <mat-select formControlName="is_nukhba_user">
+                            <mat-option value="1">Test User</mat-option>
+                            <mat-option value="0">Actual User</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field class="searchField" appearance="outline">
+                        <mat-label>Search by User Name</mat-label>
+                        <input matInput placeholder="Search by Name" formControlName="keyword">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field class="searchField" appearance="outline">
+                        <mat-label>Search by Restaurant Name</mat-label>
+                        <input matInput placeholder="Search by Restaurant Name" formControlName="res_name">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Post Type</mat-label>
+                        <mat-select formControlName="type">
+                            <mat-option value="1">Rating </mat-option>
+                            <mat-option value="2"> Wishlist</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <!-- <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Select Rating</mat-label>
+                        <mat-select formControlName="coupon_applied">
+                            <mat-option value="1">Yes </mat-option>
+                            <mat-option value="0"> No</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div> -->
+                <div class="col-md-6 mb-4">
+                    <mat-form-field appearance="outline" class="searchField">
+                        <mat-label>Is Photos Uploaded</mat-label>
+                        <mat-select formControlName="isPhotos">
+                            <mat-option value="1">Yes </mat-option>
+                            <mat-option value="0"> No</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="p-3">
+    <button mat-raised-button color="accent" (click)="backFrom()">Close</button>
+    <button mat-raised-button color="primary" class="primary" (click)="loadData()">Search</button>
+    <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+</mat-dialog-actions>

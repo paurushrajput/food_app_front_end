@@ -1,0 +1,141 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div [ngClass]="data?'':'WrapperArea'">
+  <mat-toolbar class="pagetitle-bar w-100 mb-0" fxLayoutAlign="space-between center" fxLayoutGap="20">
+    <h2>Gift & Goodies Management</h2>
+    <button mat-raised-button color="primary" class="primary" (click)="add()">Add</button>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="example-sidenav-container" autosize>
+    <div class="WrapperBox">
+      <div class="Small-Wrapper">
+        <div class="searchArea mb-3" fxLayoutAlign="space-between center" fxLayoutGap="20">
+          <form [formGroup]="searchForm" class="search-form" fxLayoutAlign="start center" fxLayoutGap="8">
+            <!-- <mat-form-field appearance="outline" class="searchField">
+                  <mat-label>Search By Restaurant Name</mat-label>
+                  <input matInput placeholder="Enter Restaturant name" formControlName="name">
+              </mat-form-field>
+                <button mat-raised-button color="primary" class="primary" (click)="searchData()">Search</button>
+                <button mat-raised-button color="accent" (click)="formReset()">Reset</button> -->
+          </form>
+          <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+          </mat-paginator>
+        </div>
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+            <ng-container matColumnDef="sr">
+              <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+              <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }} </td>
+            </ng-container>
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef> Title</th>
+              <td mat-cell *matCellDef="let element"> {{element.title?element.title:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="icon">
+              <th mat-header-cell *matHeaderCellDef>Image</th>
+              <td mat-cell *matCellDef="let element">
+                <img (click)="previewImage(element.image,'')" style="max-width: 70px;" src={{element.image}}>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="coins">
+              <th mat-header-cell *matHeaderCellDef>Points</th>
+              <td mat-cell *matCellDef="let element"> {{element.points?element.points:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="cn">
+              <th mat-header-cell *matHeaderCellDef>Type</th>
+              <td mat-cell *matCellDef="let element"> {{element.type |titlecase}} </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <!-- <td mat-cell *matCellDef="let element" class="text-center"> -->
+              <td mat-cell *matCellDef="let element"> {{element.status==1?'Active':'Inactive'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="status1" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef>Disable / Enable</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                  <mat-slide-toggle
+                      [checked]="element.status==1?true:false"
+                      (change)="onToggleChange($event, element)"></mat-slide-toggle>
+              </td>
+          </ng-container>
+            <!-- <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Update </th>
+                <td mat-cell *matCellDef="let element;index as i;">
+                  <button mat-mini-fab color="accent" (click)="showEditForm(element)">
+                    <mat-icon class="material-symbols-sharp">edit</mat-icon>
+                  </button>
+                </td>
+              </ng-container> -->
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Options </th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                  <mat-icon class="material-symbols-sharp">more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button (click)="showEditForm(element)" mat-menu-item>
+                    <span>Update</span>
+                  </button>
+                  <button (click)="delete(element)" mat-menu-item>
+                    <span>Delete</span>
+                  </button>
+                </mat-menu>
+              </td>
+            </ng-container>
+            <!-- <ng-container matColumnDef="option">
+                  <th mat-header-cell *matHeaderCellDef class="text-center"> Actions </th>
+                  <td mat-cell *matCellDef="let element" fxLayoutGap="10" class="text-center">
+                    <button mat-mini-fab class="btn-warning" (click)="reviewDetails(element)">
+                      <mat-icon class="material-symbols-sharp">visibility</mat-icon>
+                    </button>
+                  </td>
+                </ng-container> -->
+
+            <!-- <ng-container matColumnDef="option">
+                  <th mat-header-cell *matHeaderCellDef class="text-center"> Options </th>
+                  <td mat-cell *matCellDef="let element" class="text-center">
+                    <div class="d-flex justify-content-start align-items-center">
+                      <button mat-mini-fab class="btn-warning mr-2" (click)="approveRequest(element)">
+                        <mat-icon class="material-symbols-sharp">verified</mat-icon>
+                      </button>
+                      {{element.approval_status |titlecase}}
+                    </div>
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                      <mat-icon class="material-symbols-sharp">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item>
+                        <span>Replies to Customer</span>
+                      </button>
+                      <button mat-menu-item>
+                        <span>Pending Responds</span>
+                      </button>
+                      <button mat-menu-item>
+                        <span>Total Responds</span>
+                      </button>
+                      <button mat-menu-item>
+                        <span>Restaurant Rating</span>
+                      </button>
+                    </mat-menu>
+                  </td>
+                </ng-container> -->
+            <!-- <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef> Edit </th>
+                    <td mat-cell *matCellDef="let element">
+                      <button mat-mini-fab color="accent" (click)="showEditForm(element)" class="secondary">
+        
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                    </td>
+                  </ng-container> -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-container>
+  <mat-dialog-actions *ngIf="data" align="end" class="px-3">
+    <button mat-raised-button mat-dialog-close color="accent">Close</button>
+  </mat-dialog-actions>
+</div>

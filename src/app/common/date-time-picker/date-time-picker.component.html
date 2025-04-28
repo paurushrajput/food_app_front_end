@@ -1,0 +1,11 @@
+<form [formGroup]="form"  >
+<mat-form-field appearance="outline" class="w-100 searchField">
+	<mat-label>Enter a date range</mat-label>
+	<mat-date-range-input [rangePicker]="picker" (dateChange)="onDateChange()" >
+	  <input matStartDate #startInput placeholder="Start Date" formControlName="startDate" readonly="true" >
+	  <input matEndDate #endInput placeholder="End Date" formControlName="endDate" readonly="true" >
+	</mat-date-range-input>
+	<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+	<mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+</form>

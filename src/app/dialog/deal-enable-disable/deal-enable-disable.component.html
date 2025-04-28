@@ -1,0 +1,16 @@
+<div class="Decline">
+    <!-- <a href="javascript:void(0);" class="CloseModal" data-dismiss="modal"></a> -->
+    <h2 mat-dialog-title> {{text}} Deal</h2>
+    <div mat-dialog-content>
+        <p>Are you sure you want to {{text}} this Deal ?</p>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button [disabled]="_appService.isButtonDisabled()" (click)="updateDeal()" class="primary" color="primary"
+        mat-raised-button>Yes</button>
+    <button [disabled]="_appService.isButtonDisabled()" (click)="closeDialogBox()" class="secondary" color="accent"
+        mat-raised-button>No</button>
+    </div>
+</div>
+
+
+

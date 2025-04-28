@@ -1,0 +1,79 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div class="WrapperArea">
+    <mat-toolbar class="pagetitle-bar w-100 mb-0" fxLayoutAlign="space-between center" fxLayoutGap="20">
+      <h2>Active Campaign Report Management</h2>
+      <!-- <button mat-raised-button color="primary" class="primary" (click)="addCategory()">Add Banner</button> -->
+    </mat-toolbar>
+    <mat-sidenav-container class="example-sidenav-container" autosize>
+      <div class="WrapperBox">
+        <div class="Small-Wrapper">
+          <div class="searchArea mb-3" fxLayoutAlign="space-between center" fxLayoutGap="20">
+            <form [formGroup]="searchForm" class="search-form inline-form" fxLayoutGap="8" fxLayoutAlign="start center">
+             <app-input-box [formgroup]="searchForm" [params]="controls.name"></app-input-box>
+             
+              <button mat-raised-button color="primary" class="primary" (click)="searchData()">Search</button>
+              <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+            </form>
+            <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+            </mat-paginator>
+          </div>
+  
+          <div class="table-responsive">
+            <table [dataSource]="dataSource" mat-table class="sticky-table w-100">
+              <ng-container matColumnDef="sr">
+                <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+                <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }} </td>
+              </ng-container>
+              <ng-container matColumnDef="campaign_code">
+                <th mat-header-cell *matHeaderCellDef>Campaign Code </th>
+                <td mat-cell *matCellDef="let element;"> {{ element.details[0].campaign_code }} </td>
+              </ng-container>
+              <ng-container matColumnDef="start_date">
+                <th mat-header-cell *matHeaderCellDef> Start Date </th>
+                <td mat-cell *matCellDef="let element;"> {{ element.details[0].campaign_start_date *1000 | date: 'dd-MMM-yy hh:mm:aa' }} </td>
+              </ng-container>
+              <ng-container matColumnDef="end_date">
+                <th mat-header-cell *matHeaderCellDef> End Date </th>
+                <td mat-cell *matCellDef="let element;"> {{ element.details[0].campaign_end_date *1000 | date: 'dd-MMM-yy hh:mm:aa' }} </td>
+              </ng-container>
+              <ng-container matColumnDef="commission_type">
+                <th mat-header-cell *matHeaderCellDef>Total Users <br/>Booking </th>
+                <td mat-cell *matCellDef="let element"> {{element.details[0].total_users_booking?element.details[0].total_users_booking:'N/A'}} </td>
+              </ng-container>
+              <ng-container matColumnDef="commission_amount">
+                <th mat-header-cell *matHeaderCellDef>Email Verified <br/>Users Count </th>
+                <td mat-cell *matCellDef="let element"> {{element.details[0].email_verified_users_count?element.details[0].email_verified_users_count:'N/A'}} </td>
+              </ng-container>
+              <ng-container matColumnDef="coupon_code">
+                <th mat-header-cell *matHeaderCellDef>Coupon Code </th>
+                <td mat-cell *matCellDef="let element"> {{element.details[0].coupon_code?element.details[0].coupon_code:'N/A'}} </td>
+              </ng-container>
+              <ng-container matColumnDef="total_booking">
+                <th mat-header-cell *matHeaderCellDef>Total Users <br/>Booking </th>
+                <td mat-cell *matCellDef="let element"> {{element.details[0].total_users_booking?element.details[0].total_users_booking:'N/A'}} </td>
+              </ng-container>
+              <ng-container matColumnDef="total_signup">
+                <th mat-header-cell *matHeaderCellDef>Total Users <br/>Count </th>
+                <td mat-cell *matCellDef="let element"> {{element.details[0].total_users_count?element.details[0].total_users_count:'N/A'}} </td>
+              </ng-container>
+              <ng-container matColumnDef="mobile_verified_users_count">
+                <th mat-header-cell *matHeaderCellDef>Mobile Verified <br/>Users Count </th>
+                <td mat-cell *matCellDef="let element"> {{element.details[0].mobile_verified_users_count?element.details[0].mobile_verified_users_count:'N/A'}} </td>
+              </ng-container>
+  
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+          <div>
+            <!-- <mat-paginator #paginator [length]="userlistcount" [pageIndex]="currentPage" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"  (page)="pageChanged($event)"  aria-label="Select page">
+          </mat-paginator> -->
+          </div>
+        </div>
+        <div>
+        </div>
+      </div>
+    </mat-sidenav-container>
+  </div>

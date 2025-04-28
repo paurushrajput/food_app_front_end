@@ -1,0 +1,43 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div [ngClass]="data?'':'WrapperArea'">
+    <mat-toolbar class="pagetitle-bar w-100 mb-0" fxLayoutAlign="space-between center" fxLayoutGap="20">
+        <h2 mat-dialog-title>View Like List</h2>
+        <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+        </mat-paginator>
+    </mat-toolbar>
+    <mat-dialog-content>
+        <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+                <ng-container matColumnDef="sr">
+                    <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+                    <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="userName">
+                    <th mat-header-cell *matHeaderCellDef> Name</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element?.name?element?.name:'N/A'}} </td>
+                </ng-container>
+                <ng-container matColumnDef="useremail">
+                    <th mat-header-cell *matHeaderCellDef>Email</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element?.email?element?.email:'N/A'}} </td>
+                </ng-container>
+                <ng-container matColumnDef="createdAt">
+                    <th mat-header-cell *matHeaderCellDef>Created Date</th>
+                    <td mat-cell *matCellDef="let element;">
+                        {{element.created_at |
+                            date:
+                            'dd-MMM-yy HH:MM aa'}}
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions *ngIf="data" align="end" class="px-3">
+        <button mat-raised-button mat-dialog-close color="accent">Close</button>
+    </mat-dialog-actions>
+</div>

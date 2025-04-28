@@ -1,0 +1,53 @@
+<div class="Decline">
+    <h2 mat-dialog-title>Instant Features</h2>
+    <form class="innerbox" [formGroup]="instantPaymentForm">
+        <div mat-dialog-content>
+            <div fxLayout="column">
+                <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+                    <div fxFlex="100">
+                        <div class="teamlable">Select Type<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="enable_instant_payment">
+                                <mat-option value="1">Enable</mat-option>
+                                <mat-option value="0">Disable</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100">
+                        <div class="teamlable">Enter Percentage Amount <em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <input matInput type="number" formControlName="instant_pay_amt_pct"
+                                placeholder="Enter Value">
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+                <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+                    <div fxFlex="100">
+                        <div class="teamlable">Select Message Type<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="rev_msg_template">
+                                <mat-option value="1">Full Payment</mat-option>
+                                <mat-option value="0">Advance Payment</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100">
+                        <div class="teamlable">Select Voucher Applicable <em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-select formControlName="voucher_applicable">
+                                <mat-option value="1">Yes</mat-option>
+                                <mat-option value="0">No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+            </div>
+        </div>
+    </form>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button [disabled]="_appService.isButtonDisabled()" (click)="addInstantPayment()" class="primary"
+            color="primary" mat-raised-button>Save</button>
+        <button [disabled]="_appService.isButtonDisabled()" (click)="closeDialogBox()" class="secondary" color="accent"
+            mat-raised-button>Cancel</button>
+    </div>
+</div>

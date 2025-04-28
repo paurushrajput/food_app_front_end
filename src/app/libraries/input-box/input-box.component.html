@@ -1,0 +1,8 @@
+
+  <div [formGroup]="formgroup">
+    <mat-form-field class="custom-mat-form-field" appearance="outline">
+      <mat-label>{{params.label}}</mat-label>
+      <input matInput placeholder="{{params.placeholder}}" [formControlName]="params.controls" (input)="onInputChange($event)">
+    </mat-form-field>
+  </div>
+    

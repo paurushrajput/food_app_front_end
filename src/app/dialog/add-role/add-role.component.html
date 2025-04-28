@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>
+    <span *ngIf="this.entity_id==undefined">New</span>
+    <span *ngIf="this.entity_id!=undefined">Edit</span>
+    Role
+</h2>
+<form class="innerbox" [formGroup]="roleForm">
+    <div mat-dialog-content>
+        <div fxLayout="column">
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <!-- <div class="teamlable">Name<em>*</em></div> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <input matInput placeholder="Enter Name" formControlName="name">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(roleForm.get('name')?.hasError('required') && (submitted || (roleForm.get('name')?.dirty)))">
+                        *Name Field Is Required
+                    </div>
+                </div>
+            </div>
+           
+           
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px">
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button [disabled]="roleForm.invalid"
+            color="primary" class="primary" (click)="saveLocation()">Save</button>
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="secondary"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>

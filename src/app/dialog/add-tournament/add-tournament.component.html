@@ -1,0 +1,144 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<h2 mat-dialog-title>
+  <span *ngIf="this.entity_id==undefined">Create</span>
+  <span *ngIf="this.entity_id!=undefined">Edit</span>
+  Tournament
+</h2>
+<div mat-dialog-content class="pb-0">
+  <div fxLayout="column">
+    <div [formGroup]="newTrmt">
+      <mat-card-content class="flex-row" fxLayoutGap="20">
+        <mat-form-field appearance="outline" class="example-full-width w-100">
+          <mat-label>Select Game</mat-label>
+          <mat-select formControlName="game_id">
+            <mat-option *ngFor="let type of gameData" value={{type.client_game_id}}>
+              {{type.title}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-content class="flex-row" fxLayoutGap="20">
+        <mat-form-field appearance="outline" class="example-full-width w-100">
+          <mat-label>Select Start Date </mat-label>
+          <mat-datetimepicker-toggle [for]="datetimePicker" matSuffix></mat-datetimepicker-toggle>
+          <mat-datetimepicker #datetimePicker type="datetime"> </mat-datetimepicker>
+          <input matInput #startInput formControlName="date_start" [matDatetimepicker]="datetimePicker" required
+            autocomplete="false" readonly="true" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="example-full-width w-100">
+          <mat-label>Select End Date </mat-label>
+          <mat-datetimepicker-toggle [for]="dateEndtimePicker" matSuffix></mat-datetimepicker-toggle>
+          <mat-datetimepicker #dateEndtimePicker type="datetime"> </mat-datetimepicker>
+          <input matInput #endInput formControlName="date_end" [matDatetimepicker]="dateEndtimePicker" required
+            autocomplete="false" readonly="true" />
+        </mat-form-field>
+        <!-- <mat-form-field appearance="outline">
+          <mat-label>Select Date Range</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate placeholder="Start date" formControlName="date_start">
+            <input matEndDate placeholder="End date" formControlName="date_end">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field> -->
+      </mat-card-content>
+      <mat-card-content class="flex-row" fxLayoutGap="20">
+        <mat-form-field appearance="outline" class="example-full-width w-100">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" placeholder="Enter Title">
+          <div class="text-danger"
+            *ngIf="(newTrmt.get('title')?.hasError('required') && (submitted || (newTrmt.get('title')?.dirty)))">
+            *Title Field Is Required
+          </div>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="example-full-width w-100">
+          <mat-label>Select Breakup</mat-label>
+          <mat-select formControlName="winner_breakup_id">
+            <mat-option *ngFor="let type of breakupData" value={{type.id}}>
+              {{type.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-content class="flex-row" fxLayoutGap="20">
+        <mat-form-field appearance="outline" class="example-full-width w-100">
+          <mat-label>Select Rule</mat-label>
+          <mat-select formControlName="tournament_rule_id">
+            <mat-option *ngFor="let type of ruleData" value={{type.id}}>
+              {{type.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="example-full-width w-100">
+          <mat-label>Select Referral Points</mat-label>
+          <!-- <mat-select formControlName="user_referral_points">
+            <mat-option value="50">
+              50</mat-option>
+            <mat-option value="50">
+              100</mat-option>
+            <mat-option value="50">
+              150</mat-option>
+          </mat-select> -->
+          <input matInput readonly formControlName="user_referral_points" placeholder="Enter Referral Points">
+
+        </mat-form-field>
+      </mat-card-content>
+      <!-- <mat-card-content> -->
+      <div class="row">
+        <div class="col">
+          <label class="position-relative d-flex align-items-center gap-2">Upload <mat-icon class="material-symbols-sharp"
+              matTooltip="Please select only jpeg,png format image.">info</mat-icon></label>
+          <div class="custom-file">
+            <input class="ng-hide" formControlName="image" (change)="onFileSelected($event)" id="input-file-id1"
+            type="file" />
+              <label for="input-file-id1">Upload Image</label>
+          </div>
+     
+          <!-- <div *ngIf="imageSize" class="filesize my-2">File size: {{ imageSize }}</div> -->
+            <div class="text-danger"
+            *ngIf="(newTrmt.get('image')?.hasError('required') && (submitted || (newTrmt.get('image')?.dirty)))">
+            *Image Field Is Required
+            </div>
+          </div>
+          <div class="col">
+              <ng-container *ngIf="image">
+                  <div class="image-preview">
+                      <img id="preview" [src]=image>
+                  </div>
+              </ng-container>
+          </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label class="position-relative d-flex align-items-center gap-2">Upload <mat-icon class="material-symbols-sharp"
+              matTooltip="Please select only jpeg,png format image.">info</mat-icon></label>
+          <div class="custom-file">
+            <input class="ng-hide" formControlName="image_on_redeem_page" (change)="onFileSelectedRedeem($event)" id="input-file-id"
+            type="file" />
+              <label for="input-file-id">Upload Redeem Image</label>
+          </div>
+     
+          <!-- <div *ngIf="imageSize" class="filesize my-2">File size: {{ imageSize }}</div> -->
+            <div class="text-danger"
+            *ngIf="(newTrmt.get('image_on_redeem_page')?.hasError('required') && (submitted || (newTrmt.get('image_on_redeem_page')?.dirty)))">
+            *Image Field Is Required
+            </div>
+          </div>
+          <div class="col">
+              <ng-container *ngIf="selectRedeemImage">
+                  <div class="image-preview">
+                      <img id="preview" [src]=selectRedeemImage>
+                  </div>
+              </ng-container>
+          </div>
+      </div>
+      <!-- </mat-card-content> -->
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions fxLayoutAlign="end center" style="padding: 10px 20px 20px;">
+  <button [disabled]="_appService.isButtonDisabled()" class="primary" (click)="saveLeaderBoardReward()"
+    mat-raised-button color="primary">Save</button>
+  <button [disabled]="_appService.isButtonDisabled()" (click)="closeDialogBox()" mat-raised-button color="accent"
+    class="accent">Close</button>
+</div>

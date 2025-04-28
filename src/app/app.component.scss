@@ -1,0 +1,58 @@
+.header {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+}
+.avatar{
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    // margin-right: 5px;
+}
+.project-mode{
+    background-color: #c72420;
+    border: 1px solid #ff7976;
+    color: #fff;
+    padding: 7px 15px;
+    line-height: 1;
+    font-size: 18px;
+    margin-left: 20px;
+    border-radius: 8px;
+}
+
+.project-modev2{
+    background-color: #0fb42a;
+    border: 1px solid #0f9c26;
+    color: #fff;
+    padding: 6px 15px;
+    line-height: 1;
+    font-size: 15px;
+    margin-left: 20px;
+    border-radius: 5px;
+}
+
+.WrapperArea.expand {
+    margin-left: 55px;
+    width: calc(100% - 55px);
+}
+
+.WrapperArea.expand .SidenavBar {
+    width: 55px;
+}
+.fill-remaining-space {
+    flex: 1 1 auto;
+}
+.avtar-info{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.avtar-info .pic{
+    display: inline-block;
+}
+.avtar-info .pic img{
+    max-width: 40px;
+
+}

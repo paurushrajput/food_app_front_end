@@ -1,0 +1,39 @@
+<div class="Decline">
+    <!-- <a href="javascript:void(0);" class="CloseModal" data-dismiss="modal"></a> -->
+    <h2 mat-dialog-title>Change Status</h2>
+    <div mat-dialog-content>
+        <p>Are you sure you want to {{status}} this restaurant ?</p>
+    </div>
+    <form class="innerbox" [formGroup]="approveForm">
+        <div mat-dialog-content>
+            <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+                <div *ngIf="data.status=='live'" fxFlex="100">
+                    <div class="teamlable">Live By<em>*</em></div>
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select</mat-label>
+                        <mat-select formControlName="live_by">
+                            <mat-option *ngFor="let option of this.adminUsers"
+                                value="{{option.value}}">{{option.key}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="data.status!='live'" fxFlex="100">
+                    <div class="teamlable">Pilot By<em>*</em></div>
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select</mat-label>
+                        <mat-select formControlName="pilot_by">
+                            <mat-option *ngFor="let option of this.adminUsers"
+                                value="{{option.value}}">{{option.key}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </mat-card-content>
+        </div>
+    </form>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button [disabled]="_appService.isButtonDisabled()" (click)="changeStatus()" class="primary" color="primary"
+            mat-raised-button>Yes</button>
+        <button [disabled]="_appService.isButtonDisabled()" (click)="closeDialogBox()" class="accent" color="accent"
+            mat-raised-button>No</button>
+    </div>
+</div>

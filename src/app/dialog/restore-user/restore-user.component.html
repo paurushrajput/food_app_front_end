@@ -1,0 +1,14 @@
+<div class="Decline">
+    <!-- <a href="javascript:void(0);" class="CloseModal" data-dismiss="modal"></a> -->
+    <h2 mat-dialog-title>Confirm Restore</h2>
+    <div mat-dialog-content>
+        <p>Are you sure you want to restore this user ?</p>
+    </div>
+
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button (click)="restoreuser()" class="primary" color="primary"
+            mat-raised-button>Yes</button>
+        <button  (click)="closeDialogBox()" class="secondary" color="accent"
+            mat-raised-button>No</button>
+    </div>
+</div>

@@ -1,0 +1,209 @@
+<div [ngClass]="data?'':'WrapperArea'">
+  <!-- class="WrapperArea" -->
+  <mat-toolbar class="pagetitle-bar">
+    <h2>Restaurant Management</h2>
+    <button 
+  mat-icon-button 
+  color="accent" 
+  mat-dialog-close 
+  *ngIf="data"
+  aria-label="Close" style="margin-left: auto;">
+  <mat-icon>X</mat-icon>
+</button>
+  </mat-toolbar>
+  <div class="WrapperBox">
+    <div class="Small-Wrapper">
+      <div class="searchArea mb-3" fxLayoutAlign="space-between center" fxLayoutGap="20">
+        <form [formGroup]="searchForm" class="search-form searchField" fxLayoutAlign="start center" fxLayoutGap="8">
+          <!-- <app-input-box [formgroup]="searchForm" [params]="controls.name"></app-input-box> -->
+          <mat-form-field class="custom-mat-form-field" appearance="outline">
+            <mat-label>Search By Name/Location</mat-label>
+            <input matInput placeholder="Search By Name/Location" formControlName="name">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="searchField">
+            <mat-label>Restaurant Type</mat-label>
+            <mat-select formControlName="is_pilot">
+              <mat-option value="1">Pilot </mat-option>
+              <mat-option value="0">Live </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="searchField">
+            <mat-label>Select Status</mat-label>
+            <mat-select formControlName="res_status">
+              <mat-option value="approved">Approved </mat-option>
+              <mat-option value="inactive">Inactive </mat-option>
+              <mat-option value="pending">Pending </mat-option>
+              <!-- <mat-option value="approved">Approved </mat-option> -->
+              <mat-option value="rejected">Rejected </mat-option>
+
+            </mat-select>
+          </mat-form-field>
+          <button mat-raised-button color="primary" class="primary" (click)="searchData()">Search</button>
+          <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+        </form>
+        <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+        </mat-paginator>
+        
+      </div>
+      <div class="table-responsive">
+        <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+          <ng-container matColumnDef="sr">
+            <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+            <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Restaurant Name</th>
+            <td mat-cell *matCellDef="let element"> {{element.name?element.name:'N/A'}} </td>
+          </ng-container>
+          <ng-container matColumnDef="location">
+            <th mat-header-cell *matHeaderCellDef>Location</th>
+            <td mat-cell *matCellDef="let element"> {{element.location_name?element.location_name:'N/A'}} </td>
+            <!-- <td mat-cell *matCellDef="let element; let i = index">
+              {{ element.address ? (isTruncated[i] ? element.address : (element.address | slice:0:3) ) : '' }}
+              <a *ngIf="element.address && !isTruncated[i]" (click)="toggleTruncation(i)">....</a>
+              <a *ngIf="element.address && isTruncated[i]" (click)="toggleTruncation(i)">--</a>
+            </td> -->
+          </ng-container>
+          <ng-container matColumnDef="pax">
+            <th mat-header-cell *matHeaderCellDef style="width: 100px;">Pax Details</th>
+            <td mat-cell *matCellDef="let element">
+              <span
+                *ngIf="!element.pax_details?.fixed_per_booking && !element.pax_details?.fixed_per_pax && !element.pax_details?.varies_per_pax ">N/A</span>
+              <span *ngIf="element.pax_details?.fixed_per_booking">{{"AED "+ element.pax_details?.fixed_per_booking +" "
+                +"/ booking"}}</span>
+              <span *ngIf="element.pax_details?.fixed_per_pax">{{"AED "+ element.pax_details?.fixed_per_pax +"
+                "+"/ pax"}}</span>
+              <button style="font-size: 24px; height: 24px; width: 24px;" mat-mini-fab
+                *ngIf="element.pax_details?.varies_per_pax" (click)="viewDialog(element)">
+                <mat-icon style="font-size: 16px; height: 16px; width: 16px;"
+                  class="material-symbols-sharp">info</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="payment">
+            <th mat-header-cell *matHeaderCellDef style="width: 70px;">Total Revenue</th>
+            <td mat-cell *matCellDef="let element"> {{element.booking?.revenue}} </td>
+          </ng-container>
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef>Cuisines</th>
+            <td mat-cell *matCellDef="let element" style="white-space: nowrap;"> <a *ngIf="element.cousines.length > 1"
+                (click)="openCuisinePopup(element.cousines)"
+                class="link">{{element.cousines.length>0?element.cousines[0]:'N/A'}} </a>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let element">
+              <span *ngIf="element.approval_status=='pending' && element.status!='inactive'"
+                class="chip yellow">{{element.approval_status
+                |titlecase}}</span>
+              <span *ngIf="element.approval_status=='approved' && element.status=='active'"
+                class="chip green">{{element.approval_status
+                |titlecase}}</span>
+              <span *ngIf="element.approval_status=='approved' && element.status=='inactive'"
+                class="chip inactive">{{element.status
+                |titlecase}}</span>
+              <span *ngIf="element.approval_status=='rejected' && element.status=='inactive'"
+                class="chip inactive">{{element.status
+                |titlecase}}</span>
+              <span *ngIf="element.approval_status=='pending' && element.status=='inactive'"
+                class="chip inactive">{{element.status
+                |titlecase}}</span>
+              <span *ngIf="element.approval_status=='rejected' && element.status=='active'"
+                class="chip brown">{{element.approval_status
+                |titlecase}}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="option">
+            <th mat-header-cell *matHeaderCellDef class="text-center"> Options </th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+              <!-- <div class="d-flex justify-content-start align-items-center">
+              <button mat-mini-fab class="btn-warning mr-2" (click)="approveRequest(element)">
+                <mat-icon class="material-symbols-sharp">verified</mat-icon>
+              </button>
+              {{element.approval_status |titlecase}}
+            </div> -->
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                <mat-icon class="material-symbols-sharp">more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button (click)="viewRestroDetails(element)" mat-menu-item>
+                  <span>View Details</span>
+                </button>
+                <button [disabled]="element.approval_status=='pending'" (click)="viewFeedback(element)" mat-menu-item>
+                  <span>View Feedback</span>
+                </button>
+                <!-- <mat-menu #feedback="matMenu">
+                  <button mat-menu-item>Vertebrates</button>
+                  <button mat-menu-item>Invertebrates</button>
+                </mat-menu> -->
+                <button [disabled]="element.approval_status=='pending'" (click)="autoBooking(element)" mat-menu-item>
+                  <span>Auto Booking</span>
+                </button>
+                <button [disabled]="element.approval_status=='pending'" (click)="viewBoking(element)" mat-menu-item>
+                  <span>View Booking</span>
+                </button>
+                <button (click)="approveRequest(element,'Update')" [disabled]="element.approval_status=='pending'"
+                  mat-menu-item>
+                  <span>Update Restaurant</span>
+                </button>
+                <button (click)="approveRequest(element,'Approve')"
+                  [disabled]="element.approval_status=='approved' || element.approval_status=='rejected'" mat-menu-item>
+                  <span>Restaurant Approve</span>
+                </button>
+                <button (click)="rejectRequest(element)"
+                  [disabled]="element.approval_status=='rejected' || element.approval_status=='approved'" mat-menu-item>
+                  <span>Restaurant Reject</span>
+                </button>
+                <!-- <button [disabled]="element.approval_status=='pending'" (click)="addInstantPayment(element)"
+                  mat-menu-item>
+                  <span>Add Instant Payment</span>
+                </button> -->
+                <button [disabled]="element.approval_status=='pending'" (click)="reviewDetails(element)" mat-menu-item>
+                  <span>Customer</span>
+                </button>
+                <button [disabled]="element.approval_status=='pending'" (click)="confirmDeactivate(element)"
+                  mat-menu-item>
+                  <span>{{element.status=='active'?'Deactivate':'Activate'}}</span>
+                </button>
+                <button [disabled]="element.approval_status=='pending'" (click)="slotList(element)" mat-menu-item>
+                  <span>Slot Management</span>
+                </button>
+                <button (click)="viewDates(element.pilot_at?element.pilot_at:'','Pilot')" mat-menu-item>
+                  <span> Pilot Date</span>
+                </button>
+                <button (click)="viewDates(element.live_at?element.live_at:'','Live')" mat-menu-item>
+                  <span> Live Date</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="actionv2">
+            <th mat-header-cell *matHeaderCellDef>Live / Pilot </th>
+            <td mat-cell *matCellDef="let element">
+              <button *ngIf="element.is_pilot=='0'" (click)="changePilotStatus(element,'pilot')"
+                class="btn btn-sm btn-min btn-success">Live</button>
+              <button *ngIf="element.is_pilot=='1'" (click)="changePilotStatus(element,'live')"
+                class="btn btn-sm btn-min btn-dark">Pilot</button>
+            </td>
+          </ng-container>
+          <!-- <ng-container matColumnDef="autoBooking">
+            <th mat-header-cell *matHeaderCellDef class="text-center"> Auto Booking </th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+              <div class="d-flex justify-content-start align-items-center">
+              <button mat-mini-fab class="btn-success mr-2" (click)="autoBooking(element)">
+                <mat-icon class="material-symbols-sharp">bookmark</mat-icon>
+              </button>
+              {{element.auto_booking==1?'Activated':'Deactivated'}}
+            </div>
+            </td>
+          </ng-container> -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,118 @@
+<h2 mat-dialog-title>
+    <span *ngIf="this.entity_id==undefined">New</span>
+    <span *ngIf="this.entity_id!=undefined">Edit</span>
+    Campaign
+</h2>
+<form class="innerbox" [formGroup]="campaignForm">
+    <div mat-dialog-content>
+        <div fxLayout="column" fxLayoutAlign="start center">
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <input matInput placeholder="Enter Title" formControlName="title">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(campaignForm.get('title')?.hasError('required') && (submitted || (campaignForm.get('title')?.dirty)))">
+                        *Title Field Is Required
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutGap="20" fxFlex="100" class="w-100">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Select Start Date </mat-label>
+                    <mat-datetimepicker-toggle [for]="datetimePicker" matSuffix></mat-datetimepicker-toggle>
+                    <mat-datetimepicker #datetimePicker type="datetime"> </mat-datetimepicker>
+                    <input matInput  #startInput formControlName="start_date" [matDatetimepicker]="datetimePicker" required
+                        autocomplete="false" readonly="true" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Select End Date </mat-label>
+                    <mat-datetimepicker-toggle [for]="dateEndtimePicker" matSuffix></mat-datetimepicker-toggle>
+                    <mat-datetimepicker #dateEndtimePicker type="datetime"> </mat-datetimepicker>
+                    <input matInput #endInput formControlName="end_date" [matDatetimepicker]="dateEndtimePicker" required
+                        autocomplete="false" readonly="true" />
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="20" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <!-- <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <input matInput placeholder="Enter agent Id" formControlName="agent_id">
+                    </mat-form-field> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Agent</mat-label>
+                        <mat-select formControlName="agent_id" (selectionChange)="onChange()">
+                            <mat-option value="">NONE</mat-option>
+                            <mat-option *ngFor="let type of userList" value={{type.user_id}}>
+                                {{type.first_name +''+type.last_name +'('+type.username +')'}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <!-- <div class="text-danger"
+                        *ngIf="(campaignForm.get('agent_id')?.hasError('required') && (submitted || (campaignForm.get('agent_id')?.dirty)))">
+                        *agentid Field Is Required
+                    </div> -->
+                </div>
+                <div fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Coupon</mat-label>
+                        <mat-select formControlName="coupon_id">
+                            <mat-option *ngFor="let type of couponData" value={{type.id}}>
+                                {{type.coupon_code}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(campaignForm.get('coupon_id')?.hasError('required') && (submitted || (campaignForm.get('coupon_id')?.dirty)))">
+                        *couponid Is Required
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" fxLayoutGap="20" class="w-100">
+                <div *ngIf="campaignForm.value.agent_id" fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Enter Commission</mat-label>
+                        <input matInput type="number" placeholder="Enter Commission Amount"
+                            formControlName="commission_amount">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(campaignForm.get('commission_amount')?.hasError('required') && (submitted || (campaignForm.get('commission_amount')?.dirty)))">
+                        *commission amount Field Is Required
+                    </div>
+                </div>
+                <div *ngIf="campaignForm.value.agent_id" fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Action</mat-label>
+                        <mat-select formControlName="action">
+                            <mat-option value="0">CPR</mat-option>
+                            <mat-option value="1">CPV</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(campaignForm.get('action')?.hasError('required') && (submitted || (campaignForm.get('action')?.dirty)))">
+                        *action Field Is Required
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div *ngIf="campaignForm.value.agent_id" fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Commission Type</mat-label>
+                        <mat-select formControlName="commission_type">
+                            <mat-option value="0">FLAT</mat-option>
+                            <!-- <mat-option value="percentage">Percentage</mat-option> -->
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(campaignForm.get('commission_type')?.hasError('required') && (submitted || (campaignForm.get('commission_type')?.dirty)))">
+                        *commission type Field Is Required
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button mat-raised-button color="primary" class="primary" (click)="saveCampaign()">Save</button>
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="accent"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>

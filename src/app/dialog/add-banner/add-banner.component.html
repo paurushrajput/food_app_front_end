@@ -1,0 +1,221 @@
+<h2 mat-dialog-title>
+  <span *ngIf="this.entity_id==undefined">New</span>
+  <span *ngIf="this.entity_id!=undefined">Edit</span>
+  Banner
+</h2>
+<form class="innerbox" [formGroup]="newBanner">
+  <div mat-dialog-content>
+    <div fxLayout="column">
+      <mat-card-content class="row mb-4">
+          <div class="row">
+            <div class="col">
+            <label class="position-relative d-flex align-items-center gap-2">Upload <mat-icon class="material-symbols-sharp"
+                matTooltip="Please select only jpeg,png format image.">info</mat-icon></label>
+            <div class="custom-file">
+                <input class="ng-hide" formControlName="icon" id="input-file-id" type="submit" (click)="onFileSelected($event)"/>
+                <label for="input-file-id"  >Upload Image</label>
+            </div>
+       
+            <div *ngIf="imageSize" class="filesize my-2">File size: {{ imageSize }}</div>
+                <div class="text-danger"
+                    *ngIf="(newBanner.get('icon')?.hasError('required') && (isValidFormSubmitted || (newBanner.get('icon')?.dirty)))">
+                    *Image Is Required
+                </div>
+            </div>
+            <div class="col">
+                <ng-container *ngIf="image">
+                    <div class="image-preview">
+                        <img id="preview" [src]=image>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+      </mat-card-content>
+      <mat-card-content class="row mb-0">
+        <!-- <div fxFlex="100">
+          <div class="teamlable">Select Action Type<em>*</em></div>
+          <mat-form-field class="example-full-width w-100">
+            <input matInput type="text" formControlName="actionType" placeholder="Enter Actiontype">
+          </mat-form-field>
+          <label
+            *ngIf="newBanner.get('actionType')?.hasError('required')  && isValidFormSubmitted != null && !isValidFormSubmitted"
+            class="error">
+            Action Type required.
+          </label>
+        </div> -->
+       
+        <div class="col-md-4">
+          <!-- <div class="teamlable">Type<em>*</em></div> -->
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Select Type</mat-label>
+            <mat-select formControlName="banner_type">
+              <mat-option value="restaurant">Restaurant</mat-option>
+              <mat-option value="game">Game Play</mat-option>
+              <mat-option value="shareapp">Share App</mat-option>
+              <mat-option value="manual">Manual</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <!-- <div class="teamlable">Type<em>*</em></div> -->
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Select Screen Type</mat-label>
+            <mat-select formControlName="screen_type">
+              <mat-option value="morepage">More Page</mat-option>
+              <mat-option value="home">Home</mat-option>
+          
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <!-- <div class="teamlable">Select Size<em>*</em></div> -->
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Select Position</mat-label>
+            <mat-select formControlName="banner_size">
+                <mat-option value="small">TOP</mat-option>
+              <mat-option value="big">MIDDLE</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <!-- <div *ngIf="newBanner.value.banner_type=='2'" fxFlex="100">
+          <div class="teamlable">Select Game<em>*</em></div>
+          <mat-form-field class="example-full-width w-100">
+            <mat-label>Select Game</mat-label>
+            <mat-select formControlName="gameId">
+              <mat-option *ngFor="let type of gameData" value={{type.id}}>
+                {{type.title?type.title:'N/A'}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div> -->
+
+        <div class="col-md-4" *ngIf="newBanner.value.banner_type=='restaurant'">
+          <!-- <div class="teamlable">Select Restaurant<em>*</em></div> -->
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Select Restaurant</mat-label>
+            <mat-select formControlName="res_id">
+              <mat-option *ngFor="let type of restaurantData | sort:'name'" value={{type.id}}>
+                {{type.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4" *ngIf="newBanner.value.banner_type=='manual'">
+          <!-- <div class="teamlable">Enter Action<em>*</em></div> -->
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Enter Action</mat-label>
+            <input matInput type="text" formControlName="action" placeholder="Enter Action">
+          </mat-form-field>
+          <label
+            *ngIf="newBanner.get('action')?.hasError('required')  && isValidFormSubmitted != null && !isValidFormSubmitted"
+            class="text-danger">
+            Action required.
+          </label>
+        </div>
+       
+        <!-- <div *ngIf="this.action=='2'" fxFlex="100">
+              <div class="teamlable">Action<em>*</em></div>
+              <mat-form-field class="example-full-width w-100">
+                <mat-label>Select</mat-label>
+                <mat-select formControlName="action">
+                  <mat-option value="invite">INVITE</mat-option>
+                  <mat-option value="tournament">TOURNAMENT</mat-option>
+                  <mat-option value="deposit">DEPOSIT</mat-option>
+                  <mat-option value="game">GAME</mat-option>
+                  <mat-option value="updateProfile">UPDATE PROFILE</mat-option>
+                  <mat-option value="miningScreen">MINING SCREEN</mat-option>
+                  <mat-option value="matchContest">MATCH CONTEST</mat-option>
+                  <mat-option value="wallet">WALLET</mat-option>
+                  <mat-option value="referAndEarn">REFER AND EARN</mat-option>
+                  <mat-option value="networkReferral">Network Referral</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <label
+                *ngIf="newBanner.get('action')?.hasError('required')  && isValidFormSubmitted != null && !isValidFormSubmitted"
+                class="error">
+                Action required.
+              </label>
+            </div> -->
+        <!-- <div fxFlex="100">
+          <div class="teamlable">Placement<em>*</em></div>
+          <mat-form-field class="example-full-width w-100">
+            <mat-label>Select</mat-label>
+            <mat-select formControlName="bannerType" (selectionChange)="checkBannerType()">
+              <mat-option value="all">Home</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <label
+            *ngIf="newBanner.get('bannerType')?.hasError('required')  && isValidFormSubmitted != null && !isValidFormSubmitted"
+            class="error">
+            Banner Type required.
+          </label>
+        </div>
+        <div fxFlex="100">
+          <div class="teamlable">Size<em>*</em></div>
+          <mat-form-field class="example-full-width w-100">
+            <mat-label>Select</mat-label>
+            <mat-select formControlName="bannerSize">
+              <mat-option value="small">Small</mat-option>
+              <mat-option value="full">Full</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <label
+            *ngIf="newBanner.get('bannerSize')?.hasError('required')  && isValidFormSubmitted != null && !isValidFormSubmitted"
+            class="error">
+            Size required.
+          </label>
+        </div>
+        <div fxFlex="100">
+          <div class="teamlable">App Type<em>*</em></div>
+          <mat-form-field class="example-full-width w-100">
+            <mat-label>Select</mat-label>
+            <mat-select formControlName="appType">
+              <mat-option value="free">Free</mat-option>
+              <mat-option value="pro">Pro</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <label
+            *ngIf="newBanner.get('appType')?.hasError('required')  && isValidFormSubmitted != null && !isValidFormSubmitted"
+            class="error">
+            App Type required.
+          </label>
+        </div> -->
+        <div class="col-md-4">
+         
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Select Start Date </mat-label>
+              <mat-datetimepicker-toggle [for]="datetimePicker" matSuffix></mat-datetimepicker-toggle>
+              <mat-datetimepicker #datetimePicker type="datetime"> </mat-datetimepicker>
+              <input matInput  #startInput formControlName="start_time" [matDatetimepicker]="datetimePicker" required
+                autocomplete="false" readonly="true" [min]="minStartDate"/>
+            </mat-form-field>
+            </div>
+            <div class="col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Select End Date </mat-label>
+              <mat-datetimepicker-toggle [for]="dateEndtimePicker" matSuffix></mat-datetimepicker-toggle>
+              <mat-datetimepicker #dateEndtimePicker type="datetime"> </mat-datetimepicker>
+              <input matInput #endInput formControlName="end_time" [matDatetimepicker]="dateEndtimePicker" required
+                autocomplete="false" readonly="true" [min]="minEndDate"/>
+            </mat-form-field>
+           
+            </div>
+        <div class="col-md-4">
+          <!-- <div class="teamlable">Select Size<em>*</em></div> -->
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Select Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option value="1">Active</mat-option>
+              <mat-option value="0">Inactive</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        
+      </mat-card-content>
+    </div>
+  </div>
+  <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+    <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="primary"
+      (click)="saveBanner()">{{!newBanner.get('id')?.value?'Add':'Update'}}</button>
+    <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent"
+      (click)="closeDialogBox()">Close</button>
+  </div>
+</form>

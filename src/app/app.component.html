@@ -1,0 +1,59 @@
+<mat-toolbar *ngIf="_router.url != '/'" class="header" color="primary">
+  <h2 class="admin-logo mr-3"><img src="../assets/images/logo-icon.png" class="img-fluid" alt="" /></h2>
+  <span class="example-fill-remaining-space"></span>
+  <!-- <mat-icon   *ngIf="_router.url != '/'">menu</mat-icon> -->
+    <a (click)="change_nav()" *ngIf="_router.url != '/'">
+      <span class="d-flex"><i class="material-symbols-sharp" style="color:blanchedalmond;">menu</i></span>
+    </a>
+    <div [ngClass]="databaseName=='Live'?'project-modev2':'project-mode'" class="project-mode">{{databaseName}}</div>
+    <span class="fill-remaining-space"></span>
+    <div class="avtar-info" [matMenuTriggerFor]="menu">
+       <!-- Avatar and Dropdown -->
+      <div class="avatar">
+        <img
+          src="../assets/images/avtar-img.png"
+          alt="User Avatar"
+          class="img-fluid"
+        />
+      </div>
+      <mat-icon class="material-symbols-sharp">arrow_drop_down</mat-icon>
+    </div>
+
+  <mat-menu #menu="matMenu">
+    <button  mat-menu-item>
+      <mat-icon class="material-symbols-sharp">account_circle</mat-icon>
+      Profile
+    </button>
+    <button routerLink="/change/password" mat-menu-item>
+      <mat-icon class="material-symbols-sharp">settings</mat-icon>
+      Change Password
+    </button>
+    <button mat-menu-item (click)="adminLogout()">
+      <mat-icon class="material-symbols-sharp">logout</mat-icon>
+      Logout
+    </button>
+  </mat-menu>
+    
+    <!-- <div class="avtar-info">
+      <button mat-icon-button >
+        <mat-icon class="material-symbols-sharp">logout</mat-icon>
+      </button>
+    </div> -->
+  <!-- <mat-menu #menu="matMenu"> -->
+  <!-- <span><i class="material-symbols-sharp" (click)="adminLogout()">logout</i></span> -->
+  <!-- <button (click)="adminLogout()" mat-menu-item>Logout</button> -->
+  <!-- </mat-menu> -->
+</mat-toolbar>
+<mat-sidenav-container class="example-sidenav-container" autosize>
+  <app-sidenav [isExpanded]="isExpanded" *ngIf="_router.url != '/'"></app-sidenav>
+  <div class="example-sidenav-content {{ this._router.url=='/' ? 'no-nav' : klass_nav}} layout">
+    <router-outlet></router-outlet>
+  </div>
+</mat-sidenav-container>
+<!-- <app-sidenav></app-sidenav> -->
+
+<div class="loader-wrapper" *ngIf="loading">
+  <div class="loader">
+    <img src="assets/images/logo-icon.png" class="img-fluid" alt="" />
+  </div>
+</div>

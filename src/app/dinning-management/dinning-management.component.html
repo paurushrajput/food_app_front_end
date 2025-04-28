@@ -1,0 +1,74 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div class="WrapperArea">
+  <mat-toolbar class="pagetitle-bar">
+    <h2>Dinning Management</h2>
+ </mat-toolbar>
+ <mat-sidenav-container class="example-sidenav-container" autosize>
+  <div class="WrapperBox">
+    <div class="Small-Wrapper">
+      <div fxLayoutAlign="end center" fxLayoutGap="20" class="mb-3">
+        <button mat-raised-button color="primary" class="primary" (click)="addDinning()">Add Dinning</button>
+      </div>
+      <div fxLayoutAlign="space-between center" fxLayoutGap="20" class="searchArea mb-3">
+      <form [formGroup]="searchForm" class="search-form" fxLayoutAlign="start center" fxLayoutGap="8">
+        <app-input-box [formgroup]="searchForm" [params]="controls.name"></app-input-box>
+        
+        <button mat-raised-button color="primary" class="primary" (click)="loadData()">Search</button>
+        <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+      </form>
+      <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+      </mat-paginator>
+      </div>
+      
+      <div class="table-responsive">
+        <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+          <ng-container matColumnDef="sr">
+            <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+            <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }} </td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name</th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          </ng-container>
+          <!-- <ng-container matColumnDef="image">
+            <th mat-header-cell *matHeaderCellDef>Image</th>
+            <td mat-cell *matCellDef="let element">
+              <img style="max-width: 70px;" src={{element.icon}}>
+            </td>
+          </ng-container> -->
+          <!-- <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef>Type </th>
+                <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+            </ng-container> -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let element"><span class="chip green">{{element.status==1?'Active':'Inactive'}}</span> </td>
+          </ng-container>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef> Edit </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-mini-fab color="accent" (click)="showEditForm(element)">
+                <span class="material-symbols-sharp">edit</span>
+              </button>
+
+              <!-- <button mat-mini-fab>
+                <mat-icon>menu</mat-icon>
+              </button> -->
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+      <div>
+        <!-- <mat-paginator #paginator [length]="userlistcount" [pageIndex]="currentPage" [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions"  (page)="pageChanged($event)"  aria-label="Select page">
+        </mat-paginator> -->
+      </div>
+    </div>
+    <div>
+    </div>
+  </div>
+</mat-sidenav-container>
+</div>

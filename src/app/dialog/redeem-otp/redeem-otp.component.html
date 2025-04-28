@@ -1,0 +1,20 @@
+<div class="Decline">
+    <!-- <a href="javascript:void(0);" class="CloseModal" data-dismiss="modal"></a> -->
+    <h2 mat-dialog-title>Redeem OTP</h2>
+    <div mat-dialog-content>
+        <form [formGroup]="otpForm">
+            <mat-form-field appearance="outline">
+                <mat-label>Enter OTP</mat-label>
+                <input matInput formControlName="otp" type="text" maxlength="6">
+                <mat-error *ngIf="otpForm.get('otp')?.hasError('required')">OTP is required</mat-error>
+                <mat-error *ngIf="otpForm.get('otp')?.hasError('pattern')">Enter a valid 6-digit OTP</mat-error>
+            </mat-form-field>
+        </form>
+    </div>
+    
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button [disabled]="otpForm.invalid || _appService.isButtonDisabled()"  (click)="redeemotp()" class="primary" color="primary" mat-raised-button>Yes</button>
+        <button [disabled]="_appService.isButtonDisabled()" (click)="closeDialogBox()" class="secondary" color="accent" mat-raised-button>No</button>
+    </div>
+</div>
+

@@ -1,0 +1,125 @@
+<h2 mat-dialog-title>
+    Add Slot Template
+</h2>
+<form class="innerbox" [formGroup]="slotForm">
+    <div mat-dialog-content>
+        <div>
+            <mat-card-content class="p-0">
+                <div class="w-25 mb-3">
+                    <app-date-time-picker (dateRangeChange)="onDateRangeChange($event)"></app-date-time-picker>
+                </div>
+
+                <div formArrayName="slots" style="flex-direction: row;box-sizing: border-box;">
+
+                    <div *ngFor="let slot of slots.controls; let i = index" [formGroupName]="i">
+                        <div class="card p-3 mb-3">
+                            <div class="d-flex justify-content-between w-100 align-items-center">
+                                <div class="d-flex flex-column" style="width: calc(100% - 50px);">
+                                    <div class="form-container">
+
+                                        <mat-form-field appearance="outline" class="start-time">
+                                            <mat-label>Start Time</mat-label>
+                                            <mat-select formControlName="start_time">
+                                                <mat-option *ngFor="let time of startTime" [value]="time.time">{{
+                                                    time.value
+                                                    }}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" class="end-time">
+                                            <mat-label>End Time</mat-label>
+                                            <mat-select formControlName="end_time">
+                                                <mat-option *ngFor="let time of endTime" [value]="time.time">{{
+                                                    time.value
+                                                    }}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+
+
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Message Template</mat-label>
+                                            <mat-select formControlName="rev_msg_template">
+                                                <mat-option [value]="0">Booking Fee</mat-option>
+                                                <mat-option [value]="1">Advance Payment</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Max Guests Per Booking</mat-label>
+                                            <input matInput type="number" formControlName="max_guest_per_booking">
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Discount</mat-label>
+                                            <input matInput type="number" formControlName="discount">
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Voucher Applicable</mat-label>
+                                            <mat-select formControlName="voucher_applicable">
+                                                <mat-option [value]="0">No</mat-option>
+                                                <mat-option [value]="1">Yes</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-container searchField mb-3">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Booking Fee</mat-label>
+                                            <mat-select formControlName="booking_fee_required">
+                                                <mat-option [value]="0">No</mat-option>
+                                                <mat-option [value]="1">Yes</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Auto Booking</mat-label>
+                                            <mat-select formControlName="auto_booking">
+                                                <mat-option [value]="0">No</mat-option>
+                                                <mat-option [value]="1">Yes</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Amount</mat-label>
+                                            <input matInput type="number" formControlName="amount">
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Total Capacity</mat-label>
+                                            <input matInput type="number" formControlName="total_capacity">
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Otp Required</mat-label>
+                                            <mat-select formControlName="otp_required">
+                                                <mat-option [value]="0">No</mat-option>
+                                                <mat-option [value]="1">Yes</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+
+                                    </div>
+                                </div>
+
+                                <button mat-icon-button color="warn" (click)="removeSlot(i)" class="delete-btn"
+                                    *ngIf="i !=0">
+                                    <mat-icon class="material-symbols-sharp">delete</mat-icon>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <button mat-fab extended color="primary" (click)="addSlot()"><mat-icon
+                        class="material-symbols-sharp">Add</mat-icon>Add Slot</button>
+            </mat-card-content>
+
+
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button [disabled]="_appService.isButtonDisabled() || this.slotForm.invalid" mat-raised-button color="primary"
+            (click)="onSubmit()">Save</button>
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>

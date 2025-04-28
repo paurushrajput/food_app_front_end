@@ -1,0 +1,44 @@
+<div class="Decline">
+    <!-- <a href="javascript:void(0);" class="CloseModal" data-dismiss="modal"></a> -->
+    <h2 mat-dialog-title>Restaurant Reject</h2>
+    <!-- <div mat-dialog-content>
+        <p>Are you sure you want to approve this request ?</p>
+    </div> -->
+    <form class="innerbox" [formGroup]="requestForm">
+        <div mat-dialog-content>
+            <div fxLayout="column">
+                <mat-card-content class="flex-row mb-0" fxLayoutGap="20" fxLayoutAlign="start center" fxFlex="100">
+                    <div fxFlex="100">
+                        <div class="teamlable"> Request<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-label>Select Type</mat-label>
+                            <mat-select formControlName="approve">
+                                <!-- <mat-option value="approved">Approve</mat-option> -->
+                                <mat-option value="rejected">Reject</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100">
+                        <div class="teamlable"> Reason<em>*</em></div>
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                           
+                            <input matInput type="text" placeholder="Enter Reason" formControlName="reject_reason">
+                        </mat-form-field>
+                        <div class="text-danger"
+                          *ngIf="(requestForm.get('reject_reason')?.hasError('required') && ( (requestForm.get('reject_reason')?.dirty)))">
+                          *Name is required
+                        </div>
+                        
+                    </div>
+                </mat-card-content>
+            
+            </div>
+        </div>
+    </form>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button [disabled]="_appService.isButtonDisabled()" (click)="confirmationPopup()" class="primary"
+            color="primary" mat-raised-button>Save</button>
+        <button [disabled]="_appService.isButtonDisabled()" (click)="closeDialogBox()" class="secondary" color="accent"
+            mat-raised-button>Cancel</button>
+    </div>
+</div>

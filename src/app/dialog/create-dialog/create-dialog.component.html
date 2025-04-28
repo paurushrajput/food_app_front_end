@@ -1,0 +1,265 @@
+<h2 mat-dialog-title>
+    Send {{this.dialogForm.value.type}} {{this.data.status=='0'?'To Specific User':"To All Users"}}
+</h2>
+<form class="innerbox" [formGroup]="dialogForm">
+    <div mat-dialog-content>
+        <div fxLayout="column" fxLayoutAlign="start center">
+            <div fxLayout="row" fxFlex="100" class="w-100 gap-3">
+                <div fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Type</mat-label>
+                        <mat-select formControlName="type">
+                            <mat-option value="Dialog">Dialog</mat-option>
+                            <mat-option value="Notification">Notification</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(dialogForm.get('type')?.hasError('required') && (submitted || (dialogForm.get('type')?.dirty)))">
+                        *type Field Is Required
+                    </div>
+                </div>
+                <div fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Title</mat-label>
+                        <input matInput placeholder="Enter Title" formControlName="title">
+                    </mat-form-field>
+                    <!-- <div class="text-danger"
+                        *ngIf="(dialogForm.get('title')?.hasError('required') && (submitted || (dialogForm.get('title')?.dirty)))">
+                        *Title Field Is Required
+                    </div> -->
+                </div>
+            </div>
+            <div *ngIf="dialogForm.value.type!='Notification'" fxLayout="row" fxFlex="100" class="w-100 gap-3">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Select Start Date </mat-label>
+                    <mat-datetimepicker-toggle [for]="datetimePicker" matSuffix></mat-datetimepicker-toggle>
+                    <mat-datetimepicker #datetimePicker type="datetime"> </mat-datetimepicker>
+                    <input matInput #startInput formControlName="start_time" [matDatetimepicker]="datetimePicker"
+                         autocomplete="false" readonly="true" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Select End Date </mat-label>
+                    <mat-datetimepicker-toggle [for]="dateEndtimePicker" matSuffix></mat-datetimepicker-toggle>
+                    <mat-datetimepicker #dateEndtimePicker type="datetime"> </mat-datetimepicker>
+                    <input matInput #endInput formControlName="end_time" [matDatetimepicker]="dateEndtimePicker"
+                         autocomplete="false" readonly="true" />
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100 gap-3">
+                <div fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Message </mat-label>
+                        <input type="text" matInput placeholder="Enter Message" formControlName="message">
+                    </mat-form-field>
+                    <!-- <div class="text-danger"
+                        *ngIf="(dialogForm.get('message')?.hasError('required') && (submitted || (dialogForm.get('message')?.dirty)))">
+                        *message Field Is Required
+                    </div> -->
+                </div>
+                <div fxFlex="100">
+                    <!-- <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <input matInput placeholder="Enter action_type" formControlName="action_type">
+                    </mat-form-field> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Action Type </mat-label>
+                        <mat-select formControlName="action_type">
+                            <mat-option value="1">Restaurant</mat-option>
+                            <mat-option value="2">Game Play</mat-option>
+                            <mat-option value="3">Share App</mat-option>
+                            <mat-option value="6">Deal</mat-option>
+                            <mat-option value="4">Manual</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <!-- <div class="text-danger"
+                        *ngIf="(dialogForm.get('action_type')?.hasError('required') && (submitted || (dialogForm.get('action_type')?.dirty)))">
+                        *action_type Field Is Required
+                    </div> -->
+                </div>
+            </div>
+
+            <div fxLayout="row" fxFlex="100" class="w-100 gap-3">
+
+                <div *ngIf="dialogForm.value.action_type==4" fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Action</mat-label>
+                        <input matInput placeholder="Enter action" formControlName="action">
+                    </mat-form-field>
+                    <!-- <div class="text-danger"
+                        *ngIf="(dialogForm.get('action')?.hasError('required') && (submitted || (dialogForm.get('action')?.dirty)))">
+                        *action Field Is Required
+                    </div> -->
+                </div>
+                <div *ngIf="dialogForm.value.type!='Notification' " fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Button Name</mat-label>
+                        <input matInput placeholder="Enter Button Name" formControlName="button_name">
+                    </mat-form-field>
+                    <!-- <div class="text-danger"
+                        *ngIf="(dialogForm.get('button_name')?.hasError('required') && (submitted || (dialogForm.get('button_name')?.dirty)))">
+                        *Button Name Field Is Required
+                    </div> -->
+                </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100 gap-3">
+                <div *ngIf="dialogForm.value.action_type==1" fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Restaurant </mat-label>
+                        <mat-select formControlName="res_id">
+                            <mat-option *ngFor="let type of restaurantData | sort:'name'" value={{type.id}}>
+                                {{type.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <!-- <div class="text-danger"
+                        *ngIf="(dialogForm.get('res_id')?.hasError('required') && (submitted || (dialogForm.get('res_id')?.dirty)))">
+                        *res_id Field Is Required
+                    </div> -->
+                </div>
+                <div *ngIf="dialogForm.value.action_type==6" fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select Deal </mat-label>
+                        <mat-select formControlName="deal_id">
+                            <mat-option *ngFor="let type of dealData  | sort:'name'"
+                                [ngClass]="{'highlight': isHighlighted(type)}" value={{type.id}}>
+                                {{type.title}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <!-- <div class="text-danger"
+                        *ngIf="(dialogForm.get('res_id')?.hasError('required') && (submitted || (dialogForm.get('res_id')?.dirty)))">
+                        *res_id Field Is Required
+                    </div> -->
+                </div>
+                <div fxFlex="100">
+                    <!-- <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <input matInput placeholder="Enter user_type" formControlName="user_type">
+                    </mat-form-field> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Select User Type</mat-label>
+                        <mat-select formControlName="user_type">
+                            <mat-option *ngIf="this.data.status!='0'" value="1">All User</mat-option>
+                            <mat-option value="0">Specific User</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <!-- <div class="text-danger"
+                        *ngIf="(dialogForm.get('user_type')?.hasError('required') && (submitted || (dialogForm.get('user_type')?.dirty)))">
+                        *user_type Field Is Required
+                    </div> -->
+                </div>
+
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100 gap-3">
+                <div fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label> Close Button</mat-label>
+                        <mat-select formControlName="is_close">
+                            <mat-option value="1">Enable</mat-option>
+                            <mat-option value="0">Disable</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <!-- <div fxFlex="100" class="position-relative">
+                    <input class="ng-hide" formControlName="image" (change)="onFileSelected($event)" id=" input-file-id"
+                        type="file" />
+                    <ng-container *ngIf="image">
+                        <img id="preview" [src]=image style="max-width:100px;max-height:90px;">
+                    </ng-container>
+                    <br>
+                    <div class="text-danger" *ngIf="(dialogForm.get('image')?.hasError('required') && (submitted ))">
+                        *Image Is Required
+                    </div>
+                    <mat-icon class="material-symbols-sharp mt-2 notify-icon"
+                        matTooltip="Please select only jpeg,png format image.">info</mat-icon>
+                    <div *ngIf="imageSize">File size: {{ imageSize }}</div>
+                </div> -->
+
+            </div>
+            <div fxLayout="row" style="margin-bottom: 20px;" fxFlex="100" class="w-100 gap-3">
+                <div class="col">
+                    <label class="position-relative d-flex align-items-center gap-2">Upload <mat-icon
+                            class="material-symbols-sharp"
+                            matTooltip="Please select only jpeg,png format image.">info</mat-icon></label>
+                    <div class="custom-file">
+                        <input class="ng-hide" formControlName="image" (change)="onFileSelected($event)"
+                            id="input-file-id" type="file" />
+                        <label for="input-file-id">Upload Image</label>
+                    </div>
+
+                    <div *ngIf="imageSize" class="filesize my-2">File size: {{ imageSize }}</div>
+                    <div class="text-danger"
+                        *ngIf="(dialogForm.get('image')?.hasError('required') && (submitted || (dialogForm.get('image')?.dirty)))">
+                        *Image Is Required
+                    </div>
+                </div>
+                <div class="col">
+                    <ng-container *ngIf="image">
+                        <div class="image-preview">
+                            <img id="preview" [src]=image>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" class="w-100 gap-3">
+
+            </div>
+            <div *ngIf="this.data.status!='0'" class="d-flex flex-wrap column-gap-3">
+                <div *ngIf="dialogForm.value.user_type=='0'" fxLayout="row" fxFlex="100" class="w-100 gap-3">
+                    <div *ngIf="dialogForm.value.coupon_id==''" fxFlex="100">
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-label>Select Campaign</mat-label>
+                            <mat-select formControlName="campaign_id">
+                                <mat-option *ngFor="let type of campaignData" value={{type.id}}>
+                                    {{type.title}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <!-- <div class="text-danger"
+                            *ngIf="(dialogForm.get('action')?.hasError('required') && (submitted || (dialogForm.get('action')?.dirty)))">
+                            *action Field Is Required
+                        </div> -->
+                    </div>
+                    <div *ngIf="dialogForm.value.campaign_id==''" fxFlex="100">
+                        <mat-form-field class="example-full-width w-100" appearance="outline">
+                            <mat-label>Select Coupon</mat-label>
+                            <mat-select formControlName="coupon_id">
+                                <mat-option *ngFor="let type of couponData" value={{type.id}}>
+                                    {{type.coupon_code}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div *ngIf="dialogForm.value.user_type=='0'" fxLayout="row" fxFlex="100" class="w-100 gap-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label> User Onboard Start Date</mat-label>
+                        <input matInput #startInput1 formControlName="on_boarding_start" [matDatepicker]="dp1">
+                        <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+                        <mat-datepicker #dp1></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label> User Onboard End Date</mat-label>
+                        <input matInput #endInput1 formControlName="on_boarding_end" [matDatepicker]="dp2">
+                        <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+                        <mat-datepicker #dp2 disabled="false"></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- <div *ngIf="dialogForm.value.user_type=='0' && dialogForm.value.on_boarding_start=='' && dialogForm.value.on_boarding_end==''"
+                fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-label>Is Coupon Used</mat-label>
+                        <mat-select formControlName="is_coupon_used">
+                            <mat-option value="1">True</mat-option>
+                            <mat-option value="0">False</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div> -->
+
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button mat-raised-button color="accent" class="accent" (click)="resetForm()">Reset</button>
+        <button [disabled]="_appService.isButtonDisabled() " mat-raised-button color="primary" class="primary"
+            (click)="saveDialog()">Save</button>
+        <button [disabled]="_appService.isButtonDisabled() " mat-raised-button color="accent" class="accent"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>

@@ -1,0 +1,14 @@
+<div class="Decline">
+    <!-- <a href="javascript:void(0);" class="CloseModal" data-dismiss="modal"></a> -->
+    <h2 mat-dialog-title>Confirm {{data.submitTitle}}</h2>
+    <div mat-dialog-content>
+        <p>{{data.title}}</p>
+    </div>
+
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button  class="primary" color="primary"
+            mat-raised-button (click)="confirm()" >Yes</button>
+        <button  class="accent" color="accent"
+            mat-raised-button (click)="closeDialogBox()">No</button>
+    </div>
+</div>

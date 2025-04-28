@@ -1,0 +1,28 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<h2 mat-dialog-title>
+   Reservation Cancel Reason
+</h2>
+<div mat-dialog-content>
+        <form [formGroup]="bookingCancelForm" fxFlex="100">
+                <mat-card-content class="flex-row"  fxFlex="100">
+                    <div fxLayout="column">
+                        <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+                            <input matInput type="text" placeholder="Enter Reason" formControlName="booking_cancel_reason">
+                        </mat-form-field>
+                        <div class="text-danger"
+                            *ngIf="(bookingCancelForm.get('booking_cancel_reason')?.hasError('required') && (submitted || (bookingCancelForm.get('booking_cancel_reason')?.dirty)))">
+                            *Reason is required
+                        </div>
+                    </div>
+                 
+                </mat-card-content>
+
+        </form>    
+</div>
+<div mat-dialog-actions fxLayoutAlign="end center" style="padding: 10px 20px 20px;">
+    <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="primary" class="primary"
+        (click)="submit()">Initiate Refund</button>
+    <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="accent"
+        (click)="closeDialogBox()">Close</button>
+</div>

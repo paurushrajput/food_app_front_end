@@ -1,0 +1,48 @@
+<section class="vh-100">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5">
+
+        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid"
+          alt="Sample image">
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <form [formGroup]="loginform">
+          <h1 class="mb-3">Login</h1>
+          <div class="form-outline">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Email address</mat-label>
+              <input matInput placeholder="Enter Your Email" type="email" id="form3Example3" formControlName="emailId">
+              <mat-hint *ngIf="(loginform.get('emailId')?.hasError('pattern') && (submitted ||  (loginform.get('emailId')?.dirty)))">*Please Enter valid email</mat-hint>
+            </mat-form-field>
+          </div>
+          
+          <div class="form-outline">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Password</mat-label>
+              <input matInput placeholder="Enter Your Password" [type]="hide ? 'password' : 'text'" id="form3Example4" formControlName="password">
+              <div class="eye-icon" (click)="myFunction()" style="cursor: pointer;">
+                <span class="material-symbols-sharp">{{hide ? 'visibility_off' : 'visibility'}}</span>
+              </div>
+              <mat-hint *ngIf="(loginform.get('password')?.hasError('required') && (submitted || (loginform.get('password')?.dirty)))">*Password is required</mat-hint>
+            </mat-form-field>  
+          </div>
+          <!-- <div class="form-outline">
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+              <mat-label>Select Role</mat-label>
+              <mat-select formControlName="role_type">
+                  <mat-option value="1">SUPER ADMIN</mat-option>
+                  <mat-option value="2">SUB ADMIN</mat-option>
+              </mat-select>
+              <mat-hint *ngIf="(loginform.get('role_type')?.hasError('required') && (submitted || (loginform.get('role_type')?.dirty)))">*Select Role is required</mat-hint>
+          </mat-form-field>
+          </div> -->
+            <button mat-raised-button (click)="onLogIn()" color="primary">Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div
+    class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary">
+  </div>
+</section>

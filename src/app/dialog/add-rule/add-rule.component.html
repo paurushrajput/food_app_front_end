@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<h2 mat-dialog-title>
+    Create Tournament Rule
+</h2>
+<div mat-dialog-content>
+        <form [formGroup]="newRule" fxFlex="100">
+                <mat-card-content class="flex-row"  fxFlex="100">
+                    <div fxLayout="column">
+                        <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+                            <input matInput type="text" placeholder="Enter Name" formControlName="name">
+                        </mat-form-field>
+                        <div class="text-danger"
+                            *ngIf="(newRule.get('name')?.hasError('required') && (submitted || (newRule.get('name')?.dirty)))">
+                            *Name is required
+                        </div>
+                    </div>
+                    <div fxLayout="column" formArrayName="rule">
+                         <div *ngFor="let rule of rulesArray.controls; let i = index" fxLayout="row" fxLayoutGap="10" class="w-100">
+                            <div style="flex: 1 1 auto;">
+                                <mat-form-field appearance="outline" class="example-full-width w-100">
+                                    <input matInput type="text" placeholder="Enter Rule" formControlName={{i}}>
+                                </mat-form-field>
+                                <div class="text-danger"
+                                    *ngIf="(newRule.get('rule')?.hasError('required') && (submitted || (newRule.get('rule')?.dirty)))">
+                                    *rule is required
+                                </div>
+                            </div>
+                            <button mat-mini-fab class="delete-btn" (click)="removeRule(i)">
+                              <mat-icon class="material-symbols-sharp">remove</mat-icon>
+                            </button>
+                          </div> 
+                          <button mat-fab class="primary" color="primary" (click)="addRules()">
+                            <mat-icon class="material-symbols-sharp">add</mat-icon>
+                          </button>
+                        
+                     
+                    </div>
+                </mat-card-content>
+
+        </form>    
+</div>
+<div mat-dialog-actions fxLayoutAlign="end center" style="padding: 10px 20px 20px;">
+    <button [disabled]="_appService.isButtonDisabled() || this.newRule.invalid" mat-raised-button color="primary" class="primary"
+        (click)="saveRule()">Save
+        Rule</button>
+    <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="accent"
+        (click)="closeDialogBox()">Close</button>
+</div>

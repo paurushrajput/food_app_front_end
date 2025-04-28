@@ -1,0 +1,63 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div [ngClass]="data?'':'WrapperArea'">
+    <mat-toolbar class="pagetitle-bar">
+        <h2>Role Permission Management</h2>
+        <button mat-raised-button color="primary" class="primary" (click)="addUpdateRolePermission()">Add Permission</button>
+    </mat-toolbar>
+    <mat-sidenav-container class="example-sidenav-container" autosize>
+        <div class="WrapperBox">
+            <div class="Small-Wrapper">
+                <div fxLayoutAlign="end center" fxLayoutGap="20" class="mb-3">
+                    <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+                        [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+                    </mat-paginator>
+                </div>
+                <div class="table-responsive">
+                    <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+                        <ng-container matColumnDef="sr">
+                            <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+                            <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef> Module Name</th>
+                            <td mat-cell *matCellDef="let element"> {{element.module_name?element.module_name:'N/A'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="role_name">
+                            <th mat-header-cell *matHeaderCellDef> Role Name</th>
+                            <td mat-cell *matCellDef="let element"> {{element.role_name?element.role_name:'N/A'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="permission_type">
+                            <th mat-header-cell *matHeaderCellDef>Permission Type</th>
+                            <td mat-cell *matCellDef="let element"> {{element.permission_type?element.permission_type:'N/A'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                            <th mat-header-cell *matHeaderCellDef>Status</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element?.status?"Active":'N/A'}} </td>
+                        </ng-container>
+                      
+                        <ng-container matColumnDef="created">
+                            <th mat-header-cell *matHeaderCellDef>Created At</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.created_at | date: 'dd-MMM-yy hh:mm:aa'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef> Edit </th>
+                            <td mat-cell *matCellDef="let element">
+                                <button mat-mini-fab color="accent" (click)="addUpdateRolePermission(element)" class="secondary">
+                                    <span class="material-symbols-sharp">edit</span>
+                                </button>
+                                <button mat-mini-fab color="accent" (click)="removeModule(element)" class="secondary">
+                                    <span class="material-symbols-sharp">delete</span>
+                                </button>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav-container>
+</div>

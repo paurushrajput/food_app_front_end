@@ -1,0 +1,107 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div [ngClass]="data?'':'WrapperArea'">
+    <mat-toolbar class="pagetitle-bar w-100 mb-0" fxLayoutAlign="space-between center" fxLayoutGap="20">
+        <h2>Post Management</h2>
+    </mat-toolbar>
+
+    <mat-sidenav-container class="example-sidenav-container" autosize>
+        <div class="WrapperBox">
+            <div class="Small-Wrapper">
+                <div class="searchArea mb-3" fxLayoutAlign="space-between center" fxLayoutGap="20">
+                    <div class="d-flex gap-2">
+                      <button mat-raised-button color="primary" class="primary" (click)="postFilter()">Filter</button>
+                      <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                      <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+                        [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+                      </mat-paginator>
+                    </div>
+                  </div>
+                <div class="table-responsive">
+                    <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+                        <ng-container matColumnDef="sr">
+                            <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+                            <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="userName">
+                            <th mat-header-cell *matHeaderCellDef> User Name</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element?.user?.full_name?element?.user?.full_name:'N/A'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="resName">
+                            <th mat-header-cell *matHeaderCellDef>Restaurant Name</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element?.restaurant?.name?element?.restaurant?.name:'N/A'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="createdAt">
+                            <th mat-header-cell *matHeaderCellDef>Created Date</th>
+                            <td mat-cell *matCellDef="let element;">
+                                <div style="white-space: nowrap;text-align: center;">
+                                    {{element.created_at*1000 |
+                                    date:
+                                    'dd-MMM-yy'}} <br> {{element.created_at*1000 |
+                                    date:
+                                    'HH:MM'}}</div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="type">
+                            <th mat-header-cell *matHeaderCellDef>Type</th>
+                            <td mat-cell *matCellDef="let element"> {{element.type==1?'RATING':'WISHLIST'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="likeCount">
+                            <th mat-header-cell *matHeaderCellDef>Like Count</th>
+                            <td mat-cell *matCellDef="let element" class="text-center">
+                                {{element.like_count?element.like_count:0}} </td>
+                        </ng-container>
+                        <!-- <ng-container matColumnDef="status">
+                            <th mat-header-cell *matHeaderCellDef>Status</th>
+                            <td mat-cell *matCellDef="let element"> {{element.status==1?'Active':'Inactive'}}
+                            </td>
+                        </ng-container> -->
+                        <ng-container matColumnDef="status" stickyEnd>
+                            <th mat-header-cell *matHeaderCellDef>Disable / Enable</th>
+                            <td mat-cell *matCellDef="let element" class="text-center">
+                                <mat-slide-toggle
+                                    [checked]="element.status==1?true:false"
+                                    (change)="onToggleChange($event, element)"></mat-slide-toggle>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="commentCount">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">Comment Count</th>
+                            <td mat-cell *matCellDef="let element" class="text-center">
+                                {{element.comment_count?element.comment_count:0}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="details">
+                            <th mat-header-cell *matHeaderCellDef class="text-center"> Options </th>
+                            <td mat-cell *matCellDef="let element" class="text-center">
+                                <button mat-icon-button [matMenuTriggerFor]="menu"
+                                    aria-label="Example icon-button with a menu">
+                                    <mat-icon class="material-symbols-sharp">more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <button (click)="viewPostDetails(element)" mat-menu-item>
+                                        <span>View Details</span>
+                                    </button>
+                                    <button (click)="viewPostLikeList(element)" mat-menu-item>
+                                        <span>View Like List</span>
+                                    </button>
+                                    <button (click)="viewPostCommentList(element)" mat-menu-item>
+                                        <span>View Comment List</span>
+                                    </button>
+                                </mat-menu>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav-container>
+    <mat-dialog-actions *ngIf="data" align="end" class="px-3">
+        <button mat-raised-button mat-dialog-close color="accent">Close</button>
+    </mat-dialog-actions>
+</div>

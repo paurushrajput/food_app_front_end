@@ -1,0 +1,81 @@
+<div class="main-container">
+    <h2 mat-dialog-title>Build Update</h2>
+    <form [formGroup]="buildform">
+        <div mat-dialog-content>
+            <mat-card-content class="flex-row" fxLayoutGap="20">
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Enter title</mat-label>
+                    <input matInput placeholder="Enter title" formControlName="title">
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Version</mat-label>
+                    <input matInput placeholder="Enter Version" formControlName="version">
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-content class="flex-row" fxLayoutGap="20">
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Available Version</mat-label>
+                    <input matInput placeholder="Enter Available Version" formControlName="available_version">
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Select force update type</mat-label>
+                    <mat-select formControlName="force_update">
+                        <mat-option value='1'>True</mat-option>
+                        <mat-option value='0'>False</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-content>
+
+
+            <mat-card-content fxLayout="column">
+
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Description Label</mat-label>
+                    <input matInput placeholder="Enter label" formControlName="label">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Sub Title</mat-label>
+                    <input matInput placeholder="Enter sub title" formControlName="subTitle">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Button Name</mat-label>
+                    <input matInput placeholder="Enter button name" formControlName="buttonName">
+                </mat-form-field>
+            </mat-card-content>
+            <!-- <div>
+                <quill-editor formControlName="html_description"></quill-editor>
+            </div> -->
+            <div class="card mb-4">
+                <div class="card-header d-flex">
+                    <h6 class="card-header-title mb-0">Add Message</h6>
+                </div>
+                <div class="card-body">
+                    <div class="form-group" formArrayName="html_description">
+                        <div *ngFor="let textForm of specialText.controls; let i = index">
+                            <div class="form-row gap-10 flex-nowrap w-100 align-items-center mb-3" fxLayoutGap="10">
+                                <div [formGroupName]="i" class="lesson-form-row w-100" fxFlex="100">
+                                    <textarea class="form-control w-100" placeholder="Enter Your Text"
+                                        formControlName="text"></textarea>
+                                </div>
+                                <button (click)="removeTextarea(i,textForm)" mat-icon-button class="delete-btn">
+                                    <mat-icon class="material-symbols-sharp"> delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <button mat-fab extended color="primary" class="primary" (click)="addTextarea()">
+                            <mat-icon class="material-symbols-sharp">add</mat-icon>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- <input class="ng-hide" (change)="onFileSelected($event)" id=" input-file-id" type="file" /> -->
+        </div>
+        <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+            <button mat-raised-button color="primary" (click)="saveBuildData()" class="primary">Upload
+            </button>
+            <button mat-raised-button color="accent" class="accent" (click)="closeDialogBox()">Close</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,81 @@
+<h2 mat-dialog-title>
+    <span *ngIf="this.entity_id==undefined">New</span>
+    <span *ngIf="this.entity_id!=undefined">Edit</span>
+    Cuisine
+</h2>
+<form class="innerbox" [formGroup]="categoryForm">
+    <div mat-dialog-content>
+        <div fxLayout="column">
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <!-- <div class="teamlable">Name<em>*</em></div> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <input matInput placeholder="Enter Name" formControlName="name" (input)="onInputChange($event)">
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(categoryForm.get('name')?.hasError('required') && (submitted || (categoryForm.get('name')?.dirty)))">
+                        *Name Field Is Required
+                    </div>
+                </div>
+            </div>
+            <!-- <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-select formControlName="type">
+                            <mat-option value="">Select Type</mat-option>
+                            <mat-option value="cuisine">CUISINE</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(categoryForm.get('type')?.hasError('required') && (submitted || (categoryForm.get('type')?.dirty)))">
+                        *Type Field Is Required
+                    </div>
+                </div>
+            </div> -->
+            <div fxLayout="row" fxFlex="100" class="w-100">
+                <div fxFlex="100">
+                    <!-- <div class="teamlable">Select Status<em>*</em></div> -->
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <mat-select formControlName="status">
+                            <mat-option value="1">Active</mat-option>
+                            <mat-option value="0">Inactive</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="text-danger"
+                        *ngIf="(categoryForm.get('status')?.hasError('required') && (submitted || (categoryForm.get('status')?.dirty)))">
+                        *status Field Is Required
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                <label class="position-relative d-flex align-items-center gap-2">Upload <mat-icon class="material-symbols-sharp"
+                    matTooltip="Please select only jpeg,png format image.">info</mat-icon></label>
+                <div class="custom-file">
+                    <input class="ng-hide" formControlName="icon" (click)="onFileSelected($event)" id="input-file-id" type="submit" style="display:none;" />
+                    <label for="input-file-id">Upload Image</label>
+                </div>
+           
+                <div *ngIf="imageSize" class="filesize my-2">File size: {{ imageSize }}</div>
+                    <div class="text-danger"
+                        *ngIf="(categoryForm.get('icon')?.hasError('required') && (submitted || (categoryForm.get('icon')?.dirty)))">
+                        *Image Is Required
+                    </div>
+                </div>
+                <div class="col">
+                    <ng-container *ngIf="image">
+                        <div class="image-preview">
+                            <img id="preview" [src]=image>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button [disabled]="categoryForm.invalid"
+            color="primary" class="primary" (click)="saveCategory()">Save</button>
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="accent"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>

@@ -1,0 +1,204 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div class="WrapperArea">
+  <mat-toolbar class="pagetitle-bar w-100 mb-0" fxLayoutAlign="space-between center" fxLayoutGap="20">
+    <h2>Voucher Management</h2>
+    <button mat-raised-button color="primary" class="primary" (click)="addCoupon()">Add Voucher</button>
+  </mat-toolbar>
+  <mat-sidenav-container class="example-sidenav-container" autosize>
+    <div class="WrapperBox">
+      <div class="Small-Wrapper">
+        <div class="searchArea mb-3" fxLayoutAlign="space-between center" fxLayoutGap="20">
+          <form [formGroup]="searchForm" class="search-form" fxLayoutAlign="start center">
+            <mat-form-field appearance="outline" class="searchField">
+              <mat-label>Select Discount Type</mat-label>
+              <mat-select formControlName="discount_type">
+                <mat-option value="percentage">Percentage</mat-option>
+                <mat-option value="flat">Flat</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <!-- <app-input-box [formgroup]="searchForm" [params]="controls.name"></app-input-box> -->
+            <mat-form-field appearance="outline" class="searchField">
+              <mat-label>Select Type</mat-label>
+              <mat-select formControlName="type">
+                <mat-option value="1">For Specific organisation</mat-option>
+                <mat-option value="2"> Global for all users</mat-option>
+                <mat-option value="3">For specific user</mat-option>
+                <mat-option value="4">Store</mat-option>
+                <mat-option value="5">Campaign</mat-option>
+                <mat-option value="6">Agent</mat-option>
+                <mat-option value="7">Referral</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <!-- <mat-form-field appearance="outline" class="searchField">
+              <mat-label> Campaign Title</mat-label>
+              <input matInput type="text" placeholder="Enter Campaign" formControlName="campaign_title">
+            </mat-form-field> -->
+            <mat-form-field appearance="outline" class="searchField">
+              <mat-label>Select Status</mat-label>
+              <mat-select formControlName="status">
+                <mat-option value="1">Live</mat-option>
+                <mat-option value="0">Disabled</mat-option>
+                <mat-option value="2">Expired</mat-option>
+                <mat-option value="3">Deleted</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-raised-button color="primary" class="primary" (click)="searchData()">Search</button>
+            <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+          </form>
+          
+        </div>
+        <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+          </mat-paginator>
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100">
+            <ng-container matColumnDef="sr">
+              <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+              <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }} </td>
+            </ng-container>
+            <ng-container matColumnDef="expiration_at">
+              <th mat-header-cell *matHeaderCellDef>Expiry </th>
+              <td mat-cell *matCellDef="let element" style="white-space: nowrap;"> {{element.expiration_at*1000 | date:'dd-MMM-YY'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef>Description</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.description}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="discountType">
+              <th mat-header-cell *matHeaderCellDef>Discount <br/>Type</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.discount_type}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="type">
+              <th mat-header-cell *matHeaderCellDef>Type</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.type}}
+              </td>
+            </ng-container>
+       
+            <ng-container matColumnDef="discount">
+              <th mat-header-cell *matHeaderCellDef>Discount</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.discount}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="couponCode">
+              <th mat-header-cell *matHeaderCellDef>Voucher Code</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.coupon_code}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="max_discount">
+              <th mat-header-cell *matHeaderCellDef>Max Discount</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.max_discount}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="max_use">
+              <th mat-header-cell *matHeaderCellDef>Max Use</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.max_use}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="min_use">
+              <th mat-header-cell *matHeaderCellDef>Min Use</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.min_use}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="organization_id">
+              <th mat-header-cell *matHeaderCellDef>Organization Id</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.organization_id?element.organization_id:'N/A'}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="uses_per_user">
+              <th mat-header-cell *matHeaderCellDef>Uses <br/> per use</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.uses_per_user}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="used" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef>Used Voucher <br> Count</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.used_cpn_count}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="status" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.coup_status && !element.deleted_at && element.is_expired!==true" class="chip green">{{element.coup_status | titlecase}}</span>
+                <span *ngIf="element.status!='enabled' || element.deleted_at || element.is_expired==true" class="chip inactive">{{  element.deleted_at ?'Deleted':element.is_expired?"Expired":element.status | titlecase}}</span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="unused" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Unused Voucher <br> Count </th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                <ng-container>
+                  
+
+                  <button mat-fab class="btn-warning" extended [disabled]="element.unused_cpn_count=='0'" (click)="viewuser(element)">
+                    <mat-icon *ngIf="element.unused_cpn_count!=0" class="material-symbols-sharp">visibility</mat-icon>
+                    <mat-icon *ngIf="element.unused_cpn_count==0"
+                      class="material-symbols-sharp">visibility_off</mat-icon>
+                      {{element.unused_cpn_count}}
+                  </button>
+
+
+                  
+                </ng-container>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="action" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef> Update </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="d-flex gap-1">
+                  <button mat-mini-fab color="accent" (click)="showEditForm(element)">
+                    <mat-icon class="material-symbols-sharp">edit</mat-icon>
+                  </button>
+                  <button mat-mini-fab color="warn" [disabled]="element.is_deleted" (click)="deleteCoupon(element)">
+                    <mat-icon class="material-symbols-sharp"> delete</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+        <div>
+          <!-- <mat-paginator #paginator [length]="userlistcount" [pageIndex]="currentPage" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"  (page)="pageChanged($event)"  aria-label="Select page">
+          </mat-paginator> -->
+        </div>
+      </div>
+      <div>
+      </div>
+    </div>
+  </mat-sidenav-container>
+</div>
+
+
+
+
+
+<!-- <div fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-card>Category Management</mat-card>
+    <button mat-stroked-button color="primary" class="primary"  (click)="addCategory()">Add Category</button>
+  </div> -->
+
+
+
+<!-- <mat-card>
+    <mat-card-header>
+      <mat-card-title>Actions Buttons</mat-card-title>
+      <mat-card-subtitle>End</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+      <button mat-button>LIKE</button>
+      <button mat-button>SHARE</button>
+    </mat-card-actions>
+  </mat-card> -->

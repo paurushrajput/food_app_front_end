@@ -1,0 +1,86 @@
+<h2 mat-dialog-title>
+    <span *ngIf="this.entity_id==undefined">Create</span>
+    <span *ngIf="this.entity_id!=undefined">Edit</span>
+    Agent
+</h2>
+<form class="innerbox" [formGroup]="agentForm">
+    <div mat-dialog-content class="pb-0">
+        <div fxLayout="column">
+            <mat-card-content class="flex-row" fxLayoutGap="20">
+                <mat-form-field class="example-full-width w-100" appearance="outline">
+                    <input matInput placeholder="Enter First Name" formControlName="first_name">
+                </mat-form-field>
+                <div class="text-danger"
+                    *ngIf="(agentForm.get('first_name')?.hasError('required') && (submitted || (agentForm.get('first_name')?.dirty)))">
+                    *First Name Field Is Required
+                </div>
+                <mat-form-field class="example-full-width w-100" appearance="outline">
+                    <input matInput placeholder="Enter Last Name" formControlName="last_name">
+                </mat-form-field>
+                <div class="text-danger"
+                    *ngIf="(agentForm.get('last_name')?.hasError('required') && (submitted || (agentForm.get('last_name')?.dirty)))">
+                    *Last Name Field Is Required
+                </div>
+            </mat-card-content>
+            <mat-card-content class="flex-row" fxLayoutGap="20">
+                <mat-form-field class="example-full-width w-100" appearance="outline">
+                    <input matInput placeholder="Enter Username" formControlName="agent_username">
+                </mat-form-field>
+                <div class="text-danger"
+                    *ngIf="(agentForm.get('agent_username')?.hasError('required') && (submitted || (agentForm.get('agent_username')?.dirty)))">
+                    *Username Field Is Required
+                </div>
+                <mat-form-field class="example-full-width w-100" appearance="outline">
+                    <input matInput placeholder="Enter Email" formControlName="email">
+                </mat-form-field>
+                <!-- <div class="text-danger"
+                    *ngIf="(agentForm.get('email')?.hasError('required') && (submitted || (agentForm.get('email')?.dirty)))">
+                    *email Field Is Required
+                </div> -->
+            </mat-card-content>
+            <mat-card-content class="flex-row" fxLayoutGap="20">
+                <mat-form-field class="example-full-width w-100" appearance="outline">
+                    <input matInput placeholder="Enter Password" formControlName="password">
+                </mat-form-field>
+                <div class="text-danger"
+                    *ngIf="(agentForm.get('password')?.hasError('required') && (submitted || (agentForm.get('password')?.dirty)))">
+                    *Password Field Is Required
+                </div>
+                <mat-form-field class="example-full-width w-100" appearance="outline">
+                    <mat-select formControlName="device_type">
+                        <mat-option value="web">Web</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="text-danger"
+                    *ngIf="(agentForm.get('device_type')?.hasError('required') && (submitted || (agentForm.get('device_type')?.dirty)))">
+                    *device_type Field Is Required
+                </div>
+            </mat-card-content>
+            <mat-card-content class="flex-row" fxLayoutGap="20">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Select Location</mat-label>
+                        <mat-select formControlName="location_id">
+                            <mat-option *ngFor="let type of locationData | sort:'name'" value={{type.uid}}>
+                                {{type.name}}</mat-option>
+                        </mat-select>
+                        <div class="text-danger"
+                            *ngIf="(agentForm.get('location_id')?.hasError('required') && (submitted || (agentForm.get('location_id')?.dirty)))">
+                            *Location Field Is Required
+                        </div>
+                    </mat-form-field>
+                    
+                    <mat-form-field class="example-full-width w-100" appearance="outline">
+                        <input matInput placeholder="Enter Referral Code" formControlName="referral_code">
+                    </mat-form-field>
+                </mat-card-content>
+                
+                
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="primary" class="primary"
+            (click)="createAgent()">Create</button>
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="accent"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>

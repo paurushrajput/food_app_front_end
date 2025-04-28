@@ -1,0 +1,159 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div class="WrapperArea">
+    <mat-toolbar class="pagetitle-bar">
+        <h2>Transaction Management</h2>
+        <div class="ml-auto">
+            <ul class="d-flex justify-content-end align-items-center gap-3 instruction">
+                <li>
+                    <div class="d-flex align-items-center green"><span></span>Actual User</div>
+                </li>
+                <li>
+                    <div class="d-flex align-items-center red"><span></span>Test User</div>
+                </li>
+            </ul>
+        </div>
+    </mat-toolbar>
+    <mat-sidenav-container class="example-sidenav-container" autosize>
+        <div class="WrapperBox">
+            <div class="Small-Wrapper">
+                <div fxLayoutGap="20" class="searchArea big mb-3 d-flex justify-content-between align-items-center">
+                    <div class="d-flex gap-2">
+                        <button mat-raised-button color="primary" class="primary" (click)="txnFilter()">Filter</button>
+                        <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+                    </div>
+                    <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+                        [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+                    </mat-paginator>
+                </div>
+                <div class="table-responsive">
+                    <table mat-table [dataSource]="dataSource" class="w-100 sticky-table">
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="sr">
+                            <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+                            <td [ngClass]="element.is_nukhba_user==1?'red':'green'" mat-cell
+                                *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef> User Name </th>
+                            <td mat-cell *matCellDef="let element" [innerHTML]="element.username"> {{element.username?element.username:"N/A"}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="email">
+                            <th mat-header-cell *matHeaderCellDef> User Email </th>
+                            <td mat-cell *matCellDef="let element"> {{element.user_email?element.user_email:"N/A"}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="phone">
+                            <th mat-header-cell *matHeaderCellDef> User Mobile </th>
+                            <td mat-cell *matCellDef="let element"> {{element.user_mobile?element.user_mobile:"N/A"}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="resLocation">
+                            <th mat-header-cell *matHeaderCellDef> Restaurant Location</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.rest_location_name?element.rest_location_name:"N/A"}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="pax">
+                            <th mat-header-cell *matHeaderCellDef style="width: 200px;"> Number Of <br /> People (pax)
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.total_guest?element.total_guest:"N/A"}}
+                            </td>
+                        </ng-container>
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="bookingId">
+                            <th mat-header-cell *matHeaderCellDef> Booking ID </th>
+                            <td mat-cell *matCellDef="let element"> {{element.reservation_id}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="bookingDate">
+                            <th mat-header-cell *matHeaderCellDef> Booking Date </th>
+                            <td mat-cell *matCellDef="let element"> {{element.booking_date}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="slotTime">
+                            <th mat-header-cell *matHeaderCellDef> Booking Slot </th>
+                            <td mat-cell *matCellDef="let element"> {{element.slot_time }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="resName">
+                            <th mat-header-cell *matHeaderCellDef> Restaurant Name </th>
+                            <td mat-cell *matCellDef="let element"> {{element.restaurant_name}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="amount">
+                            <th mat-header-cell *matHeaderCellDef>Booking fee paid </th>
+                            <td mat-cell *matCellDef="let element"> {{element.amount }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="paymentDate">
+                            <th mat-header-cell *matHeaderCellDef> Transaction <br /> Date / Time</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div style="white-space: nowrap;text-align: center;"><span
+                                        [outerHTML]="element.created_at | gmt"></span></div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="txnId">
+                            <th mat-header-cell *matHeaderCellDef> Status <br />Code </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element?.txn_details?.code?element?.txn_details?.code:'N/A'}}
+                            </td>
+                        </ng-container>
+                        <!-- <ng-container matColumnDef="txnId" stickyEnd>
+                            <th mat-header-cell *matHeaderCellDef> Transaction Id </th>
+                            <td mat-cell *matCellDef="let element; let i = index">
+                                {{ element.ref_txn_id ? (isTruncated[i] ? element.ref_txn_id : (element.ref_txn_id |
+                                slice:0:3) ) : '' }}
+                                <a *ngIf="element.ref_txn_id && !isTruncated[i]" (click)="toggleTruncation(i)">....</a>
+                            </td>
+
+                        </ng-container> -->
+                        <ng-container matColumnDef="isPilot" stickyEnd>
+                            <th mat-header-cell *matHeaderCellDef> Transaction<br /> Type </th>
+                            <td mat-cell *matCellDef="let element">
+                                <!-- <span class="chip green"> {{element.payment_status | titlecase}}</span> -->
+                                <span *ngIf="element.is_pilot=='1'" class="chip pink">Pilot</span>
+                                <span *ngIf="element.is_pilot=='0'" class="chip green">Live</span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="status" stickyEnd>
+                            <th mat-header-cell *matHeaderCellDef> Order Status </th>
+                            <td mat-cell *matCellDef="let element">
+                                <!-- <span class="chip green"> {{element.payment_status | titlecase}}</span> -->
+                                <!-- <span *ngIf="element.payment_status=='refunded'"
+                                    class="chip pink">{{element.payment_status | titlecase}}</span> -->
+                                <span *ngIf="element.payment_details.code==3"
+                                    class="chip green">{{element.payment_details?.text}}</span>
+                                <span
+                                    *ngIf="element.payment_details.code!=3 && element.payment_status!='clickedBack'"
+                                    class="chip red">{{element.payment_details?.text}}</span>
+                                <span *ngIf="element.payment_status=='clickedBack'" class="chip red">Clicked
+                                    Back</span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="action1" stickyEnd>
+                            <th mat-header-cell *matHeaderCellDef>Action </th>
+                            <td mat-cell *matCellDef="let element">
+                                <button mat-icon-button [matMenuTriggerFor]="menu"
+                                    aria-label="Example icon-button with a menu">
+                                    <mat-icon class="material-symbols-sharp">more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item *ngIf="!element.is_nukhba_user"
+                                        (click)="txnDetails(element)">View Details
+                                    </button>
+                                </mat-menu>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+                <div>
+                    <!-- <mat-paginator #paginator [length]="userlistcount" [pageIndex]="currentPage" [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions"  (page)="pageChanged($event)"  aria-label="Select page">
+            </mat-paginator> -->
+                </div>
+            </div>
+            <div>
+            </div>
+        </div>
+    </mat-sidenav-container>
+</div>

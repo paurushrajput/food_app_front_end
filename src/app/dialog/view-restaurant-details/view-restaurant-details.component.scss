@@ -1,0 +1,109 @@
+.mat-button.mat-red {
+    color: rgb(255, 0, 0);
+  }
+  
+  .mat-raised-button.mat-red, .mat-flat-button.mat-red{
+    background-color: rgb(255, 0, 0);
+    color: white;
+  }
+  
+  
+  table {
+    border-collapse: separate;
+  }
+  
+  th {
+    background-color: #303030;
+    color: white;
+  }
+  
+  th,
+  td {
+    width: 150px;
+    text-align: center;
+    // border: 1px solid #f1f1f1;
+    padding: 5px;
+  }
+  
+  h2 {
+    color: #303030;
+  }
+  span.Green {
+    background: green;
+    padding: 5px 10px;
+    color: #fff;
+    border-radius: 6px;
+  }
+  span.debit{
+    color:green;
+  }
+  span.Red {
+    color: #fff;
+    background: var(--colorRed);
+    padding: 5px 10px;
+    border-radius: 6px;
+  }
+  span.credit{
+    color:var(--colorRed);
+  }
+  
+  .manage-displ{
+    display: list-item !important;
+  }
+  
+  .filterFlex2 ul li{
+    display: inline-block;
+    margin-right: 15px;
+  }
+  .filterFlex2 ul li {
+    display: inline-block;
+    margin-right: 15px;
+  }
+  .filterFlex2 ul li:last-child{
+    margin-right: 0;
+  }
+  .filterFlex2 ul li a{
+    display: block;
+  }
+  
+  .filterFlex .form-control.formControl{
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .filterFlex .form-group{
+    margin-bottom: 0;
+    margin-right: 15px;
+  }
+  .applyBtn a.btns {
+    display: inline-block;
+    padding: 10px 20px;
+  }
+  .filterFlex {
+    display: flex;
+    align-items: flex-end;
+  }
+  .filterFlex  label.label {
+    font-size: 13px;
+    line-height: 14px;
+  }
+  
+  label.label{
+    font-size: 14px;
+    color: var(--colorBlack);
+    font-weight: 500;
+    line-height: 18px;
+  }
+  
+  th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+    padding: 10px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    padding-right: 10px;
+  }
+  th {
+    border-collapse: separate;
+    border-spacing: 0 15px;
+  }
+
+  

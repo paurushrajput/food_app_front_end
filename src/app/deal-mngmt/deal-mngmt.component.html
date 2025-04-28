@@ -1,0 +1,135 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div [ngClass]="data?'':'WrapperArea'">
+  <mat-toolbar class="pagetitle-bar w-100 mb-0" fxLayoutAlign="space-between center" fxLayoutGap="20">
+    <h2>Deal Management</h2>
+    <!-- <div class="ml-auto">
+      <ul class="d-flex justify-content-end align-items-center gap-3 instruction">
+        <li>
+          <div class="d-flex align-items-center red"><span></span>Draft Deal</div>
+        </li>
+      </ul>
+    </div> -->
+    <button mat-raised-button color="primary" class="primary" (click)="addDeal()">Add Deal</button>
+  </mat-toolbar>
+  <mat-sidenav-container class="example-sidenav-container" autosize>
+    <div class="WrapperBox">
+      <div class="Small-Wrapper">
+        <div class="searchArea mb-3" fxLayoutAlign="space-between center" fxLayoutGap="20">
+          <div class="d-flex gap-2">
+            <button mat-raised-button color="primary" class="primary" (click)="dealFilter()">Filter</button>
+            <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+          </div>
+          <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+          </mat-paginator>
+        </div>
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource" class="sticky-table" fxFlex="100" cdkDropList
+            (cdkDropListDropped)="drop($event)">
+            <ng-container matColumnDef="sr">
+              <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+              <td [ngClass]="element.status==-4?'red':''" mat-cell *matCellDef="let element;index as i;"> {{ currentPage
+                * pageSize + i + 1 }} </td>
+            </ng-container>
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef>Title</th>
+              <td mat-cell *matCellDef="let element"> {{element.title?element.title:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="resName">
+              <th mat-header-cell *matHeaderCellDef>Restaurant Name</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.restaurant_name?element.restaurant_name:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="startTime">
+              <th mat-header-cell *matHeaderCellDef>Start Time</th>
+              <td mat-cell *matCellDef="let element">
+                <div *ngIf="element.start_time!=null" style="white-space: nowrap;text-align: center;"><span
+                    [outerHTML]="element?.start_time_parsed |gmt"></span></div>
+                <div *ngIf="element.start_time==null">
+                  N/A
+                </div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="endTime">
+              <th mat-header-cell *matHeaderCellDef>End Time</th>
+              <td mat-cell *matCellDef="let element">
+                <div *ngIf="element.start_time!=null" style="white-space: nowrap;text-align: center;"><span
+                    [outerHTML]="element?.end_time_parsed |gmt"></span></div>
+                <div *ngIf="element.end_time==null">
+                  N/A
+                </div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="catname">
+              <th mat-header-cell *matHeaderCellDef>Category Name</th>
+              <td mat-cell *matCellDef="let element"> {{element.category_name?element.category_name:'N/A'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="desc">
+              <th mat-header-cell *matHeaderCellDef>Description</th>
+              <td mat-cell *matCellDef="let element"> {{element.description?element.description:"N/A"}} </td>
+            </ng-container>
+            <ng-container matColumnDef="type">
+              <th mat-header-cell *matHeaderCellDef>Type</th>
+              <td mat-cell *matCellDef="let element"> 
+              {{ element.type == 'paid' ? 'Paid' : element.type == 'free' ? 'Free' : element.type =='pay_at_resto' ? 'Pay At Restaurant' : 'None' }}
+               </td>
+            </ng-container>
+            <!-- <ng-container matColumnDef="toggle" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef>Disable / Enable</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                <mat-slide-toggle [disabled]="element.status==-4" [checked]="element.status==1?true:false"
+                  (change)="onToggleChange($event, element)"></mat-slide-toggle>
+              </td>
+            </ng-container> -->
+            <ng-container matColumnDef="isPilot">
+              <th mat-header-cell *matHeaderCellDef>Deal Mode</th>
+              <td mat-cell *matCellDef="let element"> {{element.is_pilot==1?'Pilot':'Live'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="action" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef> Action </th>
+              <td mat-cell *matCellDef="let element" fxLayoutGap="10">
+                <div class="d-flex justify-content-center align-items-center gap-2">
+                  <button mat-mini-fab color="accent" (click)="showEditForm(element)" mat-mini-fab color="accent">
+                    <mat-icon class="material-symbols-sharp">edit</mat-icon>
+                  </button>
+                  <!-- <button mat-mini-fab color="warn" (click)="deleteDeal(element)" mat-mini-fab color="warn">
+                    <mat-icon class="material-symbols-sharp"> delete</mat-icon>
+                  </button> -->
+                </div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="userDeal" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef class="text-center"> View <br />User Deal </th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                <ng-container>
+                  <button class="btn-warning" mat-mini-fab (click)="viewDeal(element)">
+                    <mat-icon class="material-symbols-sharp">visibility</mat-icon>
+                    <!-- <mat-icon *ngIf="element.restaurant_count=='0'"
+                      class="material-symbols-sharp">visibility_off</mat-icon> -->
+                  </button>
+                </ng-container>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="actionV1">
+              <th mat-header-cell *matHeaderCellDef>Options </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                  <mat-icon class="material-symbols-sharp">more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item  (click)="deleteDeal(element)">Delete Deal</button>
+                  <button mat-menu-item  (click)="dealOptions(element)">Deal Sold Out</button>
+                  <button mat-menu-item  (click)="enable_disable_deal(element)">{{element.status==1?'Disable':'Enable'}} Deal</button>
+                  <button mat-menu-item  (click)="preRestroSelect(element)">{{element.pre_select_branch==1?'Disable':'Enable'}} Pre-Restro Select</button>
+                  <button mat-menu-item  (click)="dealCredits(element)">{{element.free_with_nukhba_credits==1?'Disable':'Enable'}} Free with NC </button>
+                </mat-menu>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" cdkDrag></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-container>
+</div>

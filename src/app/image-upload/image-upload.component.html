@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>
+    Upload Image
+</h2>
+<form class="innerbox" [formGroup]="categoryForm">
+    <div mat-dialog-content>
+        <div fxLayout="column">
+            <div class="row">
+                <div class="col">
+                    <label class="position-relative d-flex align-items-center gap-2">Upload <mat-icon
+                            class="material-symbols-sharp"
+                            matTooltip="Please select only jpeg,png format image.">info</mat-icon></label>
+                    <div class="custom-file">
+                        <input class="ng-hide" formControlName="icon" (change)="onFileSelected($event)"
+                            id="input-file-id" type="file" />
+                        <label for="input-file-id">Upload Image</label>
+                    </div>
+
+                    <div *ngIf="imageSize" class="filesize my-2">File size: {{ imageSize }}</div>
+                    <div class="text-danger"
+                        *ngIf="(categoryForm.get('icon')?.hasError('required') && (submitted || (categoryForm.get('icon')?.dirty)))">
+                        *Image Is Required
+                    </div>
+                </div>
+                <div class="col">
+                    <ng-container *ngIf="image">
+                        <div class="image-preview">
+                            <img id="preview" [src]=image>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center" style="padding: 20px;">
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button [disabled]="categoryForm.invalid"
+            color="primary" class="primary" (click)="uploadImage()">Upload</button>
+        <button [disabled]="_appService.isButtonDisabled()" mat-raised-button color="accent" class="accent"
+            (click)="closeDialogBox()">Close</button>
+    </div>
+</form>

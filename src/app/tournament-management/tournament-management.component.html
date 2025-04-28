@@ -1,0 +1,113 @@
+<!-- <app-sidenav></app-sidenav> -->
+<div class="WrapperArea">
+  <mat-toolbar class="pagetitle-bar w-100 mb-0" fxLayoutAlign="space-between center" fxLayoutGap="20">
+    <h2>Tournament Management</h2>
+    <button mat-raised-button color="primary" (click)="addTournament()" class="primary">Add Tournament</button>
+  </mat-toolbar>
+  <mat-sidenav-container class="example-sidenav-container" autosize>
+    <div class="WrapperBox">
+      <div class="Small-Wrapper">
+        <div class="searchArea mb-3" fxLayoutAlign="space-between center" fxLayoutGap="20">
+          <form [formGroup]="searchForm" class="search-form" fxLayoutAlign="start center" fxLayoutGap="8">
+            <mat-form-field appearance="outline" class="searchField">
+              <mat-label>Select Status</mat-label>
+              <mat-select formControlName="status">
+                <mat-option value="1">Scheduled</mat-option>
+                <mat-option value="2">Live</mat-option>
+                <mat-option value="3">Completed</mat-option>
+                <!-- <mat-option value="4">Abandoned</mat-option> -->
+              </mat-select>
+            </mat-form-field>
+            <button mat-raised-button color="primary" class="primary" (click)="loadData()">Search</button>
+            <button mat-raised-button color="accent" (click)="formReset()">Reset</button>
+          </form>
+          <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+          </mat-paginator>
+        </div>
+        <div class="table-responsive">
+          <table mat-table [dataSource]="userList" class="w-100 sticky-table">
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="sr">
+              <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+              <td mat-cell *matCellDef="let element;index as i;"> {{ currentPage * pageSize + i + 1 }} </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.title?element.title:"N/A"}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="start">
+              <th mat-header-cell *matHeaderCellDef> Start Time </th>
+              <td mat-cell *matCellDef="let element">
+                <div style="white-space: nowrap;text-align: center;">
+                  {{element.date_start*1000 |
+                  date:
+                  'dd-MMM-yy'}} <br> {{element.date_start*1000 |
+                  date:
+                  'HH:MM'}}</div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="end">
+              <th mat-header-cell *matHeaderCellDef> End Time </th>
+              <td mat-cell *matCellDef="let element">
+                <div style="white-space: nowrap;text-align: center;">
+                  {{element.date_end*1000 |
+                  date:
+                  'dd-MMM-yy'}} <br> {{element.date_end*1000 |
+                  date:
+                  'HH:MM'}}</div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="points">
+              <th mat-header-cell *matHeaderCellDef> Referral Points </th>
+              <td mat-cell *matCellDef="let element"> {{element.user_referral_points}} </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef> Status </th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.status=='pending'" class="chip yellow">{{element.status | titlecase}}</span>
+                <span *ngIf="element.status=='live'" class="chip pink">{{element.status | titlecase}}</span>
+                <span *ngIf="element.status=='completed'" class="chip green">{{element.status | titlecase}}</span>
+
+                <span *ngIf="element.status=='scheduled'" class="chip yellow">{{element.status | titlecase}}</span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="leaderboard">
+              <th mat-header-cell *matHeaderCellDef> View Leaderboard </th>
+              <td mat-cell *matCellDef="let element" fxLayoutGap="10">
+                <button mat-mini-fab class="btn-warning" (click)="viewLeaderboard(element)">
+                  <mat-icon class="material-symbols-sharp">visibility</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="image">
+              <th mat-header-cell *matHeaderCellDef>Image</th>
+              <td mat-cell *matCellDef="let element">
+                <img (click)="previewImage(element.image)" style="max-width: 70px;" src={{element.image}}>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef> Update </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-mini-fab color="accent" (click)="showEditForm(element)">
+                  <mat-icon class="material-symbols-sharp">edit</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+        <div>
+          <!-- <mat-paginator #paginator [length]="userlistcount" [pageIndex]="currentPage" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"  (page)="pageChanged($event)"  aria-label="Select page">
+          </mat-paginator> -->
+        </div>
+      </div>
+      <div>
+      </div>
+    </div>
+  </mat-sidenav-container>
+</div>
